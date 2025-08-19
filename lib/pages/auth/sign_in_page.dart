@@ -1,33 +1,39 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  // Variables to hold the email and password values
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;  // Size of the screen
-    var screenWidth = screenSize.width;  // Screen width
-    var screenHeight = screenSize.height;  // Screen height
-    var orientation = MediaQuery.of(context).orientation;  // Orientation (portrait or landscape)
+    var screenSize = MediaQuery.of(context).size; // Size of the screen
+    var screenWidth = screenSize.width; // Screen width
+    var screenHeight = screenSize.height; // Screen height
 
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text("Sign In"),
       // ),
-      body: 
-      Column(
+      body: Column(
         children: [
           SizedBox(
-            height: screenHeight * 0.05,  // Responsive height for the top space
+            height: screenHeight * 0.05, // Responsive height for the top space
           ),
           SizedBox(
-            child: 
-            Align(
+            child: Align(
               alignment: Alignment.topCenter,
               child: Image.asset(
                 "assets/images/logo_bukulapak.png",
-                width: screenWidth * 0.2, 
+                width: screenWidth * 0.2,
               ),
             ),
           ),
@@ -38,16 +44,14 @@ class SignInPage extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'poppins',
                 color: darkBlue,
-                fontSize: screenWidth * 0.03,  // Responsive font size
+                fontSize: screenWidth * 0.03, // Responsive font size
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
 
           // Email Input Field
-          SizedBox(
-            height: screenHeight * 0.05,
-          ),
+          SizedBox(height: screenHeight * 0.05),
           Align(
             alignment: Alignment(-0.73, 0),
             child: Text(
@@ -61,8 +65,12 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: screenHeight * 0.008),
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.1,
+              vertical: screenHeight * 0.008,
+            ),
             child: TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 labelText: "Masukkan Alamat Email Anda",
                 labelStyle: TextStyle(
@@ -78,9 +86,7 @@ class SignInPage extends StatelessWidget {
           ),
 
           // Password Field
-          SizedBox(
-            height: screenHeight * 0.02,
-          ),
+          SizedBox(height: screenHeight * 0.02),
           Align(
             alignment: Alignment(-0.73, 0),
             child: Text(
@@ -94,8 +100,12 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: screenHeight * 0.008),
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.1,
+              vertical: screenHeight * 0.008,
+            ),
             child: TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 labelText: "Masukkan Kata Sandi Anda",
                 labelStyle: TextStyle(
@@ -121,9 +131,7 @@ class SignInPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: screenHeight * 0.2,
-          ),
+          SizedBox(height: screenHeight * 0.2),
           ElevatedButton(
             onPressed: () {
               // Navigasi disini
@@ -148,13 +156,9 @@ class SignInPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-            child: 
-            Text(
+            child: Text(
               'Cara lain untuk masuk',
-              style: TextStyle(
-              color: lightGray,
-              fontSize: screenWidth * 0.025,
-              ),
+              style: TextStyle(color: lightGray, fontSize: screenWidth * 0.025),
             ),
           ),
           Container(
@@ -162,10 +166,7 @@ class SignInPage extends StatelessWidget {
             width: screenWidth * 0.4,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: lightGray,
-                width: 1,
-              ),
+              border: Border.all(color: lightGray, width: 1),
             ),
             child: Center(
               child: Image(
@@ -175,9 +176,7 @@ class SignInPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: screenHeight * 0.05, 
-          ),
+          SizedBox(height: screenHeight * 0.05),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
             child: Row(
@@ -209,7 +208,7 @@ class SignInPage extends StatelessWidget {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }
