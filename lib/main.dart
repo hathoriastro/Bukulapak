@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bukulapak/pages/home.dart';
 import 'package:bukulapak/pages/auth/welcomepage.dart';
 import 'package:bukulapak/pages/auth/sign_in_page.dart';
+import 'package:bukulapak/pages/auth/sign_up_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,15 +16,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: 'poppins',  // Set the global font family
+        fontFamily: 'poppins', // Set the global font family
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/sign_in',
+      initialRoute: '/sign_up',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/homepage': (context) => const HomePage(),
         '/welcome': (context) => const WelcomePage(),
         '/sign_in': (context) => const SignInPage(),
+        '/sign_up': (context) => const SignUpPage(),
       },
     );
   }

@@ -192,7 +192,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/welcome');
+                    Navigator.pushNamed(context, '/sign_up');
                   },
                   child: Text(
                     "Daftar",
