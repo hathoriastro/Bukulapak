@@ -10,19 +10,18 @@ class ProductCard extends StatelessWidget {
   final String title;
 
   const ProductCard({
-    Key? key,
+    super.key,
     required this.imageProduct,
     required this.date,
     required this.time,
     required this.price,
     required this.location,required this.title,
-  }) : super(key : key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final sizewidth = size.width;
-    
     final fullwidth = 440;
     return Container(
       width: sizewidth * 182 / fullwidth,
@@ -31,7 +30,7 @@ class ProductCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey, width: 1.5),
+        border: Border.all(color: lightGray, width: 1.5),
 
       ),
       child: Padding(

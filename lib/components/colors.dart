@@ -12,3 +12,7 @@ const Color customorange = Color(0xFFF29F05);
 const Color softgray = Color(0xFFC4C4C4);
 const Color orange = Color(0xFFF29F05);
 const Color darkWhite = Color(0xFFEFEFEF);
+const Color cyan = Color(0xFF48D1CC);
+const Color sd = Color(0xFFB81414);
+const Color smp = Color(0xFF191970);
+const Color sma = Color(0xFF436B95);

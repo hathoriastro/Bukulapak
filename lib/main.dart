@@ -1,5 +1,6 @@
-import 'package:bukulapak/pages/home.dart';
+import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/splash_screen.dart';
+import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/pages/auth/welcomepage.dart';
 import 'package:bukulapak/pages/auth/sign_in_page.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/category': (context) => const CategoryPage(),
         '/add_product': (context) => const AddProductPage(),
         '/barterin': (context) => const BarterinPage(),
+        '/modulGo': (context) => const ModulPage(),
       },
     );
   }

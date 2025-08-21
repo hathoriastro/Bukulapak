@@ -1,7 +1,7 @@
-import 'package:bukulapak/components/banner_carousel.dart';
+import 'package:bukulapak/components/user/banner_carousel.dart';
 import 'package:bukulapak/components/colors.dart';
-import 'package:bukulapak/components/card_product.dart';
-import 'package:bukulapak/components/navbar.dart';
+import 'package:bukulapak/components/user/product_card.dart';
+import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
