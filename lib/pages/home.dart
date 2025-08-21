@@ -61,130 +61,143 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric( 
-          vertical: MediaQuery.of(context).size.height * 0.03,
-          horizontal: MediaQuery.of(context).size.width * 0.035,
-        ),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: BannerCarousel()
-              // ClipRRect(child: Image.asset('assets/images/banner2.png', )),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.03,
+              horizontal: MediaQuery.of(context).size.width * 0.035,
             ),
-            SizedBox(height: 15),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: BannerCarousel(),
+                ),
+                SizedBox(height: 15),
 
-            Container(
-              padding: EdgeInsets.all(13
-              ),
-              child: Column(
-                
-                children: [
-                  Row(
-                      children: [
-                        Text(
-                          'Buku',
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Column(
-                          children: [
-                            Text(
-                              'Gratis',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: customorange,
-                                fontWeight: FontWeight.w500,
-                              ),
+                Container(
+                  padding: EdgeInsets.all(13),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Buku',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
                             ),
-                            Container(height: 1.5, width: 65, color: darkBlue),
-                          ],
-                        ),
-                        Spacer(
-                          flex: 2,
-                        ),
-                        Text(
-                          'Lihat Semua',
-                          style: TextStyle(
-                            fontSize: 8,
-                            color: lightGray,
-                            fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ],
-                    ),
-                  
-                  SizedBox(height: 15),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ProductCard(),ProductCard()
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 40),
-                  Row(
-                      children: [
-                        Text(
-                          'Baru',
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                       SizedBox(width: 4),
-                        Column(
-                          children: [
-                            Text(
-                              'Ditambahkan',
-                              style: TextStyle(
-                                fontSize: 22,
+                          SizedBox(width: 4),
+                          Column(
+                            children: [
+                              Text(
+                                'Gratis',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: customorange,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Container(
+                                height: 1.5,
+                                width: 65,
                                 color: darkBlue,
-                                fontWeight: FontWeight.w500,
                               ),
+                            ],
+                          ),
+                          Spacer(flex: 2),
+                          Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: lightGray,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Container(height: 1.5, width: 152, color: customorange),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 15),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [ProductCard(), ProductCard()]),
+                      ),
+                      SizedBox(height: 40),
+                      Row(
+                        children: [
+                          Text(
+                            'Baru',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Column(
+                            children: [
+                              Text(
+                                'Ditambahkan',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: darkBlue,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Container(
+                                height: 1.5,
+                                width: 152,
+                                color: customorange,
+                              ),
+                            ],
+                          ),
+
+                          Spacer(flex: 2),
+                          Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: lightGray,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ProductCard(),
+                            ProductCard(),
+                            ProductCard(),
                           ],
                         ),
-                  
-                        Spacer(
-                        flex:2                 
-                        ),
-                        Text(
-                          'Lihat Semua',
-                          style: TextStyle(
-                            fontSize: 8,
-                            color: lightGray,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 15),
-                    SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ProductCard(),ProductCard(), ProductCard()
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
+          Positioned(
+            right: 12,
+            bottom: 10, // biar ga ketutup navbar
+            child: Image.asset(
+                "assets/images/floatinglamp.png",
+                width: 77,
+                height: 77,
+              ),
             
-          ],
-        ),
+          ),
+        ],
       ),
+
       bottomNavigationBar: BottomNavbar(selectedItem: 0),
     );
   }

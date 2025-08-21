@@ -1,7 +1,6 @@
 
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class BottomNavbar extends StatefulWidget {
   final int selectedItem;
