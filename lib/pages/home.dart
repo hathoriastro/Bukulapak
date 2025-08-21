@@ -1,3 +1,4 @@
+import 'package:bukulapak/components/banner_carousel.dart';
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/card_product.dart';
 import 'package:bukulapak/components/navbar.dart';
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         shadowColor: Colors.grey.withOpacity(0.5),
         surfaceTintColor: Colors.transparent,
         title: SizedBox(
-          height: sizeheight * 42 / fullheight,
+          height: 42,
           width: sizewidth * 259 / fullwidth,
           child: TextField(
             decoration: InputDecoration(
@@ -71,7 +72,8 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: ClipRRect(child: Image.asset('assets/images/banner2.png', )),
+              child: BannerCarousel()
+              // ClipRRect(child: Image.asset('assets/images/banner2.png', )),
             ),
             SizedBox(height: 15),
 
@@ -136,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.black,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                        SizedBox(width: 4),
@@ -147,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                 fontSize: 22,
                                 color: darkBlue,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             Container(height: 1.5, width: 152, color: customorange),

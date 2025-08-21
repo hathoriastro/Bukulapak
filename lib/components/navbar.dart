@@ -1,6 +1,7 @@
 
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class BottomNavbar extends StatefulWidget {
   final int selectedItem;
@@ -50,27 +51,28 @@ class _BottomNavState extends State<BottomNavbar> {
       backgroundColor: Colors.white,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Image.asset('assets/images/Home.png', width: 29, height: 29,),
+          icon: Icon(Icons.home_filled, size: 26,),
           label: 'Beranda',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/images/modul.png', width: 29, height: 29,),
+          icon: Icon(Icons.menu_book_rounded, size: 26,),
           label: 'Modul',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/images/unggah.png', width: 44, height: 44,),
+          icon: Icon(Icons.add_circle_outlined, size: 44,),
           label: 'Unggah',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/images/barter.png',  width: 29, height: 29,),
+          icon: Icon(Icons.handshake_rounded, size: 26),
           label: 'Barter',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/images/profil.png',),
+          icon: Icon(Icons.person, size: 26),
           label: 'Profil',
         ),
       ],
       selectedItemColor: darkBlue,
+      unselectedItemColor: softgray,
       currentIndex: widget.selectedItem,
       onTap: changeSelectedNavBar,
     )
