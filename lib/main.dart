@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'poppins', // Set the global font family
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/add_product',
+      initialRoute: '/homepage',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
