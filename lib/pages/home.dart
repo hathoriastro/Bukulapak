@@ -125,7 +125,36 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(height: 15),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(children: [ProductCard(), ProductCard()]),
+                        child: Row(
+                          children: [
+                            ProductCard(
+                              imageProduct: 'assets/images/banner1.jpg',
+                              date: '22-08-2025',
+                              time: '00.00',
+                              price: '24000',
+                              location: 'Kota Malang, Ja...',
+                              title: 'Hujan',
+                            ),
+
+                             ProductCard(
+                              imageProduct: 'assets/images/banner1.jpg',
+                              date: '22-08-2025',
+                              time: '00.00',
+                              price: '24000',
+                              location: 'Kota Malang, Ja...',
+                              title: 'Hujan',
+                            ),
+
+                             ProductCard(
+                              imageProduct: 'assets/images/banner1.jpg',
+                              date: '22-08-2025',
+                              time: '00.00',
+                              price: '24000',
+                              location: 'Kota Malang, Ja...',
+                              title: 'Hujan',
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 40),
                       Row(
@@ -173,9 +202,22 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            ProductCard(),
-                            ProductCard(),
-                            ProductCard(),
+                             ProductCard(
+                              imageProduct: 'assets/images/banner1.jpg',
+                              date: '22-08-2025',
+                              time: '00.00',
+                              price: '24000',
+                              location: 'Kota Malang, Ja...',
+                              title: 'Hujan',
+                            ),
+                             ProductCard(
+                              imageProduct: 'assets/images/banner1.jpg',
+                              date: '22-08-2025',
+                              time: '00.00',
+                              price: '24000',
+                              location: 'Kota Malang, Ja...',
+                              title: 'Hujan',
+                            ),
                           ],
                         ),
                       ),
@@ -189,11 +231,10 @@ class _HomePageState extends State<HomePage> {
             right: 12,
             bottom: 10, // biar ga ketutup navbar
             child: Image.asset(
-                "assets/images/floatinglamp.png",
-                width: 77,
-                height: 77,
-              ),
-            
+              "assets/images/floatinglamp.png",
+              width: 77,
+              height: 77,
+            ),
           ),
         ],
       ),

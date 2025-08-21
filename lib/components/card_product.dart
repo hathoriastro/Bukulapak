@@ -2,7 +2,21 @@ import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final String imageProduct;
+  final String date;
+  final String time;
+  final String price;
+  final String location;
+  final String title;
+
+  const ProductCard({
+    Key? key,
+    required this.imageProduct,
+    required this.date,
+    required this.time,
+    required this.price,
+    required this.location,required this.title,
+  }) : super(key : key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,7 @@ class ProductCard extends StatelessWidget {
               borderRadius: BorderRadiusGeometry.circular(10),
               //IMAGE PRODUCT
               child: Image.asset(
-                'assets/images/banner1.jpg',
+                imageProduct,
                 fit: BoxFit.cover,
                 width: sizewidth * 170 / fullwidth,
                 height: 134,
@@ -42,7 +56,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hujan',
+                    title,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4),
@@ -50,18 +64,18 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Dijual 10-08-2025',
+                        'Dijual $time',
                         style: TextStyle(fontSize: 8, color: lightGray),
                       ),
                       Text(
-                        '19.00 WIB',
+                        '$time WIB',
                         style: TextStyle(fontSize: 8, color: lightGray),
                       ),
                     ],
                   ),
                   SizedBox(height: 6),
                   Text(
-                    'Rp21.000',
+                    'Rp$price',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: 4),
@@ -73,7 +87,7 @@ class ProductCard extends StatelessWidget {
                         color: Colors.black,
                         size: 11,
                       ),
-                      Text('Kota Malang...', style: TextStyle(fontSize: 8)),
+                      Text(location, style: TextStyle(fontSize: 8)),
                     ],
                   ),
                 ],
