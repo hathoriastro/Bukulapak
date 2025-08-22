@@ -20,7 +20,7 @@ class _BottomNavState extends State<BottomNavbar> {
     if (index == 0) {
       Navigator.pushReplacementNamed(context, '/homepage');
     } else if (index == 1) {
-      Navigator.pushReplacementNamed(context, '');
+      Navigator.pushReplacementNamed(context, '/modulGo');
     } else if (index == 2) {
       Navigator.pushReplacementNamed(context, '');
     } else if (index == 3) {

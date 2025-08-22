@@ -43,31 +43,12 @@ class ModulPage extends StatelessWidget {
         ),
         
       ),
-      body: Column(
-        children: [
-          ModulCategories(),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              padding: EdgeInsets.all(31),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 12,
-              children: const [
-                ModulCard(title: "Pecahan", image: "assets/images/modul_sample.png"),
-                ModulCard(
-                  title: "Perkalian",
-                  image: "assets/images/modul_sample.png",
-                ),
-                ModulCard(
-                  title: "Pembagian",
-                  image: "assets/images/modul_sample.png",
-                ),
-                ModulCard(title: "Geometri", image: "assets/images/modul_sample.png"),
-              ],
-            ),
-          ),
-        ],
+      
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 30
+        ),
+        child: ModulCategories(),
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 1)
     );
