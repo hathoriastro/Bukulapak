@@ -1,5 +1,4 @@
 import 'package:bukulapak/components/colors.dart';
-import 'package:bukulapak/components/user/modul_card.dart';
 import 'package:bukulapak/components/user/modul_categories.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ class ModulPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final sizewidth = size.width;
     final sizeheight = size.height;
     final fullheight = 956;
     return Scaffold(
@@ -45,8 +43,8 @@ class ModulPage extends StatelessWidget {
       ),
       
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 30
+        padding: const EdgeInsets.only(
+          top: 25
         ),
         child: ModulCategories(),
       ),

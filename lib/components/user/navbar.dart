@@ -22,9 +22,9 @@ class _BottomNavState extends State<BottomNavbar> {
     } else if (index == 1) {
       Navigator.pushReplacementNamed(context, '/modulGo');
     } else if (index == 2) {
-      Navigator.pushReplacementNamed(context, '');
+      Navigator.pushReplacementNamed(context, '/add_product');
     } else if (index == 3) {
-      Navigator.pushReplacementNamed(context, '');
+      Navigator.pushReplacementNamed(context, '/barterin');
     } else if (index == 4) {
       Navigator.pushReplacementNamed(context, '');
     }

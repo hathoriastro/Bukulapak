@@ -73,15 +73,16 @@ class _ModulCategoriesState extends State<ModulCategories>
               ),
             ),
           ),
+          SizedBox(height: 15),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: [
-                // Konten untuk SD
+                //SD
                 GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
-                  padding: const EdgeInsets.all(31),
+                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 12,
                   children: const [
@@ -113,26 +114,15 @@ class _ModulCategoriesState extends State<ModulCategories>
                         title: "Geometri",
                         image: "assets/images/modul_sample.png",
                       ),
-                       ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
-                       ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
-                       ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
+                   
                   ],
                 ),
 
-                // Konten untuk SMP
+                // SMP
                 GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
-                  padding: const EdgeInsets.all(31),
+                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 12,
                   children: const [
@@ -155,11 +145,11 @@ class _ModulCategoriesState extends State<ModulCategories>
                   ],
                 ),
 
-                // Konten untuk SMA
+                // SMA
                 GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
-                  padding: const EdgeInsets.all(31),
+                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 12,
                   children: const [

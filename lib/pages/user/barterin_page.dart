@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -149,6 +150,7 @@ class _BarterinPageState extends State<BarterinPage> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavbar(selectedItem: 3),
     );
   }
 }

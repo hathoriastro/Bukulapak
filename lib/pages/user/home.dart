@@ -2,6 +2,9 @@ import 'package:bukulapak/components/user/banner_carousel.dart';
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/product_card.dart';
 import 'package:bukulapak/components/user/navbar.dart';
+import 'package:bukulapak/components/user/product_cart.dart';
+import 'package:bukulapak/pages/user/category_page.dart';
+import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -38,21 +41,21 @@ class _HomePageState extends State<HomePage> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              suffixIcon: Icon(Icons.search),
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoryPage()),
+                  );
+                },
+                child: const Icon(Icons.search),
+              ),
             ),
           ),
         ),
 
         actions: [
-          badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -12, end: -10),
-            badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),
-            badgeContent: Text(
-              '2',
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-            child: Image.asset('assets/images/cart.png', width: 28),
-          ),
+          ShoppingCart(),
           SizedBox(width: 38),
           Padding(
             padding: EdgeInsets.only(right: 25),
@@ -111,12 +114,22 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           Spacer(flex: 2),
-                          Text(
-                            'Lihat Semua',
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: lightGray,
-                              fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ListProductPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Lihat Semua',
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: lightGray,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -136,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                               title: 'Hujan',
                             ),
 
-                             ProductCard(
+                            ProductCard(
                               imageProduct: 'assets/images/banner1.jpg',
                               date: '22-08-2025',
                               time: '00.00',
@@ -145,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                               title: 'Hujan',
                             ),
 
-                             ProductCard(
+                            ProductCard(
                               imageProduct: 'assets/images/banner1.jpg',
                               date: '22-08-2025',
                               time: '00.00',
@@ -202,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                             ProductCard(
+                            ProductCard(
                               imageProduct: 'assets/images/banner1.jpg',
                               date: '22-08-2025',
                               time: '00.00',
@@ -210,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                               location: 'Kota Malang, Ja...',
                               title: 'Hujan',
                             ),
-                             ProductCard(
+                            ProductCard(
                               imageProduct: 'assets/images/banner1.jpg',
                               date: '22-08-2025',
                               time: '00.00',

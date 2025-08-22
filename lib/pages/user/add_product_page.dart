@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -185,8 +186,8 @@ class _AddProductPageState extends State<AddProductPage> {
           SizedBox(height: screenHeight * 0.02),
         ],
       ),
-      )
-      
+      ),
+      bottomNavigationBar: BottomNavbar(selectedItem: 2),
     );
   }
 }
