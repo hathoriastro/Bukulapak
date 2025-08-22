@@ -16,6 +16,8 @@ class ModulCard extends StatelessWidget {
         final size = MediaQuery.of(context).size;
     final sizewidth = size.width;
     final fullwidth = 440;
+    final sizeheight = size.height;
+    final fullheight = 956;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -24,7 +26,7 @@ class ModulCard extends StatelessWidget {
       color: cyan,
       child: SizedBox(
         width: sizewidth *175/fullwidth,
-        height: 170,
+        height: sizeheight* 170/ fullheight,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,8 +35,8 @@ class ModulCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
                 image,
-                width: 115,
-                height: 115,
+                width: sizewidth*115/fullwidth,
+                height: sizeheight* 115/fullheight,
                 fit: BoxFit.cover,
               ),
             ),

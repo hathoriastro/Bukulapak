@@ -45,7 +45,7 @@ class ProductCard extends StatelessWidget {
                 imageProduct,
                 fit: BoxFit.cover,
                 width: sizewidth * 170 / fullwidth,
-                height: 134,
+                height: 134
               ),
             ),
             SizedBox(height: 6),
