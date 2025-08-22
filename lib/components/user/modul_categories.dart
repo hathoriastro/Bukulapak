@@ -42,7 +42,7 @@ class _ModulCategoriesState extends State<ModulCategories>
             controller: _tabController,
             backgroundColor: activeColors[_tabController.index],
             contentCenter: true,
-            width: 90,
+            width: 110,
             height: 40,
           
             unselectedBackgroundColor: Colors.white,
