@@ -14,14 +14,18 @@ class ShoppingCart extends StatefulWidget {
 class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) {
-    return badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -12, end: -10),
-            badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),
-            badgeContent: Text(
-              '2',
-              style: TextStyle(color: Colors.white, fontSize: 12),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/keranjangPage');
+      },child:  badges.Badge(
+              position: badges.BadgePosition.topEnd(top: -12, end: -10),
+              badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),
+              badgeContent: Text(
+                '2',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              child: Image.asset('assets/images/cart.png', width: 28),
             ),
-            child: Image.asset('assets/images/cart.png', width: 28),
-          );
+    );
   }
 }
