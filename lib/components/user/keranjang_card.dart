@@ -36,7 +36,7 @@ class _KeranjangCardState extends State<KeranjangCard> {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: lightGray.withOpacity(0.8),
+            color: lightGray.withOpacity(0.7),
             spreadRadius: 1.5,
             blurRadius: 4,
             offset: const Offset(0, 4),
@@ -44,7 +44,10 @@ class _KeranjangCardState extends State<KeranjangCard> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15
+        ),
         child: Row(
           children: [
             // COVER PRODUCT
@@ -61,8 +64,8 @@ class _KeranjangCardState extends State<KeranjangCard> {
 
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.start,
+               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(widget.text1, style: TextStyle(fontWeight: FontWeight.bold),),
                   Row(

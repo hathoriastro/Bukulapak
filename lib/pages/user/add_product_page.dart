@@ -3,6 +3,7 @@ import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -16,6 +17,11 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
+
+  final ImagePicker productimage = ImagePicker();
+  Future<void> pickImage() async{
+    productimage.pickImage(source: ImageSource.gallery);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +140,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
           SizedBox(height: screenHeight * 0.02),
           IconButtonComponent(icon: Icons.add, onPressed: () {
-
+            pickImage();
           }),
 
           // Tambah video

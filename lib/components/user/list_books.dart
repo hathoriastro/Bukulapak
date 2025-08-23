@@ -53,7 +53,7 @@ class _ListBooksState extends State<ListBooks>
               controller: _tabController,
               backgroundColor: lightBlue,
               contentCenter: true,
-              width: 180,
+              width: sizewidth* 182/ fullwidth,
               height: 41,
             
               unselectedBackgroundColor: Colors.white,
@@ -90,6 +90,7 @@ class _ListBooksState extends State<ListBooks>
               child: TabBarView(
                 controller: _tabController,
                 children: [
+
                   //Berbayar
                   GridView.count(
                     crossAxisCount: 2,

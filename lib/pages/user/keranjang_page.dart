@@ -30,7 +30,7 @@ class KeranjangPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 40),
           child: Text(
             'Keranjang',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
       ),

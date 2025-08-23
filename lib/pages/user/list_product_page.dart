@@ -43,7 +43,7 @@ class _ListProductPageState extends State<ListProductPage> {
                   },
                   child: Icon(Icons.arrow_back),
                 ),
-              Text('Daftar Produk', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),),
+              Text('Daftar Produk', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
               GestureDetector(
                   onTap: () {
                     Navigator.push(

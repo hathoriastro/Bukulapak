@@ -17,7 +17,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/keranjangPage');
+        Navigator.pushNamed(context, '/keranjangpage');
       },child:  badges.Badge(
               position: badges.BadgePosition.topEnd(top: -12, end: -10),
               badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),

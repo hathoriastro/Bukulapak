@@ -25,7 +25,7 @@ class ModulPage extends StatelessWidget {
               'Modul',
               style: TextStyle(
                 color: darkBlue,
-                fontSize: 30,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -33,7 +33,7 @@ class ModulPage extends StatelessWidget {
               'Go',
               style: TextStyle(
                 color: customorange,
-                fontSize: 30,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
