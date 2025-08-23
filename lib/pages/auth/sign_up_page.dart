@@ -1,5 +1,6 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
+import 'package:bukulapak/pages/user/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
           confirmPassword: _confirmPasswordController.text);
 
       if(mounted){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CategoryPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
       }
     } on FirebaseAuthException catch(e){
       String errorMessage;
@@ -78,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
     try{
       await _authService.signInWithGoogle();{
         if(mounted){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CategoryPage()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
         }
       }
     } catch(e){
