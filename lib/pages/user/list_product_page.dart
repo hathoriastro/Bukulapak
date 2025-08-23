@@ -4,7 +4,8 @@ import 'package:bukulapak/pages/user/home.dart';
 import 'package:flutter/material.dart';
 
 class ListProductPage extends StatefulWidget {
-  const ListProductPage({super.key});
+  final int currentIndx;
+  const ListProductPage({super.key, required this.currentIndx});
 
   @override
   State<ListProductPage> createState() => _ListProductPageState();
@@ -56,7 +57,7 @@ class _ListProductPageState extends State<ListProductPage> {
           ),
         ),
       ),
-      body: ListBooks(currentindex: 1,) ,
+      body: ListBooks(currentindex: widget.currentIndx,) ,
     );
   }
 }
