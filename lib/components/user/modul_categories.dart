@@ -34,6 +34,9 @@ class _ModulCategoriesState extends State<ModulCategories>
 
   @override
   Widget build(BuildContext context) {
+     final size = MediaQuery.of(context).size;
+    final sizewidth = size.width;
+    final fullwidth = 440;
     return DefaultTabController(
       length: text.length,
       child: Column(
@@ -42,7 +45,7 @@ class _ModulCategoriesState extends State<ModulCategories>
             controller: _tabController,
             backgroundColor: activeColors[_tabController.index],
             contentCenter: true,
-            width: 110,
+            width: sizewidth*125/fullwidth,
             height: 40,
           
             unselectedBackgroundColor: Colors.white,
@@ -53,6 +56,7 @@ class _ModulCategoriesState extends State<ModulCategories>
             labelStyle: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
+              fontSize: 18
             ),
             borderWidth: 10,
             borderColor: activeColors[_tabController.index],

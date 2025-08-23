@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/category_card.dart';
 
@@ -74,7 +75,16 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderSide: BorderSide(color: lightGray),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                suffixIcon: Icon(Icons.search, color: Colors.black),
+                suffixIcon: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ListProductPage(currentIndx: 0,)),
+                  );
+                },
+                child: const Icon(Icons.search),
+              ),
+                
               ),
             ),
           ),

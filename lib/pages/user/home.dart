@@ -6,7 +6,6 @@ import 'package:bukulapak/components/user/product_cart.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
 import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -119,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ListProductPage(),
+                                  builder: (context) => ListProductPage(currentIndx: 1,),
                                 ),
                               );
                             },
