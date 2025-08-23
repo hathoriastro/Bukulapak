@@ -2,12 +2,14 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services") // << ini penting
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
 
 android {
     namespace = "com.example.bukulapak"
-    compileSdk = 34
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -15,7 +17,8 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
+        freeCompilerArgs = listOf("-Xjvm-default=all")
     }
 
     defaultConfig {
@@ -23,10 +26,10 @@ android {
         applicationId = "com.example.bukulapak"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdkVersion(flutter.minSdkVersion)
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     buildTypes {
@@ -39,6 +42,9 @@ android {
 }
 
 dependencies {
+    //classpath("com.google.gms:google-services:4.4.3")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:34.1.0"))
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -47,5 +53,9 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("com.example.flutter:flutter_debug:1.0") // Only if needed
+    //debugImplementation("com.example.flutter:flutter_debug:1.0") // Only if needed
+}
+
+flutter {
+    source = "../.."
 }

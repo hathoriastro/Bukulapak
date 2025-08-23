@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "497053976903-k1a8qdr1kg2u3202bl2s5ctee5u53dds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bukulapak",
+            "certificate_hash": "72f992d4a29fc90c1ae27a85aacad9e8ebb2fd35"
+          }
+        },
+        {
           "client_id": "497053976903-62igeq8ktk2iqoa06mp68vh94gihgg1v.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatefulWidget {
@@ -12,6 +13,22 @@ class _SignInPageState extends State<SignInPage> {
   // Variables to hold the email and password values
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final authService _authService = authService();
+
+  void _handleSignIn() async {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty
+    ) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Semua bidang harus diisi')));
+      return;
+    }
+
+    await _authService.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +151,8 @@ class _SignInPageState extends State<SignInPage> {
           SizedBox(height: screenHeight * 0.2),
           ElevatedButton(
             onPressed: () {
+              _handleSignIn();
+              Navigator.pushNamed(context, '/category');
               // Navigasi disini
             },
             style: ElevatedButton.styleFrom(
