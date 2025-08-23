@@ -152,7 +152,7 @@ class _SignInPageState extends State<SignInPage> {
           ElevatedButton(
             onPressed: () {
               _handleSignIn();
-              Navigator.pushNamed(context, '/category');
+              Navigator.pushNamed(context, '/homepage');
               // Navigasi disini
             },
             style: ElevatedButton.styleFrom(
