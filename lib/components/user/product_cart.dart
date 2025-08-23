@@ -1,7 +1,8 @@
 
+import 'package:badges/badges.dart' as badges;
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
+
 
 
 class ShoppingCart extends StatefulWidget {

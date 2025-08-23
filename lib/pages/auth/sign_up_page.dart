@@ -1,5 +1,9 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/pages/user/category_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -12,6 +16,81 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  final authService _authService = authService();
+  bool isLoading = false;
+
+  Future<void> _handleSignUp() async {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty
+    ) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Semua bidang harus diisi')));
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Kata Sandi dan Konfirmasi Kata Sandi tidak cocok!')),
+      );
+      return; // Hentikan proses jika kata sandi tidak cocok
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await _authService.createUser(email: _emailController.text,
+          password: _passwordController.text,
+          confirmPassword: _confirmPasswordController.text);
+
+      if(mounted){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CategoryPage()));
+      }
+    } on FirebaseAuthException catch(e){
+      String errorMessage;
+      if (e.code == 'weak-password') {
+        errorMessage = 'Kata sandi terlalu lemah.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Email ini sudah digunakan.';
+      } else {
+        errorMessage = 'Error Firebase: ${e.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    }
+    finally {
+      setState(() {
+        isLoading = false; // Sembunyikan loading setelah proses selesai
+      });
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      isLoading = true; // Tampilkan loading
+    });
+
+    try{
+      await _authService.signInWithGoogle();{
+        if(mounted){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CategoryPage()));
+        }
+      }
+    } catch(e){
+
+    }
+    finally {
+      setState(() {
+        isLoading = false; // Sembunyikan loading setelah proses selesai
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +236,10 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(height: screenHeight * 0.1),
           ElevatedButton(
             onPressed: () {
+              isLoading ? null : _handleSignUp();
               // Navigasi disini
             },
+
             style: ElevatedButton.styleFrom(
               backgroundColor: lightBlue,
               padding: EdgeInsets.symmetric(
@@ -192,10 +273,16 @@ class _SignUpPageState extends State<SignUpPage> {
               border: Border.all(color: lightGray, width: 1),
             ),
             child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  isLoading ? null : _handleGoogleSignIn();
+                },
               child: Image(
                 image: AssetImage("assets/images/logo_google.png"),
+
                 width: screenWidth * 0.07,
                 height: screenHeight * 0.07,
+              )
               ),
             ),
           ),
@@ -231,7 +318,17 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
           ),
+        if (isLoading)
+    Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      )
+    )
         ],
+
       ),
     );
   }
