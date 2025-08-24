@@ -126,7 +126,7 @@ class _ModulCategoriesState extends State<ModulCategories>
                 GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
-                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
+                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 31),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 12,
                   children: const [
@@ -153,7 +153,7 @@ class _ModulCategoriesState extends State<ModulCategories>
                 GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
-                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
+                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 31),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 12,
                   children: const [

@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -16,19 +17,18 @@ class _SignInPageState extends State<SignInPage> {
   final authService _authService = authService();
 
   void _handleSignIn() async {
-    if (_emailController.text.isEmpty ||
-        _passwordController.text.isEmpty
-    ) {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Semua bidang harus diisi')));
       return;
     }
 
-    await _authService.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-
+    await _authService.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +152,11 @@ class _SignInPageState extends State<SignInPage> {
           ElevatedButton(
             onPressed: () {
               _handleSignIn();
-              Navigator.pushNamed(context, '/homepage');
-              // Navigasi disini
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: lightBlue,

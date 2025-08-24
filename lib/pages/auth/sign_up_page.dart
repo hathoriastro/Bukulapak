@@ -16,7 +16,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final authService _authService = authService();
   bool isLoading = false;
@@ -24,8 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> _handleSignUp() async {
     if (_emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
-        _confirmPasswordController.text.isEmpty
-    ) {
+        _confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Semua bidang harus diisi')));
@@ -34,7 +34,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kata Sandi dan Konfirmasi Kata Sandi tidak cocok!')),
+        const SnackBar(
+          content: Text('Kata Sandi dan Konfirmasi Kata Sandi tidak cocok!'),
+        ),
       );
       return; // Hentikan proses jika kata sandi tidak cocok
     }
@@ -44,14 +46,19 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     try {
-      await _authService.createUser(email: _emailController.text,
-          password: _passwordController.text,
-          confirmPassword: _confirmPasswordController.text);
+      await _authService.createUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        confirmPassword: _confirmPasswordController.text,
+      );
 
-      if(mounted){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
       }
-    } on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'weak-password') {
         errorMessage = 'Kata sandi terlalu lemah.';
@@ -60,11 +67,10 @@ class _SignUpPageState extends State<SignUpPage> {
       } else {
         errorMessage = 'Error Firebase: ${e.message}';
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
-    }
-    finally {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage)));
+    } finally {
       setState(() {
         isLoading = false; // Sembunyikan loading setelah proses selesai
       });
@@ -76,22 +82,24 @@ class _SignUpPageState extends State<SignUpPage> {
       isLoading = true; // Tampilkan loading
     });
 
-    try{
-      await _authService.signInWithGoogle();{
-        if(mounted){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+    try {
+      await _authService.signInWithGoogle();
+      {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false,
+          );
         }
       }
-    } catch(e){
-
-    }
-    finally {
+    } catch (e) {
+    } finally {
       setState(() {
         isLoading = false; // Sembunyikan loading setelah proses selesai
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          
+
           SizedBox(height: screenHeight * 0.1),
           ElevatedButton(
             onPressed: () {
@@ -278,12 +286,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 onTap: () {
                   isLoading ? null : _handleGoogleSignIn();
                 },
-              child: Image(
-                image: AssetImage("assets/images/logo_google.png"),
+                child: Image(
+                  image: AssetImage("assets/images/logo_google.png"),
 
-                width: screenWidth * 0.07,
-                height: screenHeight * 0.07,
-              )
+                  width: screenWidth * 0.07,
+                  height: screenHeight * 0.07,
+                ),
               ),
             ),
           ),
@@ -319,17 +327,16 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
           ),
-        if (isLoading)
-    Container(
-      color: Colors.black.withOpacity(0.5),
-      child: Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        ),
-      )
-    )
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
+            ),
         ],
-
       ),
     );
   }

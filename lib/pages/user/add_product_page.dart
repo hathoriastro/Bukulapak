@@ -1,9 +1,9 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
+import 'package:bukulapak/services/image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -18,17 +18,13 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
 
-  final ImagePicker productimage = ImagePicker();
-  Future<void> pickImage() async{
-    productimage.pickImage(source: ImageSource.gallery);
-  }
-
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
 
+    final ImageService imageService = ImageService();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.1,
@@ -67,131 +63,127 @@ class _AddProductPageState extends State<AddProductPage> {
         centerTitle: true,
       ),
 
-      body: 
-      SingleChildScrollView(
-        child:
-        Column(
-        children: [
-          customInputField(
-            context: context,
-            title: 'Judul',
-            labelText: 'Hujan',
-            controller: _judulController,
-          ),
-          customInputField(
-            context: context,
-            title: 'Penerbit',
-            labelText: 'PT Gramedia',
-            controller: _penerbitController,
-          ),
-          customInputField(
-            context: context,
-            title: 'ISBN',
-            labelText: '123-456-789',
-            controller: _isbnController,
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            customInputField(
+              context: context,
+              title: 'Judul',
+              labelText: 'Hujan',
+              controller: _judulController,
+            ),
+            customInputField(
+              context: context,
+              title: 'Penerbit',
+              labelText: 'PT Gramedia',
+              controller: _penerbitController,
+            ),
+            customInputField(
+              context: context,
+              title: 'ISBN',
+              labelText: '123-456-789',
+              controller: _isbnController,
+            ),
 
-          // Option Button Gratis / Berbayar
-          SizedBox(height: screenHeight * 0.02),
-          Align(
-            alignment: Alignment(-0.78, 0),
-            child: Text(
-              'Gratis / Berbayar', 
-              style: TextStyle(
-                fontFamily: 'poppins',
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                fontSize: screenWidth * 0.03,
+            // Option Button Gratis / Berbayar
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Gratis / Berbayar',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.06,
-              vertical: screenHeight * 0.008,
-            ),
-            child: OptionButton(
-              option1: 'Gratis',
-              option2: 'Berbayar',
-            ),
-          ),
-
-          customInputField(
-            context: context,
-            title: 'Deskripsi',
-            labelText: '',
-            controller: _deskripsiController,
-          ),
-
-          // Tambah gambar
-          SizedBox(height: screenHeight * 0.02),
-          Align(
-            alignment: Alignment(-0.78, 0),
-            child: Text(
-              'Tambah Gambar', 
-              style: TextStyle(
-                fontFamily: 'poppins',
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                fontSize: screenWidth * 0.03,
-              ),
-            ),
-          ),
-
-          SizedBox(height: screenHeight * 0.02),
-          IconButtonComponent(icon: Icons.add, onPressed: () {
-            pickImage();
-          }),
-
-          // Tambah video
-          SizedBox(height: screenHeight * 0.02),
-          Align(
-            alignment: Alignment(-0.78, 0),
-            child: Text(
-              'Tambah Video', 
-              style: TextStyle(
-                fontFamily: 'poppins',
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                fontSize: screenWidth * 0.03,
-              ),
-            ),
-          ),
-
-          SizedBox(height: screenHeight * 0.02),
-          IconButtonComponent(icon: Icons.add, onPressed: () {
-
-          },),
-
-          // Tombol Unggah Produk
-          SizedBox(height: screenHeight * 0.02),
-          ElevatedButton(
-            onPressed: () {
-              // Navigasi disini
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: orange,
+            Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.2,
-                vertical: screenHeight * 0.02,
+                horizontal: screenWidth * 0.06,
+                vertical: screenHeight * 0.008,
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              child: OptionButton(option1: 'Gratis', option2: 'Berbayar'),
             ),
-            child: Text(
-              "Unggah Produk",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: screenWidth * 0.04,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
 
-          SizedBox(height: screenHeight * 0.02),
-        ],
-      ),
+            customInputField(
+              context: context,
+              title: 'Deskripsi',
+              labelText: '',
+              controller: _deskripsiController,
+            ),
+
+            // Tambah gambar
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Tambah Gambar',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
+              ),
+            ),
+
+            SizedBox(height: screenHeight * 0.02),
+            IconButtonComponent(
+              icon: Icons.add,
+              onPressed: () {
+                imageService.pickImage();
+              },
+            ),
+
+            // Tambah video
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Tambah Video',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
+              ),
+            ),
+
+            SizedBox(height: screenHeight * 0.02),
+            IconButtonComponent(icon: Icons.add, onPressed: () {}),
+
+            // Tombol Unggah Produk
+            SizedBox(height: screenHeight * 0.02),
+            ElevatedButton(
+              onPressed: () {
+                // Navigasi disini
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: orange,
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.2,
+                  vertical: screenHeight * 0.02,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Text(
+                "Unggah Produk",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            SizedBox(height: screenHeight * 0.02),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 2),
     );

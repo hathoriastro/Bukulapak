@@ -47,7 +47,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:497053976903:android:45d455f7e7f309938ce462",
         "android_client_info": {
-          "package_name": "com.example.localngalam"
+          "package_name": "com.example.bukulapak"
         }
       },
       "oauth_client": [
@@ -55,7 +55,7 @@
           "client_id": "497053976903-iuc4ireb7aurjheokh2d170h711c3ptd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.localngalam",
+            "package_name": "com.example.bukulapak",
             "certificate_hash": "72f992d4a29fc90c1ae27a85aacad9e8ebb2fd35"
           }
         },
@@ -84,7 +84,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:497053976903:android:c8f9165c94fd6ffc8ce462",
         "android_client_info": {
-          "package_name": "com.example.sosmedfinal"
+          "package_name": "com.example.bukulapak"
         }
       },
       "oauth_client": [
@@ -92,7 +92,7 @@
           "client_id": "497053976903-oq42ipsjii69keaguo25cemagd58ii3g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.sosmedfinal",
+            "package_name": "com.example.bukulapak",
             "certificate_hash": "72f992d4a29fc90c1ae27a85aacad9e8ebb2fd35"
           }
         },

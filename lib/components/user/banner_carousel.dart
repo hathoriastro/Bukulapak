@@ -74,7 +74,7 @@ class BannerCarousel extends StatelessWidget {
         enlargeCenterPage: true,
         viewportFraction: 0.9,
         aspectRatio: 16 / 9,
-        autoPlayInterval: const Duration(seconds: 6),
+        autoPlayInterval: const Duration(seconds: 4),
       ),
     );
   }
