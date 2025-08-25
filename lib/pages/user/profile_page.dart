@@ -139,32 +139,37 @@ Widget customBox({
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
 
-  return Container(
-    height: screenHeight * 0.18,
-    width: screenWidth * 0.4,
-    decoration: BoxDecoration(
-      color: boxcolor,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.3),
-          blurRadius: 10,
-          offset: Offset(0, 5),
-        ),
-      ],
-    ),
-    padding: EdgeInsets.all(16),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(boxicon, color: Colors.white, size: 50),
-        SizedBox(height: 8),
-        Text(
-          boxtitle,
-          style: TextStyle(fontWeight: FontWeight.bold, color: textcolor),
-        ),
-      ],
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, '/homepage');
+    },
+    child: Container(
+      height: screenHeight * 0.18,
+      width: screenWidth * 0.4,
+      decoration: BoxDecoration(
+        color: boxcolor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(boxicon, color: Colors.white, size: 50),
+          SizedBox(height: 8),
+          Text(
+            boxtitle,
+            style: TextStyle(fontWeight: FontWeight.bold, color: textcolor),
+          ),
+        ],
+      ),
     ),
   );
 }
