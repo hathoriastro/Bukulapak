@@ -1,6 +1,7 @@
 import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
+import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         '/homepage': (context) => const HomePage(),
         '/keranjangpage': (context) => const KeranjangPage(),
         '/profilepage': (context) => const ProfilePage(),
+        '/detailpage' : (context) => const DetailPage()
       },
     );
   }
