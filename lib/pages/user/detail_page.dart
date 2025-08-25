@@ -1,5 +1,4 @@
 import 'package:bukulapak/components/colors.dart';
-import 'package:bukulapak/components/user/navbar.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -10,6 +9,8 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+   bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,61 +53,149 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 30),
-            child: Row(
+      body: Padding(
+        padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsetsGeometry.symmetric(horizontal: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: sizeheight * 0.03,
+                        height: sizewidth * 0.075,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: lightGray,
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/dummy_pp.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: sizewidth * 0.01),
+                      Text(
+                        'Gibran Store',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: sizeheight * 0.013,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, color: lightGray),
+                      SizedBox(width: sizewidth * 0.01),
+                      Text(
+                        'Bekasi, Indonesia',
+                        style: TextStyle(
+                          fontSize: sizeheight * 0.012,
+                          color: lightGray,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsGeometry.only(top: 10, bottom: 15),
+              child: Container(
+                height: sizeheight * 0.25,
+                width: sizewidth * 0.9,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/buku.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: sizeheight * 0.05,
-                      height: sizewidth * 0.075,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: lightGray,
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/dummy_pp.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: sizewidth * 0.01),
-                    Text(
-                      'Gibran Store',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: sizeheight * 0.013
-                        ),
-                    ),
-                  ],
+                Text(
+                  'Hujan - Tere Liye',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: lightGray,
-                      ),
-                    SizedBox(width: sizewidth * 0.01),
-                    Text(
-                      'Bekasi, Indonesia',
-                      style: TextStyle(
-                        fontSize: sizeheight * 0.012,
-                        color: lightGray
-                        ),
-                    ),
-                  ],
+                                IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : null,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isFavorite = !isFavorite;
+                    });
+                  },
                 ),
               ],
             ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Stock : 19 Juta',
+                style: TextStyle(fontSize: 13, color: lightGray),
+              ),
+            ),
+            SizedBox(height: sizeheight * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Novel, Fiction'),
+              ],
+            ),
+            SizedBox(height: sizeheight * 0.02),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Product Overview',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Lorem Ipsum Dolor Sit Amet',
+                style: TextStyle(
+                  color: lightGray,
+                  fontSize: 12
+                ),
+                ),
+            )
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsetsGeometry.symmetric(vertical: 20, horizontal: 20),
+        child: Container(
+          height: sizeheight * 0.07,
+          decoration: BoxDecoration(
+            color: Color(0xFFD6D6E8),
+            borderRadius: BorderRadius.circular(30),
           ),
-
-          Container(
-            child: Image.asset('assets/images/logo_bukulapak.png')
-          )
-        ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('Hujan - 65.000'),
+              FilledButton(
+                onPressed: () {},
+                style: FilledButton.styleFrom(backgroundColor: lightBlue),
+                child: Text(
+                  'Add to Cart',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
