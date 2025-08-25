@@ -46,6 +46,7 @@ dependencies:
   firebase_storage: ^13.0.0
   flutter_launcher_icons: ^0.14.4
   file_picker: ^10.3.2
+  video_thumbnail: ^0.5.6
 
 
 dev_dependencies:
@@ -102,7 +103,6 @@ flutter:
       - assets/images/logo_google.png
       - assets/images/logo_aplikasi.png
       - assets/images/deleteicon.png
-      - assets/images/add.png
      
 
 

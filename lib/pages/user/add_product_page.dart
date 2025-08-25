@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
 
+import 'package:video_thumbnail/video_thumbnail.dart';
+import 'dart:typed_data';
+
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
 
@@ -20,6 +23,21 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _deskripsiController = TextEditingController();
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
+
+  Uint8List? _thumbnail;
+
+  Future<void> generateThumbnail(String videoUrl) async {
+    final uint8list = await VideoThumbnail.thumbnailData(
+      video: videoUrl,
+      imageFormat: ImageFormat.PNG,
+      maxWidth: 128, // lebar thumbnail
+      quality: 75,
+    );
+
+    setState(() {
+      _thumbnail = uint8list;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,10 +165,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     width: screenWidth * 410 / fullwidth,
                     height: screenHeight * 212 / fullheight,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blue, 
-                        width: 2,
-                      ),
+                      border: Border.all(color: Colors.blue, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ClipRRect(
@@ -178,12 +193,14 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             SizedBox(height: screenHeight * 0.02),
-            _imageService.imageUrl == null
+            _thumbnail == null
                 ? IconButtonComponent(
                     icon: Icons.add,
                     onPressed: () async {
                       await _videoPicker.pickVideo();
-                      setState(() {});
+                      if (_videoPicker.videoUrl != null) {
+                        await generateThumbnail(_videoPicker.videoUrl!);
+                      }
                     },
                   )
                 : Container(
@@ -195,12 +212,33 @@ class _AddProductPageState extends State<AddProductPage> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        _videoPicker.videoUrl!,
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.memory(_thumbnail!, fit: BoxFit.cover),
                     ),
                   ),
+
+            // _videoPicker.videoUrl == null
+            //     ? IconButtonComponent(
+            //         icon: Icons.add,
+            //         onPressed: () async {
+            //           await _videoPicker.pickVideo();
+            //           setState(() {});
+            //         },
+            //       )
+            //     : Container(
+            //         width: screenWidth * 410 / fullwidth,
+            //         height: screenHeight * 212 / fullheight,
+            //         decoration: BoxDecoration(
+            //           border: Border.all(color: Colors.blue, width: 2),
+            //           borderRadius: BorderRadius.circular(10),
+            //         ),
+            //         child: ClipRRect(
+            //           borderRadius: BorderRadius.circular(8),
+            //           child: Image.network(
+            //             _videoPicker.videoUrl!,
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //       ),
 
             // Tombol Unggah Produk
             SizedBox(height: screenHeight * 0.02),
