@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'poppins',
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/profilepage',
+      initialRoute: '/sign_up',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
