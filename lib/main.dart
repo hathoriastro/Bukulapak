@@ -1,10 +1,9 @@
-import 'package:bukulapak/firebase_options.dart';
 import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
+import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
-import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -13,9 +12,11 @@ import 'package:bukulapak/pages/auth/welcomepage.dart';
 import 'package:bukulapak/pages/auth/sign_in_page.dart';
 import 'package:bukulapak/pages/auth/sign_up_page.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
+import 'package:bukulapak/pages/user/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: 'poppins', // Set the global font family
+        fontFamily: 'poppins',
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/sign_up',
@@ -56,7 +57,8 @@ class MyApp extends StatelessWidget {
         '/modulGo': (context) => const ModulPage(),
         '/homepage': (context) => const HomePage(),
         '/keranjangpage': (context) => const KeranjangPage(),
-        '/mapPage' : (context) => const mapScreen()
+        '/profilepage': (context) => const ProfilePage(),
+        '/detailpage' : (context) => const DetailPage()
       },
     );
   }
