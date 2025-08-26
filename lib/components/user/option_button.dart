@@ -6,6 +6,7 @@ class OptionButton extends StatefulWidget {
   final String option2;
   final String option3;
   final String option4;
+  final Function(String)? onChanged; // << tambahan callback
 
   const OptionButton({
     Key? key,
@@ -13,6 +14,7 @@ class OptionButton extends StatefulWidget {
     required this.option2,
     this.option3 = '',
     this.option4 = '',
+    this.onChanged, // << bisa null kalau ga dipakai
   }) : super(key: key);
 
   @override
@@ -26,6 +28,9 @@ class _OptionButtonState extends State<OptionButton> {
     setState(() {
       _selectedOption = option;
     });
+    if (widget.onChanged != null) {
+      widget.onChanged!(option); // << panggil callback ke parent
+    }
   }
 
   @override
@@ -45,22 +50,23 @@ class _OptionButtonState extends State<OptionButton> {
             value: widget.option2,
             child: Text(widget.option2),
           ),
-          if (widget.option3.isNotEmpty) ...[
+          if (widget.option3.isNotEmpty)
             PopupMenuItem<String>(
               value: widget.option3,
               child: Text(widget.option3),
             ),
-          ],
-          if (widget.option4.isNotEmpty) ...[
+          if (widget.option4.isNotEmpty)
             PopupMenuItem<String>(
               value: widget.option4,
               child: Text(widget.option4),
             ),
-          ],
         ];
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.01),
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.06,
+          vertical: screenHeight * 0.01,
+        ),
         decoration: BoxDecoration(
           color: darkWhite,
           borderRadius: BorderRadius.circular(10),
@@ -70,17 +76,14 @@ class _OptionButtonState extends State<OptionButton> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              _selectedOption, // Show the selected option
+              _selectedOption,
               style: TextStyle(
                 fontFamily: 'poppins',
                 color: Colors.black54,
                 fontSize: screenWidth * 0.03,
               ),
             ),
-            Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black54,
-            ),
+            Icon(Icons.arrow_drop_down, color: Colors.black54),
           ],
         ),
       ),

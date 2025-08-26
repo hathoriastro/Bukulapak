@@ -18,6 +18,8 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
+  final TextEditingController _hargaController = TextEditingController();
+  String? _selectedOption;
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
 
@@ -30,9 +32,14 @@ class _AddProductPageState extends State<AddProductPage> {
     final fullwidth = 440;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.1,
         leadingWidth: screenHeight,
+        backgroundColor: Colors.white,
+        elevation: 4,
+        shadowColor: Colors.grey.withOpacity(0.5),
+        surfaceTintColor: Colors.transparent,
         title: Column(
           children: [
             SizedBox(height: screenHeight * 0.03),
@@ -108,8 +115,24 @@ class _AddProductPageState extends State<AddProductPage> {
                 horizontal: screenWidth * 0.06,
                 vertical: screenHeight * 0.008,
               ),
-              child: OptionButton(option1: 'Gratis', option2: 'Berbayar'),
+              child: OptionButton(
+                option1: 'Gratis',
+                option2: 'Berbayar',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
             ),
+
+            if (_selectedOption == 'Berbayar')
+              customInputField(
+                context: context,
+                title: 'Harga',
+                labelText: 'Rp 100.000',
+                controller: _hargaController,
+              ),
 
             customInputField(
               context: context,
@@ -147,10 +170,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     width: screenWidth * 410 / fullwidth,
                     height: screenHeight * 212 / fullheight,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blue, 
-                        width: 2,
-                      ),
+                      border: Border.all(color: Colors.blue, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ClipRRect(
