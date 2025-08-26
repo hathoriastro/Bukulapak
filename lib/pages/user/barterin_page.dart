@@ -23,6 +23,8 @@ class _BarterinPageState extends State<BarterinPage> {
   String _selectedOption = '';
   final BarterService _barterService = BarterService();
   final ImageService _imageService = ImageService();
+  final fullheight = 956;
+  final fullwidth = 440;
 
 
   final TextEditingController _judulController = TextEditingController();
@@ -140,8 +142,14 @@ class _BarterinPageState extends State<BarterinPage> {
 
               SizedBox(height: screenHeight * 0.02),
               if (_imageService.selectedImage != null)
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
+                Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.blue,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: GestureDetector(
@@ -151,7 +159,8 @@ class _BarterinPageState extends State<BarterinPage> {
                           },
                           child: Image.file(
                             _imageService.selectedImage!,
-                            height: 154,
+                            width: screenWidth * 410 / fullwidth,
+                            height: screenHeight * 212 / fullheight,
                             fit: BoxFit.cover,
                           ),
                         )
