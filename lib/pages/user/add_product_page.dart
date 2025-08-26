@@ -1,6 +1,7 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:bukulapak/services/image_service.dart';
+import 'package:bukulapak/services/video_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -17,15 +18,17 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
-  String _selectedOption = '';
+  final ImageService _imageService = ImageService();
+  final VideoPicker _videoPicker = VideoPicker();
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
+    final fullheight = 956;
+    final fullwidth = 440;
 
-    final ImageService imageService = ImageService();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.1,
@@ -105,14 +108,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 horizontal: screenWidth * 0.06,
                 vertical: screenHeight * 0.008,
               ),
-              child: OptionButton(option1: 'Gratis',
-                  option2: 'Berbayar',
-                  onOptionSelected: (value) {
-                  setState(() {
-                    _selectedOption = value;
-                  });
-            }
-              ),
+              child: OptionButton(option1: 'Gratis', option2: 'Berbayar'),
             ),
 
             customInputField(
@@ -138,12 +134,33 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             SizedBox(height: screenHeight * 0.02),
-            IconButtonComponent(
-              icon: Icons.add,
-              onPressed: () {
-                imageService.pickImage();
-              },
-            ),
+
+            _imageService.imageUrl == null
+                ? IconButtonComponent(
+                    icon: Icons.add,
+                    onPressed: () async {
+                      await _imageService.pickImage();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    width: screenWidth * 410 / fullwidth,
+                    height: screenHeight * 212 / fullheight,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.blue, 
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        _imageService.imageUrl!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
             // Tambah video
             SizedBox(height: screenHeight * 0.02),
@@ -161,7 +178,29 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             SizedBox(height: screenHeight * 0.02),
-            IconButtonComponent(icon: Icons.add, onPressed: () {}),
+            _imageService.imageUrl == null
+                ? IconButtonComponent(
+                    icon: Icons.add,
+                    onPressed: () async {
+                      await _videoPicker.pickVideo();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    width: screenWidth * 410 / fullwidth,
+                    height: screenHeight * 212 / fullheight,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        _videoPicker.videoUrl!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
             // Tombol Unggah Produk
             SizedBox(height: screenHeight * 0.02),

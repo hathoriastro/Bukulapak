@@ -46,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     try {
-      await _authService.signUp(
+      await _authService.createUser(
         email: _emailController.text,
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
@@ -94,7 +94,6 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login Gagal')));
     } finally {
       setState(() {
         isLoading = false; // Sembunyikan loading setelah proses selesai

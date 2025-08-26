@@ -26,7 +26,7 @@ class _BottomNavState extends State<BottomNavbar> {
     } else if (index == 3) {
       Navigator.pushReplacementNamed(context, '/barterin');
     } else if (index == 4) {
-      Navigator.pushReplacementNamed(context, '');
+      Navigator.pushReplacementNamed(context, '/profilepage');
     }
   }
 

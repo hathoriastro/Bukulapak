@@ -1,18 +1,16 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
 class authService{
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: [
       'email',
-      'profile',
+      'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
 
@@ -20,41 +18,26 @@ class authService{
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
-  Future<void> signUp ({
+  Future<UserCredential> signInWithEmailAndPassword ({
     required String email,
     required String password,
-    required String confirmPassword
 
 }) async {
-    try {
-      if (password != confirmPassword) {
-        throw Exception('Password tidak cocok');
-      }
-      UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
-      User? user = userCredential.user;
-
-      if (user != null) {
-        await _firestore.collection('user').doc(userCredential.user!.uid).set({
-          'id': user.uid,
-          'email': user.email,
-        });
-      }
-    } catch(e){
-      rethrow;
-    }
+    return await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password);
   }
 
-
-  Future<UserCredential> signIn ({
+  Future<UserCredential> createUser ({
     required String email,
-    required String password,
+  required String password,
+    required String confirmPassword
   }) async {
-    return await FirebaseAuth.instance.signInWithEmailAndPassword(
+
+    return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password
-    );
+        );
   }
 
   Future<void> signOut() async {
@@ -78,7 +61,7 @@ class authService{
     await currentUser!.updatePassword(newPassword);
   }
 
-  Future<void> signInWithGoogle()
+  Future<UserCredential?> signInWithGoogle()
   async {
 
     try {
@@ -92,27 +75,13 @@ class authService{
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken
       );
       final userCredential =
       await FirebaseAuth.instance.signInWithCredential(credential);
-
-      User? user = userCredential.user;
-
-      if (user != null) {
-        await _firestore.collection('user').doc(userCredential.user!.uid).set({
-          'id': user.uid,
-          'email': user.email ?? googleUser.email,
-        }, SetOptions(merge: true)
-        );
-      }
+      return userCredential;
     } catch (e) {
 
+
     }
-  }
-
-
-  Future<void> signOutGoogle() async {
-    await googleSignIn.signOut();
   }
 }

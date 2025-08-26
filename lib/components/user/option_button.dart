@@ -6,16 +6,13 @@ class OptionButton extends StatefulWidget {
   final String option2;
   final String option3;
   final String option4;
-  final Function(String) onOptionSelected;
 
   const OptionButton({
     Key? key,
     required this.option1,
     required this.option2,
-    required this.onOptionSelected,
     this.option3 = '',
     this.option4 = '',
-
   }) : super(key: key);
 
   @override
@@ -28,7 +25,6 @@ class _OptionButtonState extends State<OptionButton> {
   void _onOptionSelected(String option) {
     setState(() {
       _selectedOption = option;
-      widget.onOptionSelected(option);
     });
   }
 
