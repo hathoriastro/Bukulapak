@@ -1,6 +1,7 @@
 import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
+import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
@@ -11,6 +12,7 @@ import 'package:bukulapak/pages/auth/welcomepage.dart';
 import 'package:bukulapak/pages/auth/sign_in_page.dart';
 import 'package:bukulapak/pages/auth/sign_up_page.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
+import 'package:bukulapak/pages/user/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,10 +42,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: 'poppins', // Set the global font family
+        fontFamily: 'poppins',
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/homepage',
+      initialRoute: '/sign_up',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
@@ -54,7 +56,9 @@ class MyApp extends StatelessWidget {
         '/barterin': (context) => const BarterinPage(),
         '/modulGo': (context) => const ModulPage(),
         '/homepage': (context) => const HomePage(),
-        '/keranjangpage': (context) => const KeranjangPage()
+        '/keranjangpage': (context) => const KeranjangPage(),
+        '/profilepage': (context) => const ProfilePage(),
+        '/detailpage' : (context) => const DetailPage()
       },
     );
   }

@@ -45,6 +45,8 @@ dependencies:
   image_picker: ^1.2.0
   firebase_storage: ^13.0.0
   flutter_launcher_icons: ^0.14.4
+  file_picker: ^10.3.2
+
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +89,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+      - assets/images/
+      - assets/images/buku.png
       - assets/images/logo_bukulapak.png
       - assets/images/cart.png
       - assets/images/banner1.jpg
@@ -97,6 +101,8 @@ flutter:
       - assets/images/price-tag.png
       - assets/images/logo_google.png
       - assets/images/logo_aplikasi.png
+      - assets/images/deleteicon.png
+      - assets/images/add.png
      
 
 

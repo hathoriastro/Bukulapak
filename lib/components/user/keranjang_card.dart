@@ -27,60 +27,72 @@ class _KeranjangCardState extends State<KeranjangCard> {
     final fullheight = 956;
     final fullwidth = 440;
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      width: sizewidth * 402 / fullwidth,
-      height: sizeheight * 101 / fullheight,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: lightGray.withOpacity(0.7),
-            spreadRadius: 1.5,
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15
-        ),
-        child: Row(
-          children: [
-            // COVER PRODUCT
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                widget.coverbook,
-                fit: BoxFit.cover,
-                width: sizewidth * 49 / fullwidth,
-                height: sizeheight * 65 / fullheight,
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 15),
+          width: sizewidth * 402 / fullwidth,
+          height: sizeheight * 101 / fullheight,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: lightGray.withOpacity(0.7),
+                spreadRadius: 1.5,
+                blurRadius: 4,
+                offset: const Offset(0, 4),
               ),
-            ),
-            const SizedBox(width: 17),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 37, top: 15, bottom: 15, left: 15),
+            child: Row(
+              children: [
+                // COVER PRODUCT
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    widget.coverbook,
+                    fit: BoxFit.cover,
+                    width: sizewidth * 49 / fullwidth,
+                    height: sizeheight * 65 / fullheight,
+                  ),
+                ),
+                const SizedBox(width: 17),
 
-            Expanded(
-              child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(widget.text1, style: TextStyle(fontWeight: FontWeight.bold),),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(widget.text2),
-                      Text(widget.price),
+                      Text(
+                        widget.text1,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text(widget.text2), Text(widget.price)],
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5, right: 15), // Jarak dari tepi
+            child: Image.asset(
+              "assets/images/deleteicon.png",
+              width: 30,
+              height: 30,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
