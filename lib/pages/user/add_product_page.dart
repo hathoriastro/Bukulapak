@@ -20,6 +20,7 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _deskripsiController = TextEditingController();
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
+  String _selectedOption = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class _AddProductPageState extends State<AddProductPage> {
     var screenHeight = screenSize.height;
     final fullheight = 956;
     final fullwidth = 440;
+    final ImageService imageService = ImageService();
 
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +110,14 @@ class _AddProductPageState extends State<AddProductPage> {
                 horizontal: screenWidth * 0.06,
                 vertical: screenHeight * 0.008,
               ),
-              child: OptionButton(option1: 'Gratis', option2: 'Berbayar'),
+              child: OptionButton(option1: 'Gratis',
+                  option2: 'Berbayar',
+                  onOptionSelected: (value) {
+                    setState(() {
+                      _selectedOption = value;
+                    });
+                  }
+              ),
             ),
 
             customInputField(
