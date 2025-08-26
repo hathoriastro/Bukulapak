@@ -26,7 +26,6 @@ class _BarterinPageState extends State<BarterinPage> {
   final fullheight = 956;
   final fullwidth = 440;
 
-
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
@@ -78,145 +77,141 @@ class _BarterinPageState extends State<BarterinPage> {
       ),
 
       body: SingleChildScrollView(
-          child: Column(
-            children: [
-              customInputField(
-                context: context,
-                title: 'Judul',
-                labelText: 'Hujan',
-                controller: _judulController,
-              ),
-              customInputField(
-                context: context,
-                title: 'Penerbit',
-                labelText: 'PT Gramedia',
-                controller: _penerbitController,
-              ),
-              customInputField(
-                context: context,
-                title: 'ISBN',
-                labelText: '123-456-789',
-                controller: _isbnController,
-              ),
+        child: Column(
+          children: [
+            customInputField(
+              context: context,
+              title: 'Judul',
+              labelText: 'Hujan',
+              controller: _judulController,
+            ),
+            customInputField(
+              context: context,
+              title: 'Penerbit',
+              labelText: 'PT Gramedia',
+              controller: _penerbitController,
+            ),
+            customInputField(
+              context: context,
+              title: 'ISBN',
+              labelText: '123-456-789',
+              controller: _isbnController,
+            ),
 
-              SizedBox(height: screenHeight * 0.02),
-              Align(
-                alignment: Alignment(-0.78, 0),
-                child: Text(
-                  'Pilih Kategori',
-                  style: TextStyle(
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                    fontSize: screenWidth * 0.03,
-                  ),
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Pilih Kategori',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.06,
-                  vertical: screenHeight * 0.008,
-                ),
-                child: OptionButton(
-                    option1: 'Novel',
-                    option2: 'UTBK',
-                    option3: 'Komik',
-                    option4: 'SD',
-                    onOptionSelected: (value){
-                      setState(() {
-                        _selectedOption = value;
-                      });
-                    }
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.06,
+                vertical: screenHeight * 0.008,
               ),
+              child: OptionButton(
+                option1: 'Novel',
+                option2: 'UTBK',
+                option3: 'Komik',
+                option4: 'SD',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
+            ),
 
-              // Tambah gambar
-              SizedBox(height: screenHeight * 0.02),
-              Align(
-                alignment: Alignment(-0.78, 0),
-                child: Text(
-                  'Tambah Gambar',
-                  style: TextStyle(
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                    fontSize: screenWidth * 0.03,
-                  ),
+            // Tambah gambar
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Tambah Gambar',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
                 ),
               ),
+            ),
 
-              SizedBox(height: screenHeight * 0.02),
-              if (_imageService.selectedImage != null)
-                Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blue,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(18),
+            SizedBox(height: screenHeight * 0.02),
+            if (_imageService.selectedImage != null)
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 2),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await _imageService.pickImage();
+                      setState(() {});
+                    },
+                    child: Image.file(
+                      _imageService.selectedImage!,
+                      width: screenWidth * 410 / fullwidth,
+                      height: screenHeight * 212 / fullheight,
+                      fit: BoxFit.cover,
                     ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: GestureDetector(
-                          onTap: () async {
-                            await _imageService.pickImage();
-                            setState(() {});
-                          },
-                          child: Image.file(
-                            _imageService.selectedImage!,
-                            width: screenWidth * 410 / fullwidth,
-                            height: screenHeight * 212 / fullheight,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                    )
-                )
-
-              else
-                IconButtonComponent(icon: Icons.add, onPressed: () async {
+                  ),
+                ),
+              )
+            else
+              IconButtonComponent(
+                icon: Icons.add,
+                onPressed: () async {
                   await _imageService.pickImage();
                   setState(() {});
-                }
-                ),
-
-
-
-              SizedBox(height: screenHeight * 0.04),
-              ElevatedButton(
-                onPressed: () {
-                  _barterService.addBarter(
-                      bukuBarter(
-                          Judul: _judulController.text,
-                          Penerbit: _penerbitController.text,
-                          ISBN: _isbnController.text,
-                          Kategori: _selectedOption,
-                          Gambar: _imageService.imageUrl ?? ''
-                      )
-                  );
-                  Navigator.pushNamed(context, '/mapPage');
-                  // Navigasi disini
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: orange,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.2,
-                    vertical: screenHeight * 0.02,
+              ),
+
+            SizedBox(height: screenHeight * 0.04),
+            ElevatedButton(
+              onPressed: () {
+                _barterService.addBarter(
+                  bukuBarter(
+                    Judul: _judulController.text,
+                    Penerbit: _penerbitController.text,
+                    ISBN: _isbnController.text,
+                    Kategori: _selectedOption,
+                    Gambar: _imageService.imageUrl ?? '',
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                );
+                Navigator.pushNamed(context, '/mapPage');
+                // Navigasi disini
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: orange,
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.2,
+                  vertical: screenHeight * 0.02,
                 ),
-                child: Text(
-                  "Mulai Barter",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.04,
-                    fontWeight: FontWeight.bold,
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
-            ],
-          )
+              child: Text(
+                "Mulai Barter",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 3),
     );
