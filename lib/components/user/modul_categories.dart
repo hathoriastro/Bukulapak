@@ -48,7 +48,7 @@ class _ModulCategoriesState extends State<ModulCategories>
             width: sizewidth*125/fullwidth,
             height: 40,
           
-            unselectedBackgroundColor: Colors.white,
+            unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.w700,
@@ -58,10 +58,10 @@ class _ModulCategoriesState extends State<ModulCategories>
               fontWeight: FontWeight.w700,
               fontSize: 18
             ),
-            borderWidth: 10,
+            borderWidth: 2,
             borderColor: activeColors[_tabController.index],
             unselectedBorderColor: lightGray,
-            radius: 10,
+            radius: 30,
             tabs: List.generate(
               text.length,
               (index) => Tab(
