@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
+import 'package:bukulapak/model/bukuBarter_model.dart';
+import 'package:bukulapak/services/barter_service.dart';
+import 'package:bukulapak/services/image_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
+import 'package:flutter_launcher_icons/main.dart';
 
 class BarterinPage extends StatefulWidget {
   const BarterinPage({super.key});
@@ -12,6 +20,11 @@ class BarterinPage extends StatefulWidget {
 }
 
 class _BarterinPageState extends State<BarterinPage> {
+  String _selectedOption = '';
+  final BarterService _barterService = BarterService();
+  final ImageService _imageService = ImageService();
+
+
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
@@ -57,7 +70,8 @@ class _BarterinPageState extends State<BarterinPage> {
         centerTitle: true,
       ),
 
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: [
           customInputField(
             context: context,
@@ -101,6 +115,11 @@ class _BarterinPageState extends State<BarterinPage> {
               option2: 'UTBK',
               option3: 'Komik',
               option4: 'SD',
+              onOptionSelected: (value){
+                setState(() {
+                  _selectedOption = value;
+                });
+              }
             ),
           ),
 
@@ -120,13 +139,47 @@ class _BarterinPageState extends State<BarterinPage> {
           ),
 
           SizedBox(height: screenHeight * 0.02),
-          IconButtonComponent(icon: Icons.add, onPressed: () {
+          if (_imageService.selectedImage != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+              child: GestureDetector(
+                onTap: () async {
+                  await _imageService.pickImage();
+                  setState(() {});
+                },
+                child: Image.file(
+                  _imageService.selectedImage!,
+                  height: 154,
+                  fit: BoxFit.cover,
+                ),
+              )
+              )
+           )
 
-          }),
+          else
+          IconButtonComponent(icon: Icons.add, onPressed: () async {
+            await _imageService.pickImage();
+            setState(() {});
+          }
+          ),
+
+
 
           SizedBox(height: screenHeight * 0.04),
           ElevatedButton(
             onPressed: () {
+              _barterService.addBarter(
+                bukuBarter(
+                    Judul: _judulController.text,
+                    Penerbit: _penerbitController.text,
+                    ISBN: _isbnController.text,
+                    Kategori: _selectedOption,
+                    Gambar: _imageService.imageUrl ?? ''
+                )
+              );
+              Navigator.pushNamed(context, '/mapPage');
               // Navigasi disini
             },
             style: ElevatedButton.styleFrom(
@@ -149,6 +202,7 @@ class _BarterinPageState extends State<BarterinPage> {
             ),
           ),
         ],
+      )
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 3),
     );

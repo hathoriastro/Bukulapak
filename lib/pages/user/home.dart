@@ -7,7 +7,6 @@ import 'package:bukulapak/pages/user/category_page.dart';
 import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -67,9 +66,9 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.03,
-              bottom: MediaQuery.of(context).size.height * 0.03,
+            padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.03,
+              horizontal: MediaQuery.of(context).size.width * 0.035,
             ),
             child: Column(
               children: [
@@ -85,9 +84,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(13),
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(
-              right: MediaQuery.of(context).size.width * 0.035,),
-                      child:  Row(
+                      Row(
                         children: [
                           Text(
                             'Buku',
@@ -136,7 +133,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      ),
 
                       SizedBox(height: 15),
                       SingleChildScrollView(
@@ -173,9 +169,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       SizedBox(height: 40),
-                      Padding(padding: EdgeInsets.only(
-              right: MediaQuery.of(context).size.width * 0.035,),
-                      child:
                       Row(
                         children: [
                           Text(
@@ -216,7 +209,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      ),
                       SizedBox(height: 15),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -238,14 +230,6 @@ class _HomePageState extends State<HomePage> {
                               location: 'Kota Malang, Ja...',
                               title: 'Hujan',
                             ),
-                             ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
                           ],
                         ),
                       ),
@@ -257,7 +241,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Positioned(
             right: 12,
-            bottom: 10, 
+            bottom: 10, // biar ga ketutup navbar
             child: Image.asset(
               "assets/images/floatinglamp.png",
               width: 77,

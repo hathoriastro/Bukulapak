@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class ImageService {
   final ImagePicker _picker = ImagePicker();
   String? imageUrl;
+  File? selectedImage;
 
 //milih image di galeri
   Future<void> pickImage() async {
@@ -18,9 +19,11 @@ class ImageService {
           await uploadImageToFirebaseWeb(bytes, resp.name);
         } else {
           //mobile
+          selectedImage = File(resp.path);
           await uploadImageToFirebase(File(resp.path));
         }
       }
+
     } catch (e) {
       print('Error picking image: $e');
     }

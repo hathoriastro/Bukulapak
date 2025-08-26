@@ -15,6 +15,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final authService _authService = authService();
+  bool isLoading = false;
 
   void _handleSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -24,10 +25,56 @@ class _SignInPageState extends State<SignInPage> {
       return;
     }
 
-    await _authService.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
+    setState(() {
+      isLoading = true;
+    });
+    try{
+      await _authService.signIn(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (mounted){
+        Navigator.pushReplacement(
+          context,
+            MaterialPageRoute(builder: (context) => HomePage()),);
+      }
+
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Anda belum punya akun')));
+      setState(() {
+        isLoading = false;
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      isLoading = true; // Tampilkan loading
+    });
+
+    try {
+      await _authService.signInWithGoogle();
+      {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false,
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login Gagal')));
+    } finally {
+      setState(() {
+        isLoading = false; // Sembunyikan loading setelah proses selesai
+      });
+    }
   }
 
   @override
@@ -42,6 +89,7 @@ class _SignInPageState extends State<SignInPage> {
       // ),
       body: Column(
         children: [
+
           SizedBox(
             height: screenHeight * 0.05, // Responsive height for the top space
           ),
@@ -101,7 +149,6 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
           ),
-
           // Password Field
           SizedBox(height: screenHeight * 0.02),
           Align(
@@ -151,12 +198,8 @@ class _SignInPageState extends State<SignInPage> {
           SizedBox(height: screenHeight * 0.2),
           ElevatedButton(
             onPressed: () {
-              _handleSignIn();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-                (Route<dynamic> route) => false,
-              );
+              isLoading ? null : _handleSignIn();
+              // Navigasi disini
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: lightBlue,
@@ -183,6 +226,15 @@ class _SignInPageState extends State<SignInPage> {
               style: TextStyle(color: lightGray, fontSize: screenWidth * 0.025),
             ),
           ),
+        if (isLoading)
+    Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      ),
+    ),
           Container(
             height: screenHeight * 0.05,
             width: screenWidth * 0.4,
@@ -191,11 +243,16 @@ class _SignInPageState extends State<SignInPage> {
               border: Border.all(color: lightGray, width: 1),
             ),
             child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  isLoading ? null : _handleGoogleSignIn();
+                },
               child: Image(
                 image: AssetImage("assets/images/logo_google.png"),
                 width: screenWidth * 0.07,
                 height: screenHeight * 0.07,
               ),
+            ),
             ),
           ),
           SizedBox(height: screenHeight * 0.05),
