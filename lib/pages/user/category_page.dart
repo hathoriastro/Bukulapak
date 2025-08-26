@@ -18,6 +18,7 @@ class _CategoryPageState extends State<CategoryPage> {
     var screenHeight = screenSize.height; // Screen height
 
     return Scaffold(
+      backgroundColor: Colors.white,
       // appBar: AppBar(
       //   title: const Text("Sign In"),
       // ),

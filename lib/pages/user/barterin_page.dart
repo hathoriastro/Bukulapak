@@ -38,9 +38,14 @@ class _BarterinPageState extends State<BarterinPage> {
     var screenHeight = screenSize.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.1,
         leadingWidth: screenHeight,
+        backgroundColor: Colors.white,
+        elevation: 4,
+        shadowColor: Colors.grey.withOpacity(0.5),
+        surfaceTintColor: Colors.transparent,
         title: Column(
           children: [
             SizedBox(height: screenHeight * 0.03),
