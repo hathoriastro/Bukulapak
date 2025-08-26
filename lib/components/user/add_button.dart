@@ -1,15 +1,16 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class IconButtonComponent extends StatelessWidget {
   final IconData icon; // Icon to be displayed
   final VoidCallback onPressed;
   final Color color; // Icon color
   final double size; // Icon size
   final double padding; // Padding to adjust the button size
-
+  
   // Constructor
-  const IconButtonComponent({
+  IconButtonComponent({
     Key? key,
     required this.icon,
     required this.onPressed,
@@ -17,6 +18,7 @@ class IconButtonComponent extends StatelessWidget {
     this.size = 30.0,
     this.padding = 154.0,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,12 @@ class IconButtonComponent extends StatelessWidget {
           side: BorderSide(color: lightBlue),
         ),
         backgroundColor: Colors.white
-      ),
-      child: Icon(
+      ),child:
+      Icon(
         icon,
         color: color,
         size: size,
-      ),
+      )
     );
   }
 }
