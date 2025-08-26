@@ -30,7 +30,7 @@ class _AddProductPageState extends State<AddProductPage> {
     final uint8list = await VideoThumbnail.thumbnailData(
       video: videoUrl,
       imageFormat: ImageFormat.PNG,
-      maxWidth: 128, // lebar thumbnail
+      maxWidth: 128,
       quality: 75,
     );
 
