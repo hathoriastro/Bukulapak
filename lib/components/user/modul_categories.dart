@@ -1,19 +1,20 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/modul_card.dart';
-import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:bukulapak/pages/user/pdfmodul_page.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 
-class ModulCategories extends StatefulWidget {
-  const ModulCategories({super.key});
+class ModulTabPage extends StatefulWidget {
+  const ModulTabPage({super.key});
 
   @override
-  State<ModulCategories> createState() => _ModulCategoriesState();
+  State<ModulTabPage> createState() => _ModulTabPageState();
 }
 
-class _ModulCategoriesState extends State<ModulCategories>
+class _ModulTabPageState extends State<ModulTabPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
   final List<String> text = ["SD", "SMP", "SMA"];
   final List<Color> activeColors = [sd, smp, sma];
 
@@ -22,7 +23,7 @@ class _ModulCategoriesState extends State<ModulCategories>
     super.initState();
     _tabController = TabController(length: text.length, vsync: this);
     _tabController.addListener(() {
-      setState(() {});
+      setState(() {}); //update warna aktif ketika tab berubah
     });
   }
 
@@ -32,11 +33,33 @@ class _ModulCategoriesState extends State<ModulCategories>
     super.dispose();
   }
 
+  //ambil data modul berdasar jenjang nya
+  Stream<List<Map<String, dynamic>>> getModulStream(String jenjang) async* {
+    final firestore = FirebaseFirestore.instance;
+    final modulSnapshot = await firestore.collection('modul').get();
+
+    List<Map<String, dynamic>> modulList = [];
+    for (var modulDoc in modulSnapshot.docs) {
+      if (modulDoc['jenjang'] == jenjang) {
+        final pdfSnapshot = await firestore
+            .collection('modul')
+            .doc(modulDoc.id)
+            .collection('modul_pdf')
+            .get();
+
+        for (var pdf in pdfSnapshot.docs) {
+          modulList.add(pdf.data());
+        }
+      }
+    }
+    yield modulList;
+  }
+
   @override
   Widget build(BuildContext context) {
-     final size = MediaQuery.of(context).size;
-    final sizewidth = size.width;
-    final fullwidth = 440;
+    final double sizeWidth = MediaQuery.of(context).size.width;
+    const double fullWidth = 430;
+
     return DefaultTabController(
       length: text.length,
       child: Column(
@@ -45,9 +68,8 @@ class _ModulCategoriesState extends State<ModulCategories>
             controller: _tabController,
             backgroundColor: activeColors[_tabController.index],
             contentCenter: true,
-            width: sizewidth*125/fullwidth,
+            width: sizeWidth * 125 / fullWidth,
             height: 40,
-          
             unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle: const TextStyle(
               color: Colors.grey,
@@ -56,11 +78,11 @@ class _ModulCategoriesState extends State<ModulCategories>
             labelStyle: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
-              fontSize: 18
+              fontSize: 18,
             ),
             borderWidth: 2,
             borderColor: activeColors[_tabController.index],
-            unselectedBorderColor: lightGray,
+            unselectedBorderColor: Colors.grey,
             radius: 30,
             tabs: List.generate(
               text.length,
@@ -71,111 +93,59 @@ class _ModulCategoriesState extends State<ModulCategories>
                   style: TextStyle(
                     color: _tabController.index == index
                         ? Colors.white
-                        : lightGray,
+                        : Colors.grey,
                   ),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                //SD
-                GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  padding: const EdgeInsets.only(left: 31, right: 31, bottom: 31),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 12,
-                  children: const [
-                    ModulCard(
-                      title: "Pecahan",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Perkalian",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Pembagian",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Geometri",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                     ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
-                       ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
-                       ModulCard(
-                        title: "Geometri",
-                        image: "assets/images/modul_sample.png",
-                      ),
-                   
-                  ],
-                ),
+              children: text.map((jenjang) {
+                return StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: getModulStream(jenjang),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-                // SMP
-                GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 31),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 12,
-                  children: const [
-                    ModulCard(
-                      title: "Fisika Dasar",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Biologi",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Kimia",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Matematika Lanjut",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                  ],
-                ),
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text("Modul Masih Diproses"));
+                    }
 
-                // SMA
-                GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 31),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 12,
-                  children: const [
-                    ModulCard(
-                      title: "Fisika Lanjutan",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Kalkulus",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Statistika",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                    ModulCard(
-                      title: "Ekonomi",
-                      image: "assets/images/modul_sample.png",
-                    ),
-                  ],
-                ),
-              ],
+                    final data = snapshot.data!;
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 10,
+                      ),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 12,
+                      children: data.map((modul) {
+                        return ModulCard(
+                          title: modul['judul'],
+                          image: modul['coverUrl'],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => PdfViewerPage(
+                                  title: modul['judul'],
+                                  pdfUrl: modul['pdfUrl'],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    );
+                  },
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -183,3 +153,5 @@ class _ModulCategoriesState extends State<ModulCategories>
     );
   }
 }
+
+

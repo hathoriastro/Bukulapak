@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:bukulapak/model/bukuBarter_model.dart';

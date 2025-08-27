@@ -11,8 +11,6 @@ class ModulPage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
-    final fullheight = 956;
-    final fullwidth = 440;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -58,7 +56,7 @@ class ModulPage extends StatelessWidget {
         padding: const EdgeInsets.only(
           top: 25
         ),
-        child: ModulCategories(),
+        child: ModulTabPage(),
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 1)
     );
