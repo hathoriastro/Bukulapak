@@ -64,7 +64,6 @@ class MyApp extends StatelessWidget {
         '/pesanan': (context) => const PesananProfilePage(),
         '/favoritpage': (context) => const FavoritProfilePage(),
         '/produkanda': (context) => const ProdukAndaProfilePage(),
-        '/detailpage' : (context) => const DetailPage(),
         '/mapPage' : (context) => const mapScreen(),
       },
     );
