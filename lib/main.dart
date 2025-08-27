@@ -2,9 +2,12 @@ import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
 import 'package:bukulapak/pages/user/detail_page.dart';
+import 'package:bukulapak/pages/user/favorit_profile.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
+import 'package:bukulapak/pages/user/pesanan_profile.dart';
+import 'package:bukulapak/pages/user/produk_anda_profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +44,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'poppins',
-      ),
+      theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/add_product',
+      initialRoute: '/homepage',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
@@ -58,7 +59,10 @@ class MyApp extends StatelessWidget {
         '/homepage': (context) => const HomePage(),
         '/keranjangpage': (context) => const KeranjangPage(),
         '/profilepage': (context) => const ProfilePage(),
-        '/detailpage' : (context) => const DetailPage(),
+        '/detailpage': (context) => const DetailPage(),
+        '/pesanan': (context) => const PesananProfilePage(),
+        '/favoritpage': (context) => const FavoritProfilePage(),
+        '/produkanda': (context) => const ProdukAndaProfilePage(),
       },
     );
   }

@@ -1,12 +1,12 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
-class KeranjangCard extends StatefulWidget {
+class PesananCard extends StatefulWidget {
   final String coverbook;
   final String text1;
   final String text2;
   final String price;
-  const KeranjangCard({
+  const PesananCard({
     super.key,
     required this.coverbook,
     required this.text1,
@@ -15,10 +15,10 @@ class KeranjangCard extends StatefulWidget {
   });
 
   @override
-  State<KeranjangCard> createState() => _KeranjangCardState();
+  State<PesananCard> createState() => _PesananCardState();
 }
 
-class _KeranjangCardState extends State<KeranjangCard> {
+class _PesananCardState extends State<PesananCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -39,9 +39,9 @@ class _KeranjangCardState extends State<KeranjangCard> {
             boxShadow: [
               BoxShadow(
                 color: lightGray.withOpacity(0.7),
-                spreadRadius: 1.5,
+                spreadRadius: 1,
                 blurRadius: 4,
-                offset: const Offset(0, 4),
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -83,20 +83,6 @@ class _KeranjangCardState extends State<KeranjangCard> {
                   ),
                 ),
               ],
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-              right: 15,
-            ), // Jarak dari tepi
-            child: Image.asset(
-              "assets/images/deleteicon.png",
-              width: 30,
-              height: 30,
             ),
           ),
         ),
