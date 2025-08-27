@@ -30,6 +30,7 @@ class _AddProductPageState extends State<AddProductPage> {
     var screenHeight = screenSize.height;
     final fullheight = 956;
     final fullwidth = 440;
+    final ImageService imageService = ImageService();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -176,7 +177,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        _imageService.imageUrl!,
+                        _imageService.imageUrl??"",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -216,7 +217,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        _videoPicker.videoUrl!,
+                        _videoPicker.videoUrl??"",
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -12,6 +12,7 @@ class OptionButton extends StatefulWidget {
     Key? key,
     required this.option1,
     required this.option2,
+    
     this.option3 = '',
     this.option4 = '',
     this.onChanged, // << bisa null kalau ga dipakai

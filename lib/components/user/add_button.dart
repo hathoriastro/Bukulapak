@@ -1,8 +1,11 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/image_service.dart';
+
 // ignore: must_be_immutable
 class IconButtonComponent extends StatelessWidget {
+  final _imageService = ImageService();
   final IconData icon; // Icon to be displayed
   final VoidCallback onPressed;
   final Color color; // Icon color

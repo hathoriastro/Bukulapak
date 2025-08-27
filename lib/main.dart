@@ -5,6 +5,7 @@ import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/favorit_profile.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
+import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:bukulapak/pages/user/pesanan_profile.dart';
 import 'package:bukulapak/pages/user/produk_anda_profile.dart';
@@ -63,6 +64,8 @@ class MyApp extends StatelessWidget {
         '/pesanan': (context) => const PesananProfilePage(),
         '/favoritpage': (context) => const FavoritProfilePage(),
         '/produkanda': (context) => const ProdukAndaProfilePage(),
+        '/detailpage' : (context) => const DetailPage(),
+        '/mapPage' : (context) => const mapScreen(),
       },
     );
   }
