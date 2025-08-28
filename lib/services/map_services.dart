@@ -47,13 +47,19 @@ class MapServices {
           .where((doc) => doc.id != uid)
           .map((doc) {
         final data = doc.data();
+        final ts = (data['updated'] as Timestamp?)?.toDate();
+        if (ts == null || DateTime.now().difference(ts) > const Duration(minutes: 1)){
+          return null;
+        }
         return {
           'uid': data['uid'],
           'latitude': data['latitude'],
           'longitude': data['longitude'],
           'image': data['Gambar'],
         };
-      }).toList();
+      })
+          .whereType<Map<String, dynamic>>()
+          .toList();
     });
   }
 
