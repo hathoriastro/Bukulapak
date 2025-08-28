@@ -12,8 +12,6 @@ import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
 import 'package:flutter_launcher_icons/main.dart';
 
-import '../../services/map_services.dart';
-
 class BarterinPage extends StatefulWidget {
   const BarterinPage({super.key});
 
@@ -23,7 +21,6 @@ class BarterinPage extends StatefulWidget {
 
 class _BarterinPageState extends State<BarterinPage> {
   String _selectedOption = '';
-  final _mapService = MapServices();
   final BarterService _barterService = BarterService();
   final ImageService _imageService = ImageService();
   final fullheight = 956;
@@ -181,7 +178,7 @@ class _BarterinPageState extends State<BarterinPage> {
 
               SizedBox(height: screenHeight * 0.04),
               ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   _barterService.addBarter(
                       bukuBarter(
                           Judul: _judulController.text,
@@ -191,7 +188,6 @@ class _BarterinPageState extends State<BarterinPage> {
                           Gambar: _imageService.imageUrl ?? ''
                       )
                   );
-                  await _mapService.updateUserLocation();
                   Navigator.pushNamed(context, '/mapPage');
                   // Navigasi disini
                 },

@@ -8,45 +8,55 @@ class ModulPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final sizeheight = size.height;
-    final fullheight = 956;
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: screenHeight * 0.1,
+        leadingWidth: screenHeight,
         backgroundColor: Colors.white,
-        toolbarHeight: sizeheight * 112 / fullheight,
         elevation: 4,
         shadowColor: Colors.grey.withOpacity(0.5),
         surfaceTintColor: Colors.transparent,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        title: Column(
           children: [
-            Text(
-              'Modul',
-              style: TextStyle(
-                color: darkBlue,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'Go',
-              style: TextStyle(
-                color: customorange,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
+            SizedBox(height: screenHeight * 0.03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Modul",
+                  style: TextStyle(
+                    fontFamily: 'poppins',
+                    fontSize: screenWidth * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: orange,
+                  ),
+                ),
+                Text(
+                  "Go",
+                  style: TextStyle(
+                    fontFamily: 'poppins',
+                    fontSize: screenWidth * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: darkBlue,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        
+        centerTitle: true,
       ),
       
       body: Padding(
         padding: const EdgeInsets.only(
           top: 25
         ),
-        child: ModulCategories(),
+        child: ModulTabPage(),
       ),
       bottomNavigationBar: BottomNavbar(selectedItem: 1)
     );

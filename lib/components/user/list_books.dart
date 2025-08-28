@@ -1,5 +1,4 @@
 import 'package:bukulapak/components/colors.dart';
-import 'package:bukulapak/components/user/modul_card.dart';
 import 'package:bukulapak/components/user/product_card.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,7 @@ class _ListBooksState extends State<ListBooks>
               width: sizewidth* 182/ fullwidth,
               height: 41,
             
-              unselectedBackgroundColor: Colors.white,
+              unselectedBackgroundColor: Colors.transparent,
               unselectedLabelStyle: TextStyle(
                 color: lightBlue,
                 fontWeight: FontWeight.w800,
@@ -67,9 +66,9 @@ class _ListBooksState extends State<ListBooks>
                 fontWeight: FontWeight.w700,
                 fontSize: 24
               ),
-              borderWidth: 10,
+              borderWidth: 1,
               unselectedBorderColor: lightBlue,
-              radius: 10,
+              radius: 20,
               tabs: List.generate(
                 text.length,
                 (index) => Tab(
@@ -77,6 +76,7 @@ class _ListBooksState extends State<ListBooks>
                     text[index],
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      fontSize: 20,
                       color: _tabController.index == index
                           ? Colors.white
                           : lightBlue,
