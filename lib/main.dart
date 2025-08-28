@@ -6,6 +6,7 @@ import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
+import 'package:bukulapak/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ void main() async {
     await Firebase.initializeApp();
   }
 
+
   runApp(const MyApp());
 }
 
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'poppins',
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/homepage',
+      initialRoute: '/sign_up',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
@@ -60,7 +62,7 @@ class MyApp extends StatelessWidget {
         '/keranjangpage': (context) => const KeranjangPage(),
         '/profilepage': (context) => const ProfilePage(),
         '/detailpage' : (context) => const DetailPage(),
-        '/mapPage' : (context) => const mapScreen(),
+        '/mapPage' : (context) => const MapScreen(),
       },
     );
   }

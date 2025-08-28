@@ -1,54 +1,111 @@
 import 'package:bukulapak/services/map_services.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class mapScreen extends StatefulWidget {
-  const mapScreen({super.key});
-  
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
-  State<mapScreen> createState() => _mapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class _mapScreenState extends State<mapScreen> {
+class _MapScreenState extends State<MapScreen> {
   Set<Marker> _markers = {};
+  final MapServices _mapServices = MapServices();
 
   @override
   void initState() {
     super.initState();
-    _loadCustomMarker();
+    _loadCurrentUserMarker();
+    _listenNearbyUsers();
   }
 
-  Future<void> _loadCustomMarker() async {
-    final customIcon = await _mapServices.createCustomMarker(
-        "https://firebasestorage.googleapis.com/v0/b/naru-c8575.appspot.com/o/images%2F1756101640498.png?alt=media&token=a6a096a9-d418-4467-9dea-8a1e81fb75cd"
-    );
+  /// 🔹 Marker untuk user sendiri
+  Future<void> _loadCurrentUserMarker() async {
+    final barterImage =
+    await _mapServices.getBarterImage(FirebaseAuth.instance.currentUser!.uid);
 
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: MarkerId("customMarker"),
-          position: LatLng(-7.95, 112.61),
-          icon: customIcon,
-        ),
-      );
+    if (barterImage != null) {
+      final customIcon = await _mapServices.createCustomMarker(barterImage);
+
+      final lat = await _mapServices.getBarterLatitude();
+      final long = await _mapServices.getBarterLongitude();
+
+      setState(() {
+        _markers.add(
+          Marker(
+            markerId: const MarkerId("userLocation"),
+            icon: customIcon,
+            position: LatLng(lat, long),
+          ),
+        );
+      });
+    }
+  }
+
+  /// 🔹 Marker untuk nearby users
+  void _listenNearbyUsers() {
+    _mapServices.getNearbyUsersWithLocation().listen((users) async {
+      Set<Marker> newMarkers = {};
+
+      for (var user in users) {
+        if (user['latitude'] == null || user['longitude'] == null) continue;
+
+        BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
+        if (user['image'] != null && (user['image'] as String).isNotEmpty) {
+          icon = await _mapServices.createCustomMarkerFromImage(user['image']);
+        }
+
+        newMarkers.add(
+          Marker(
+            markerId: MarkerId(user['uid']),
+            position: LatLng(user['latitude'], user['longitude']),
+            icon: icon,
+            infoWindow: InfoWindow(title: "User: ${user['uid']}"),
+          ),
+        );
+      }
+
+      setState(() {
+        // jangan hapus marker user sendiri
+        _markers.removeWhere((m) => m.markerId.value != "userLocation");
+        _markers.addAll(newMarkers);
+      });
     });
   }
-
-  MapServices _mapServices = MapServices();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Maps"), centerTitle: true),
-      body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: LatLng(-7.95, 112.61),
-          zoom: 14,
-        ),
-        markers: _markers,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+      appBar: AppBar(title: const Text("Maps"), centerTitle: true),
+      body: FutureBuilder(
+        future: Future.wait([
+          _mapServices.getBarterLatitude(),
+          _mapServices.getBarterLongitude(),
+        ]),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final lat = snapshot.data![0] as double?;
+          final long = snapshot.data![1] as double?;
+
+          if (lat == null || long == null) {
+            return const Center(child: Text("Lokasi tidak ditemukan"));
+          }
+
+          return GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(lat, long),
+              zoom: 14,
+            ),
+            markers: _markers,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+          );
+        },
       ),
     );
   }

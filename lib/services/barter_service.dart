@@ -8,7 +8,7 @@ class BarterService{
   
   Future<void> addBarter(bukuBarter barter) async {
     try{
-      final docRef = _firestore.collection('user').doc(_firebaseAuth.currentUser?.uid).collection('barter').doc();
+      final docRef = _firestore.collection('userLocation').doc(_firebaseAuth.currentUser?.uid);
       final data = {
         'id': _firebaseAuth.currentUser?.uid,
         'Judul': barter.Judul,
@@ -16,6 +16,7 @@ class BarterService{
         'ISBN': barter.ISBN,
         'Kategori': barter.Kategori,
         'Gambar': barter.Gambar,
+        'timestamp': FieldValue.serverTimestamp()
       };
 
       final docSnapshot = await docRef.get();

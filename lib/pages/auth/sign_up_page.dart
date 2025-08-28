@@ -46,11 +46,13 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     try {
-      await _authService.createUser(
+
+     final userCredential = await _authService.createUser(
         email: _emailController.text,
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
       );
+      await _authService.saveUser(userCredential.user!);
 
       if (mounted) {
         Navigator.pushReplacement(
@@ -83,7 +85,8 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     try {
-      await _authService.signInWithGoogle();
+      final userCredential = await _authService.signInWithGoogle();
+      await _authService.saveUser(userCredential!.user!);
       {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
@@ -95,6 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     } catch (e) {
     } finally {
+
       setState(() {
         isLoading = false; // Sembunyikan loading setelah proses selesai
       });

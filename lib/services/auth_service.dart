@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:bukulapak/services/map_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class authService{
   final firebaseAuth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -33,7 +37,6 @@ class authService{
   required String password,
     required String confirmPassword
   }) async {
-
     return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password
@@ -75,6 +78,7 @@ class authService{
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken
       );
       final userCredential =
       await FirebaseAuth.instance.signInWithCredential(credential);
@@ -82,6 +86,18 @@ class authService{
     } catch (e) {
 
 
+    }
+  }
+
+  Future<void> saveUser(User user) async{
+    final userRef = firestore.collection('user').doc(user.uid);
+    try{
+      return userRef.set({
+        'uid': user.uid,
+        'email': user.email??"",
+      }, SetOptions(merge: true));
+    } catch(e){
+      log(e.toString());
     }
   }
 }
