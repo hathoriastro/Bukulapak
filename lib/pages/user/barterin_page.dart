@@ -117,7 +117,7 @@ class _BarterinPageState extends State<BarterinPage> {
                     option2: 'UTBK',
                     option3: 'Komik',
                     option4: 'SD',
-                    onOptionSelected: (value){
+                    onChanged: (value){
                       setState(() {
                         _selectedOption = value;
                       });
