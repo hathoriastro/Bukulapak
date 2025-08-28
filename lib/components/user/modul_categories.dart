@@ -72,7 +72,7 @@ class _ModulTabPageState extends State<ModulTabPage>
             height: 40,
             unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle: const TextStyle(
-              color: Colors.grey,
+              color: lightGray,
               fontWeight: FontWeight.w700,
             ),
             labelStyle: const TextStyle(
@@ -82,7 +82,7 @@ class _ModulTabPageState extends State<ModulTabPage>
             ),
             borderWidth: 2,
             borderColor: activeColors[_tabController.index],
-            unselectedBorderColor: Colors.grey,
+            unselectedBorderColor: lightGray,
             radius: 30,
             tabs: List.generate(
               text.length,

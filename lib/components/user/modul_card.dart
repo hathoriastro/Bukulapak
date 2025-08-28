@@ -29,7 +29,7 @@ class ModulCard extends StatelessWidget {
         color: cyan,
         child: SizedBox(
           width: sizewidth * 175 / fullwidth,
-          height: sizeheight * 178 / fullheight,
+          height: sizeheight * 190 / fullheight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,

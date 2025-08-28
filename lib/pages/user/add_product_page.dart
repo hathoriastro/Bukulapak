@@ -224,6 +224,7 @@ class _AddProductPageState extends State<AddProductPage> {
                       await _videoPicker.pickVideo();
                       if (_videoPicker.videoUrl != null) {
                         await generateThumbnail(_videoPicker.videoUrl!);
+                        
                       }
                     },
                   )

@@ -1,4 +1,4 @@
-import 'package:bukulapak/components/colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -20,7 +20,7 @@ class PdfViewerPage extends StatelessWidget {
     return Scaffold(
       appBar: 
       AppBar(
-        backgroundColor: cyan,
+        backgroundColor: Colors.white,
         toolbarHeight: sizeheight * 112 / fullheight,
         elevation: 4,
         shadowColor: Colors.grey.withOpacity(0.5),
