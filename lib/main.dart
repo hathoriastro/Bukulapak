@@ -1,11 +1,11 @@
 import 'package:bukulapak/pages/splash_screen.dart';
-import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
 import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
+import 'package:bukulapak/pages/user/tambahproduk_page.dart';
 import 'package:bukulapak/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';

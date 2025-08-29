@@ -1,12 +1,9 @@
-import 'dart:io';
 
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:bukulapak/model/bukuBarter_model.dart';
 import 'package:bukulapak/services/barter_service.dart';
 import 'package:bukulapak/services/image_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';

@@ -1,6 +1,8 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
+import 'package:bukulapak/model/tambahproduk_model.dart';
 import 'package:bukulapak/services/image_service.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:bukulapak/services/video_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
@@ -22,9 +24,10 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
-  String? _selectedOption;
+  String _selectedOption = '';
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
+  final TambahprodukService _addproductService = TambahprodukService();
 
   Uint8List? _thumbnail;
 
@@ -246,8 +249,22 @@ class _AddProductPageState extends State<AddProductPage> {
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () {
-                // Navigasi disini
-              },
+                 _addproductService.addProduct(
+                      TambahprodukModel(
+                          Judul: _judulController.text,
+                          Penerbit: _penerbitController.text,
+                          ISBN: _isbnController.text,
+                          Kategori: _selectedOption,
+                          Gambar: _imageService.imageUrl ?? '',
+                          Video: _videoPicker.videoUrl??'',
+                          Harga: _hargaController.text,
+                          Deskripsi: _deskripsiController.text
+                          
+                      )
+                  );
+                  Navigator.pushNamed(context, '/homepage');
+                  // Navigasi disini
+                },
               style: ElevatedButton.styleFrom(
                 backgroundColor: orange,
                 padding: EdgeInsets.symmetric(

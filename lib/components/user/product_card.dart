@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
@@ -18,6 +19,7 @@ class ProductCard extends StatelessWidget {
     required this.location,
     required this.title,
   });
+
 
   @override
   Widget build(BuildContext context) {

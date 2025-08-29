@@ -37,9 +37,7 @@ class ImageService {
 
       await ref.putFile(image);
       imageUrl = await ref.getDownloadURL();
-      print('Upload Success (Mobile)! URL: $imageUrl');
     } catch (e) {
-      print('Error uploading image (Mobile): $e');
     }
   }
 
@@ -52,9 +50,9 @@ class ImageService {
 
       await ref.putData(bytes);
       imageUrl = await ref.getDownloadURL();
-      print('Upload Success (Web)! URL: $imageUrl');
+      // print('Upload Success (Web)! URL: $imageUrl');
     } catch (e) {
-      print('Error uploading image (Web): $e');
+      // print('Error uploading image (Web): $e');
     }
   }
 }
