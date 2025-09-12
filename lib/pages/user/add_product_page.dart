@@ -1,6 +1,7 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:bukulapak/services/image_service.dart';
+import 'package:bukulapak/services/video_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -17,18 +18,29 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
+  final TextEditingController _hargaController = TextEditingController();
+  String? _selectedOption;
+  final ImageService _imageService = ImageService();
+  final VideoPicker _videoPicker = VideoPicker();
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
-
+    final fullheight = 956;
+    final fullwidth = 440;
     final ImageService imageService = ImageService();
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.1,
         leadingWidth: screenHeight,
+        backgroundColor: Colors.white,
+        elevation: 4,
+        shadowColor: Colors.grey.withOpacity(0.5),
+        surfaceTintColor: Colors.transparent,
         title: Column(
           children: [
             SizedBox(height: screenHeight * 0.03),
@@ -104,8 +116,24 @@ class _AddProductPageState extends State<AddProductPage> {
                 horizontal: screenWidth * 0.06,
                 vertical: screenHeight * 0.008,
               ),
-              child: OptionButton(option1: 'Gratis', option2: 'Berbayar'),
+              child: OptionButton(
+                option1: 'Gratis',
+                option2: 'Berbayar',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
             ),
+
+            if (_selectedOption == 'Berbayar')
+              customInputField(
+                context: context,
+                title: 'Harga',
+                labelText: 'Rp 100.000',
+                controller: _hargaController,
+              ),
 
             customInputField(
               context: context,
@@ -113,6 +141,38 @@ class _AddProductPageState extends State<AddProductPage> {
               labelText: '',
               controller: _deskripsiController,
             ),
+
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Pilih Kategori',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.06,
+                vertical: screenHeight * 0.008,
+              ),
+              child: OptionButton(
+                option1: 'Novel',
+                option2: 'UTBK',
+                option3: 'Komik',
+                option4: 'SD',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
+            ),
+
 
             // Tambah gambar
             SizedBox(height: screenHeight * 0.02),
@@ -130,12 +190,30 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             SizedBox(height: screenHeight * 0.02),
-            IconButtonComponent(
-              icon: Icons.add,
-              onPressed: () {
-                imageService.pickImage();
-              },
-            ),
+
+            _imageService.imageUrl == null
+                ? IconButtonComponent(
+                    icon: Icons.add,
+                    onPressed: () async {
+                      await _imageService.pickImage();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    width: screenWidth * 410 / fullwidth,
+                    height: screenHeight * 212 / fullheight,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        _imageService.imageUrl??"",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
             // Tambah video
             SizedBox(height: screenHeight * 0.02),
@@ -153,7 +231,29 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             SizedBox(height: screenHeight * 0.02),
-            IconButtonComponent(icon: Icons.add, onPressed: () {}),
+            _imageService.imageUrl == null
+                ? IconButtonComponent(
+                    icon: Icons.add,
+                    onPressed: () async {
+                      await _videoPicker.pickVideo();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    width: screenWidth * 410 / fullwidth,
+                    height: screenHeight * 212 / fullheight,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        _videoPicker.videoUrl??"",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
             // Tombol Unggah Produk
             SizedBox(height: screenHeight * 0.02),

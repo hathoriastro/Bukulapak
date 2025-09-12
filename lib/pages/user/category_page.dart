@@ -18,40 +18,35 @@ class _CategoryPageState extends State<CategoryPage> {
     var screenHeight = screenSize.height; // Screen height
 
     return Scaffold(
+      backgroundColor: Colors.white,
       // appBar: AppBar(
       //   title: const Text("Sign In"),
       // ),
       body: Column(
         children: [
-          SizedBox(
-            height: screenHeight * 0.05, // Responsive height for the top space
-          ),
-          SizedBox(
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  SizedBox(width: screenWidth * 0.05), // Add some left padding
-                  Image.asset(
-                    "assets/images/logo_bukulapak.png",
-                    width: screenWidth * 0.1,
-                  ),
-                  SizedBox(
-                    width: screenWidth * 0.02,
-                  ), // Space between logo and text
-                  Text(
-                    'BUKULAPAK',
-                    style: TextStyle(
-                      fontFamily: 'poppins',
-                      color: darkBlue,
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+          SizedBox(height: screenHeight * 0.05),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                Image.asset(
+                  "assets/images/logo_bukulapak.png",
+                  width: screenWidth * 0.1,
+                ),
+                SizedBox(
+                  width: screenWidth * 0.15,
+                ), // Space between logo and text
+              ],
             ),
           ),
+
           SizedBox(height: screenHeight * 0.02),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -76,15 +71,16 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 suffixIcon: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ListProductPage(currentIndx: 0,)),
-                  );
-                },
-                child: const Icon(Icons.search),
-              ),
-                
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListProductPage(currentIndx: 0),
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.search),
+                ),
               ),
             ),
           ),

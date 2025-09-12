@@ -7,7 +7,6 @@ import 'package:bukulapak/pages/user/category_page.dart';
 import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -35,20 +34,30 @@ class _HomePageState extends State<HomePage> {
         title: SizedBox(
           height: 42,
           width: sizewidth * 259 / fullwidth,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CategoryPage()),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(12),
               ),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CategoryPage()),
-                  );
-                },
-                child: const Icon(Icons.search),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Search",
+                      style: TextStyle(color: lightGray, fontSize: 14),
+                    ),
+                    Icon(Icons.search),
+                  ],
+                ),
               ),
             ),
           ),
@@ -82,60 +91,63 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 15),
 
                 Container(
-                  padding: EdgeInsets.all(13),
+                  padding: EdgeInsets.only(left: 13),
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(
-              right: MediaQuery.of(context).size.width * 0.035,),
-                      child:  Row(
-                        children: [
-                          Text(
-                            'Buku',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                          Column(
-                            children: [
-                              Text(
-                                'Gratis',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: customorange,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Container(
-                                height: 1.5,
-                                width: 65,
-                                color: darkBlue,
-                              ),
-                            ],
-                          ),
-                          Spacer(flex: 2),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ListProductPage(currentIndx: 1,),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'Lihat Semua',
+                      Padding(
+                        padding: EdgeInsets.only(
+                          right: MediaQuery.of(context).size.width * 0.035,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Buku',
                               style: TextStyle(
-                                fontSize: 8,
-                                color: lightGray,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                            SizedBox(width: 4),
+                            Column(
+                              children: [
+                                Text(
+                                  'Gratis',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: customorange,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Container(
+                                  height: 1.5,
+                                  width: 65,
+                                  color: darkBlue,
+                                ),
+                              ],
+                            ),
+                            Spacer(flex: 2),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListProductPage(currentIndx: 1),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Lihat Semua',
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: lightGray,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
                       SizedBox(height: 15),
@@ -173,49 +185,50 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       SizedBox(height: 40),
-                      Padding(padding: EdgeInsets.only(
-              right: MediaQuery.of(context).size.width * 0.035,),
-                      child:
-                      Row(
-                        children: [
-                          Text(
-                            'Baru',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                      Padding(
+                        padding: EdgeInsets.only(
+                          right: MediaQuery.of(context).size.width * 0.035,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Baru',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 4),
-                          Column(
-                            children: [
-                              Text(
-                                'Ditambahkan',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: darkBlue,
-                                  fontWeight: FontWeight.w500,
+                            SizedBox(width: 4),
+                            Column(
+                              children: [
+                                Text(
+                                  'Ditambahkan',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: darkBlue,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1.5,
-                                width: 152,
-                                color: customorange,
-                              ),
-                            ],
-                          ),
-
-                          Spacer(flex: 2),
-                          Text(
-                            'Lihat Semua',
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: lightGray,
-                              fontWeight: FontWeight.bold,
+                                Container(
+                                  height: 1.5,
+                                  width: 152,
+                                  color: customorange,
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
+
+                            Spacer(flex: 2),
+                            Text(
+                              'Lihat Semua',
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: lightGray,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 15),
                       SingleChildScrollView(
@@ -238,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                               location: 'Kota Malang, Ja...',
                               title: 'Hujan',
                             ),
-                             ProductCard(
+                            ProductCard(
                               imageProduct: 'assets/images/banner1.jpg',
                               date: '22-08-2025',
                               time: '00.00',
@@ -257,7 +270,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Positioned(
             right: 12,
-            bottom: 10, 
+            bottom: 10,
             child: Image.asset(
               "assets/images/floatinglamp.png",
               width: 77,

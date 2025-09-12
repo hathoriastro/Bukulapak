@@ -21,6 +21,7 @@ class _ListProductPageState extends State<ListProductPage> {
     final fullwidth = 440;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: sizeheight * 112 / fullheight,
