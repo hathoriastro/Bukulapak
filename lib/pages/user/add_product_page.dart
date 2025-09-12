@@ -142,6 +142,38 @@ class _AddProductPageState extends State<AddProductPage> {
               controller: _deskripsiController,
             ),
 
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Pilih Kategori',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.06,
+                vertical: screenHeight * 0.008,
+              ),
+              child: OptionButton(
+                option1: 'Novel',
+                option2: 'UTBK',
+                option3: 'Komik',
+                option4: 'SD',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
+            ),
+
+
             // Tambah gambar
             SizedBox(height: screenHeight * 0.02),
             Align(

@@ -34,20 +34,30 @@ class _HomePageState extends State<HomePage> {
         title: SizedBox(
           height: 42,
           width: sizewidth * 259 / fullwidth,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CategoryPage()),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(12),
               ),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CategoryPage()),
-                  );
-                },
-                child: const Icon(Icons.search),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Search",
+                      style: TextStyle(color: lightGray, fontSize: 14),
+                    ),
+                    Icon(Icons.search),
+                  ],
+                ),
               ),
             ),
           ),
@@ -81,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 15),
 
                 Container(
-                  padding: EdgeInsets.only(left : 13),
+                  padding: EdgeInsets.only(left: 13),
                   child: Column(
                     children: [
                       Padding(

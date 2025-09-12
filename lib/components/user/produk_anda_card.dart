@@ -2,12 +2,12 @@ import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/produk_anda_button.dart';
 import 'package:flutter/material.dart';
 
-class ProdukAndaCard extends StatefulWidget {
+class ProdukAndaCardVertical extends StatefulWidget {
   final String coverbook;
   final String text1;
   final String text2;
   final String price;
-  const ProdukAndaCard({
+  const ProdukAndaCardVertical({
     super.key,
     required this.coverbook,
     required this.text1,
@@ -16,10 +16,10 @@ class ProdukAndaCard extends StatefulWidget {
   });
 
   @override
-  State<ProdukAndaCard> createState() => _ProdukAndaCardState();
+  State<ProdukAndaCardVertical> createState() => _ProdukAndaCardVerticalState();
 }
 
-class _ProdukAndaCardState extends State<ProdukAndaCard> {
+class _ProdukAndaCardVerticalState extends State<ProdukAndaCardVertical> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -82,7 +82,7 @@ class _ProdukAndaCardState extends State<ProdukAndaCard> {
                   ],
                 ),
               ),
-              ProdukAndaButton(currentindex: 0)
+              ProdukAndaButton(currentindex: 0),
             ],
           ),
         ),

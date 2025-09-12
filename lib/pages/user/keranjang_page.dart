@@ -2,8 +2,15 @@ import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/keranjang_card.dart';
 import 'package:flutter/material.dart';
 
-class KeranjangPage extends StatelessWidget {
+class KeranjangPage extends StatefulWidget {
   const KeranjangPage({super.key});
+
+  @override
+  _KeranjangPageState createState() => _KeranjangPageState();
+}
+
+class _KeranjangPageState extends State<KeranjangPage> {
+  bool applyClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +21,7 @@ class KeranjangPage extends StatelessWidget {
     final fullwidth = 440;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: sizeheight * 112 / fullheight,
@@ -36,7 +44,12 @@ class KeranjangPage extends StatelessWidget {
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 30, bottom: 120),
+        padding: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+          top: 30,
+          bottom: 120,
+        ),
         child: Column(
           children: [
             KeranjangCard(
@@ -56,7 +69,7 @@ class KeranjangPage extends StatelessWidget {
       ),
 
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20), 
+        padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -82,32 +95,37 @@ class KeranjangPage extends StatelessWidget {
                   children: [
                     Image.asset('assets/images/price-tag.png'),
                     const SizedBox(width: 10),
-                    Text(
-                      'Put Your Coupon',
-                      style: TextStyle(color: softgray),
-                    ),
+                    Text('Put Your Coupon', style: TextStyle(color: softgray)),
                     const Spacer(),
-                    Container(
-                      width: sizewidth * 88 / fullwidth,
-                      height: sizeheight * 46 / fullheight,
-                      decoration: BoxDecoration(
-                        color: customorange,
-                        borderRadius: BorderRadius.circular(28),
-                        boxShadow: [
-                          BoxShadow(
-                            color: lightGray.withOpacity(0.5),
-                            spreadRadius: 1.5,
-                            blurRadius: 4,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Apply',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
+
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          applyClicked = !applyClicked;
+                        });
+                      },
+                      child: Container(
+                        width: sizewidth * 88 / fullwidth,
+                        height: sizeheight * 46 / fullheight,
+                        decoration: BoxDecoration(
+                          color: applyClicked ? lightBlue : customorange,
+                          borderRadius: BorderRadius.circular(28),
+                          boxShadow: [
+                            BoxShadow(
+                              color: lightGray.withOpacity(0.5),
+                              spreadRadius: 1.5,
+                              blurRadius: 4,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            applyClicked ? 'Applied' : 'Apply',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),

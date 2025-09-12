@@ -7,6 +7,7 @@ import 'package:bukulapak/services/barter_service.dart';
 import 'package:bukulapak/services/image_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bukulapak/services/video_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -21,7 +22,7 @@ class BarterinPage extends StatefulWidget {
 
 class _BarterinPageState extends State<BarterinPage> {
   String _selectedOption = '';
-  final BarterService _barterService = BarterService();
+  // final BarterService _barterService = BarterService();
   final ImageService _imageService = ImageService();
   final fullheight = 956;
   final fullwidth = 440;
@@ -29,6 +30,8 @@ class _BarterinPageState extends State<BarterinPage> {
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
+
+  final VideoPicker _videoPicker = VideoPicker();
 
   @override
   Widget build(BuildContext context) {
@@ -176,20 +179,60 @@ class _BarterinPageState extends State<BarterinPage> {
                 },
               ),
 
+            // Tambah video
+            SizedBox(height: screenHeight * 0.02),
+            Align(
+              alignment: Alignment(-0.78, 0),
+              child: Text(
+                'Tambah Video',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.03,
+                ),
+              ),
+            ),
+
+            SizedBox(height: screenHeight * 0.02),
+            _imageService.imageUrl == null
+                ? IconButtonComponent(
+                    icon: Icons.add,
+                    onPressed: () async {
+                      await _videoPicker.pickVideo();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    width: screenWidth * 410 / fullwidth,
+                    height: screenHeight * 212 / fullheight,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        _videoPicker.videoUrl ?? "",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+
             SizedBox(height: screenHeight * 0.04),
             ElevatedButton(
               onPressed: () {
-                _barterService.addBarter(
-                  bukuBarter(
-                    Judul: _judulController.text,
-                    Penerbit: _penerbitController.text,
-                    ISBN: _isbnController.text,
-                    Kategori: _selectedOption,
-                    Gambar: _imageService.imageUrl ?? '',
-                  ),
-                );
-                Navigator.pushNamed(context, '/mapPage');
-                // Navigasi disini
+                // _barterService.addBarter(
+                //   bukuBarter(
+                //     Judul: _judulController.text,
+                //     Penerbit: _penerbitController.text,
+                //     ISBN: _isbnController.text,
+                //     Kategori: _selectedOption,
+                //     Gambar: _imageService.imageUrl ?? '',
+                //   ),
+                // );
+                // Navigator.pushNamed(context, '/mapPage');
+                // // Navigasi disini
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: orange,

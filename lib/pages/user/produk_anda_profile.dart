@@ -42,31 +42,31 @@ class ProdukAndaProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         child: Column(
           children: const [
-            ProdukAndaCard(
+            ProdukAndaCardVertical(
               coverbook: 'assets/images/logo_bukulapak.png',
               text1: 'Buku 1',
               text2: 'Penulis A',
               price: 'Rp50.000',
             ),
-            ProdukAndaCard(
+            ProdukAndaCardVertical(
               coverbook: 'assets/images/logo_bukulapak.png',
               text1: 'Buku 2',
               text2: 'Penulis B',
               price: 'Rp60.000',
             ),
-            ProdukAndaCard(
+            ProdukAndaCardVertical(
               coverbook: 'assets/images/logo_bukulapak.png',
               text1: 'Buku 3',
               text2: 'Penulis C',
               price: 'Rp70.000',
             ),
-            ProdukAndaCard(
+            ProdukAndaCardVertical(
               coverbook: 'assets/images/logo_bukulapak.png',
               text1: 'Buku 4',
               text2: 'Penulis D',
               price: 'Rp80.000',
             ),
-            ProdukAndaCard(
+            ProdukAndaCardVertical(
               coverbook: 'assets/images/logo_bukulapak.png',
               text1: 'Buku 5',
               text2: 'Penulis E',

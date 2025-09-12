@@ -15,7 +15,6 @@ class _FavoritProfilePageState extends State<FavoritProfilePage> {
     final size = MediaQuery.of(context).size;
     final sizewidth = size.width;
     final sizeheight = size.height;
-    final fullheight = 956;
     final fullwidth = 440;
 
     return Scaffold(
