@@ -1,6 +1,7 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatefulWidget {
@@ -28,6 +29,8 @@ class _SignInPageState extends State<SignInPage> {
       email: _emailController.text,
       password: _passwordController.text,
     );
+
+    _authService.saveUser(User as User);
   }
 
   @override

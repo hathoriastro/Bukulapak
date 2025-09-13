@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:ui';
 import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,18 +49,17 @@ class MapServices {
           .map((doc) {
         final data = doc.data();
         final ts = (data['updated'] as Timestamp?)?.toDate();
-        if (ts == null || DateTime.now().difference(ts) > const Duration(minutes: 1)){
-          return null;
-        }
+        print("Nearby user: ${data['uid']} lat:${data['latitude']} long:${data['longitude']}");
         return {
           'uid': data['uid'],
-          'latitude': data['latitude'],
-          'longitude': data['longitude'],
-          'image': data['Gambar'],
+          'latitude': (data['latitude'] as num?)?.toDouble(),
+          'longitude': (data['longitude'] as num?)?.toDouble(),
+          'Gambar': data['Gambar'] as String?,
         };
       })
           .whereType<Map<String, dynamic>>()
           .toList();
+
     });
   }
 
@@ -101,52 +101,46 @@ class MapServices {
 
   }
 
-  Future<BitmapDescriptor> createCustomMarkerFromImage(
-      String imageUrl, {int size = 150}) async {
-    final response = await http.get(Uri.parse(imageUrl));
-    final bytes = response.bodyBytes;
 
-    final codec = await ui.instantiateImageCodec(
-      bytes,
-      targetWidth: size,
-      targetHeight: size,
-    );
-    final frame = await codec.getNextFrame();
-    final image = frame.image;
+    Future<BitmapDescriptor> createCircularMarker(String imageUrl, {int size = 150}) async {
+      final response = await http.get(Uri.parse(imageUrl));
+      final bytes = response.bodyBytes;
 
-    final pictureRecorder = ui.PictureRecorder();
-    final canvas = Canvas(pictureRecorder);
-    final paint = Paint()..isAntiAlias = true;
+      final codec = await ui.instantiateImageCodec(
+        bytes,
+        targetWidth: size,
+        targetHeight: size,
+      );
+      final frame = await codec.getNextFrame();
+      final image = frame.image;
 
-    // gambar lingkaran putih background
-    canvas.drawCircle(
-      Offset(size / 2, size / 2),
-      size / 2,
-      paint..color = const Color(0xFFFFFFFF),
-    );
+      final pictureRecorder = ui.PictureRecorder();
+      final canvas = Canvas(pictureRecorder);
+      final paint = Paint()..isAntiAlias = true;
+
+      // 🔴 clip ke lingkaran
+      final clipPath = Path()
+        ..addOval(Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()));
+      canvas.clipPath(clipPath);
+
+      // gambar foto
+      final src = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
+      final dst = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+      canvas.drawImageRect(image, src, dst, paint);
+
+      // opsional: border putih
+      paint
+        ..style = PaintingStyle.stroke
+        ..color = Colors.white
+        ..strokeWidth = 6;
+      canvas.drawCircle(Offset(size / 2, size / 2), size / 2, paint);
+
+      final markerImage = await pictureRecorder.endRecording().toImage(size, size);
+      final byteData = await markerImage.toByteData(format: ui.ImageByteFormat.png);
+      return BitmapDescriptor.fromBytes(byteData!.buffer.asUint8List());
+    }
+
 
     // gambar foto user
-    final src = Rect.fromLTWH(
-      0,
-      0,
-      image.width.toDouble(),
-      image.height.toDouble(),
-    );
-    final dst = Rect.fromLTWH(
-      0,
-      0,
-      size.toDouble(),
-      size.toDouble(),
-    );
-    canvas.drawImageRect(image, src, dst, paint);
-
-    final markerImage =
-    await pictureRecorder.endRecording().toImage(size, size);
-    final byteData =
-    await markerImage.toByteData(format: ui.ImageByteFormat.png);
-
-    final Uint8List resizedBytes = byteData!.buffer.asUint8List();
-    return BitmapDescriptor.fromBytes(resizedBytes);
-  }
 
 }

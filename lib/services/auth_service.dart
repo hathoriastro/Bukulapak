@@ -95,6 +95,9 @@ class authService{
       return userRef.set({
         'uid': user.uid,
         'email': user.email??"",
+        'name': user.displayName??"",
+        'imageURL': user.photoURL??"",
+        'created_at': DateTime.now()
       }, SetOptions(merge: true));
     } catch(e){
       log(e.toString());

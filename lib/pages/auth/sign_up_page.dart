@@ -17,7 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
 
   final authService _authService = authService();
   bool isLoading = false;
@@ -46,8 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     try {
-
-     final userCredential = await _authService.createUser(
+      final userCredential = await _authService.createUser(
         email: _emailController.text,
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
@@ -92,18 +91,18 @@ class _SignUpPageState extends State<SignUpPage> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
-            (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
           );
         }
       }
-    } catch (e) {
-    } finally {
-
+    } catch (e) {} finally {
       setState(() {
-        isLoading = false; // Sembunyikan loading setelah proses selesai
+        isLoading = false;
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

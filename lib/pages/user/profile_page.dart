@@ -1,5 +1,8 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/navbar.dart';
+import 'package:bukulapak/model/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,6 +13,51 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  UserModel? _userProfil;
+  bool _isLoading = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    try {
+      DocumentSnapshot userDoc =
+      await _firestore.collection('user').doc(user.uid).get();
+
+      print('userDoc.exists=${userDoc.exists}, userDoc.data=${userDoc.data()}');
+
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          _userProfil = UserModel.fromMap(userData);
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading user profile: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -17,24 +65,32 @@ class _ProfilePageState extends State<ProfilePage> {
     var screenHeight = screenSize.height;
 
     return Scaffold(
-      body: Column(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
         children: [
           SizedBox(height: screenHeight * 0.1),
-          Container(
-            width: screenHeight * 0.5,
-            height: screenWidth * 0.2,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: lightGray,
-              image: DecorationImage(
-                image: AssetImage("assets/images/dummy_pp.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
+
+          /// Foto Profil
+          CircleAvatar(
+            radius: screenWidth * 0.15,
+            backgroundColor: lightGray,
+            backgroundImage: _userProfil?.imageURL != null &&
+                _userProfil!.imageURL!.isNotEmpty
+                ? NetworkImage(_userProfil!.imageURL!)
+                : null,
+            child: (_userProfil?.imageURL == null ||
+                _userProfil!.imageURL!.isEmpty)
+                ? Icon(Icons.person,
+                size: screenWidth * 0.15, color: Colors.white)
+                : null,
           ),
+
           SizedBox(height: screenHeight * 0.02),
+
+          /// Nama
           Text(
-            "Nama User",
+            _userProfil?.name ?? "Tanpa Nama",
             style: TextStyle(
               fontFamily: 'poppins',
               fontSize: screenWidth * 0.05,
@@ -42,9 +98,12 @@ class _ProfilePageState extends State<ProfilePage> {
               color: darkBlue,
             ),
           ),
+
           SizedBox(height: screenHeight * 0.001),
+
+          /// Email
           Text(
-            "emailuser@gmail.com",
+            _userProfil?.email ?? "Tidak ada email",
             style: TextStyle(
               fontFamily: 'poppins',
               fontSize: screenWidth * 0.035,
@@ -52,19 +111,24 @@ class _ProfilePageState extends State<ProfilePage> {
               color: orange,
             ),
           ),
+
           SizedBox(height: screenHeight * 0.01),
+
+          /// Tombol Edit Profil & Logout
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               OutlinedButton(
                 onPressed: () {},
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: lightBlue, width: 2), // custom border
+                  side:
+                  BorderSide(color: lightBlue, width: 2), // custom border
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: Text("Edit profil", style: TextStyle(color: lightBlue)),
+                child: Text("Edit profil",
+                    style: TextStyle(color: lightBlue)),
               ),
               SizedBox(width: screenWidth * 0.02),
               FilledButton(
@@ -73,13 +137,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
                 ),
-                child: Icon(Icons.logout),
+                child: const Icon(Icons.logout),
               ),
             ],
           ),
+
           SizedBox(height: screenHeight * 0.04),
+
+          /// Box Menu Atas
           Padding(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 20, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -100,8 +167,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
+
+          /// Box Menu Bawah
           Padding(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 1, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -129,6 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+/// Custom Box
 Widget customBox({
   required BuildContext context,
   required String boxtitle,
@@ -153,17 +223,17 @@ Widget customBox({
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(boxicon, color: Colors.white, size: 50),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             boxtitle,
             style: TextStyle(fontWeight: FontWeight.bold, color: textcolor),

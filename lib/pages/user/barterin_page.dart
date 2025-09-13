@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
 import 'package:flutter_launcher_icons/main.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class BarterinPage extends StatefulWidget {
   const BarterinPage({super.key});
@@ -30,6 +31,23 @@ class _BarterinPageState extends State<BarterinPage> {
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _penerbitController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
+
+  Future<void> _requestPermission() async {
+    var status = await Permission.location.status;
+    if (!status.isGranted) {
+      status = await Permission.location.request();
+    } if (status.isGranted) {
+      print("✅ Izin lokasi dikasih");
+    } else if (status.isDenied) {
+      print("❌ Izin lokasi ditolak");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
