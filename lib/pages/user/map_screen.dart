@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -23,6 +24,22 @@ class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   Set<Marker> _markers = {};
   StreamSubscription<QuerySnapshot>? _nearbyUsersSub;
+
+  Future<void> _openWhatsApp(String phone, String? message) async {
+    final pesan = message != null ? "?text=${Uri.encodeComponent(message)}" : "";
+    final uri = Uri.parse('https://wa.me/$phone$pesan');
+    final urlWeb = Uri.parse('https://web.whatsapp.com/send?phone=$phone$pesan');
+
+    if (await canLaunchUrl(uri)) {
+      try {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } catch (e){
+        await launchUrl(urlWeb, mode: LaunchMode.externalApplication);
+      }
+    }else {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   void initState() {
@@ -131,8 +148,12 @@ class _MapScreenState extends State<MapScreen> {
                 position: LatLng(lat, lng),
                 infoWindow: InfoWindow(title: data['Judul'] ?? "Buku"),
                 icon: icon,
-                onTap: () {
-                  _showUserPopup(context, data);
+                onTap: () async {
+                  final userDataDoc = await _firestore.collection("user").doc(doc.id).get();
+                  final userData = userDataDoc.data() as Map<String, dynamic>;
+                  if(userData != null) {
+                    _showUserPopup(context, data, userData);
+                  }
                 },
               ),
             );
@@ -146,7 +167,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _showUserPopup(BuildContext context, Map<String, dynamic> user) {
+  void _showUserPopup(BuildContext context, Map<String, dynamic> user, Map<String, dynamic> userData) {
     showDialog(
       context: context,
       builder: (ctx) {
@@ -187,7 +208,27 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+
+                    String formatPhone(String? phone){
+                      if(phone == null || phone.isEmpty) return "";
+                      if(phone.startsWith('0')){
+                        return phone.replaceFirst('0', '62');
+                      }
+                      return phone;
+                    }
+
+                    final phone = userData['phone'] ?? "";
+                    final String formattedPhone = formatPhone(phone);
+                    if (formattedPhone.isNotEmpty) {
+                      _openWhatsApp(formattedPhone, "Halo, saya tertarik dengan buku ${user['Judul'] ?? ''}");
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Nomor WhatsApp user tidak tersedia")),
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,

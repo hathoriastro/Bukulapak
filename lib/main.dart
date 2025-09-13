@@ -2,6 +2,7 @@ import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
 import 'package:bukulapak/pages/user/detail_page.dart';
+import 'package:bukulapak/pages/user/edit_profile.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/map_screen.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         '/profilepage': (context) => const ProfilePage(),
         '/detailpage' : (context) => const DetailPage(),
         '/mapPage' : (context) => const MapScreen(),
+        '/edit_profile' : (context) => const EditProfilePage(),
       },
     );
   }

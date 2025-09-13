@@ -119,7 +119,9 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/edit_profile');
+                },
                 style: OutlinedButton.styleFrom(
                   side:
                   BorderSide(color: lightBlue, width: 2), // custom border
@@ -144,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           SizedBox(height: screenHeight * 0.04),
 
-          /// Box Menu Atas
+
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Row(
@@ -168,7 +170,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
 
-          /// Box Menu Bawah
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
             child: Row(
@@ -198,7 +199,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-/// Custom Box
 Widget customBox({
   required BuildContext context,
   required String boxtitle,

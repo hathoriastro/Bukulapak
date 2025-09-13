@@ -52,6 +52,7 @@ dependencies:
   video_thumbnail: ^0.5.6
   syncfusion_flutter_pdfviewer: ^30.2.7
   permission_handler: ^12.0.1
+  url_launcher: ^6.3.2
 
 
 dev_dependencies:
