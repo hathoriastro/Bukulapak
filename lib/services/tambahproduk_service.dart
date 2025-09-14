@@ -32,6 +32,28 @@ class TambahprodukService {
   }
 
 
+  Future<void> addProductAll(TambahprodukModel addProduct) async {
+    try {
+      final docRef = _firestore
+          .collection('produk')
+          .doc();
+
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+
+        await docRef.update(addProduct.toMap());
+      } else {
+        await docRef.set({
+          ...addProduct.toMap(),
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print('Error menambah produk: $e');
+    }
+  }
+
    
   Stream<List<TambahprodukModel>> getProdukByUser() {
     return _firestore
@@ -50,8 +72,7 @@ class TambahprodukService {
 
   Stream<List<TambahprodukModel>> getAllProduk() {
     return _firestore
-        .collectionGroup('tambah_produk')
-        .orderBy('timestamp', descending: true)
+        .collectionGroup('produk')
         .snapshots()
         .map((snapshot) {
           return snapshot.docs
