@@ -1,7 +1,10 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/product_card.dart';
+import 'package:bukulapak/model/tambahproduk_model.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ListBooks extends StatefulWidget {
   final int currentindex;
@@ -41,9 +44,82 @@ class _ListBooksState extends State<ListBooks>
     final size = MediaQuery.of(context).size;
     final sizewidth = size.width;
     final fullwidth = 440;
+
+    Widget buildGrid(String kategori) {
+      return StreamBuilder<List<TambahprodukModel>>(
+        stream: TambahprodukService().getAllProduk(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/logo_bukulapak.png'),
+                  SizedBox(height: 10),
+                  Text(
+                    'Buku Belum Tersedia ..',
+                    style: TextStyle(color: lightGray, fontSize: 16),
+                  )
+                ],
+              ),
+            );
+          }
+
+          // Filter sesuai tab
+          final produkList = snapshot.data!
+              .where((produk) =>
+                  produk.Kategori.toLowerCase() == kategori.toLowerCase())
+              .toList();
+
+          if (produkList.isEmpty) {
+            return Center(
+              child: Text(
+                "Belum ada produk $kategori",
+                style: TextStyle(color: lightGray, fontSize: 16),
+              ),
+            );
+          }
+
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: (sizewidth * 186 / fullwidth) / 215,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 15,
+            ),
+            padding: EdgeInsets.only(left: 24, right: 8, bottom: 15),
+            itemCount: produkList.length,
+            itemBuilder: (context, index) {
+              final produk = produkList[index];
+              return ProductCard(
+                imageProduct: produk.Gambar,
+                date: produk.timestamp != null
+                    ? DateFormat('dd-MM-yyyy')
+                        .format(produk.timestamp!.toDate())
+                    : 'Tanggal Kosong',
+                time: produk.timestamp != null
+                    ? DateFormat('HH:mm').format(produk.timestamp!.toDate())
+                    : 'Jam Kosong',
+                price: kategori.toLowerCase() == 'gratis'
+                    ? 'Gratis'
+                    : 'Rp.${produk.Harga}',
+                location: "Malang",
+                title: produk.Judul,
+              );
+            },
+          );
+        },
+      );
+    }
+
     return DefaultTabController(
       length: text.length,
-
       child: Padding(
         padding: const EdgeInsets.only(top: 25),
         child: Column(
@@ -55,7 +131,6 @@ class _ListBooksState extends State<ListBooks>
               contentCenter: true,
               width: sizewidth * 182 / fullwidth,
               height: 41,
-
               unselectedBackgroundColor: Colors.transparent,
               unselectedLabelStyle: TextStyle(
                 color: lightBlue,
@@ -91,83 +166,8 @@ class _ListBooksState extends State<ListBooks>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  //Berbayar
-                  GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: (sizewidth * 186 / fullwidth) / 215,
-                    padding: EdgeInsets.only(left: 24, right: 8, bottom: 15),
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 15,
-                    children: const [
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: '24000',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: '24000',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: '24000',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: '24000',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: '24000',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                    ],
-                  ),
-
-                  // GRATIS
-                  GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: sizewidth * 182 / fullwidth / 215,
-                    padding: EdgeInsets.only(left: 24, right: 8, bottom: 15),
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 15,
-                    children: const [
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: 'Gratis',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                      ProductCard(
-                        imageProduct: 'assets/images/banner1.jpg',
-                        date: '22-08-2025',
-                        time: '00.00',
-                        price: 'Gratis',
-                        location: 'Kota Malang, Ja...',
-                        title: 'Hujan',
-                      ),
-                    ],
-                  ),
+                  buildGrid("berbayar"),
+                  buildGrid("gratis"),
                 ],
               ),
             ),

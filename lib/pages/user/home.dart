@@ -3,9 +3,12 @@ import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/product_card.dart';
 import 'package:bukulapak/components/user/navbar.dart';
 import 'package:bukulapak/components/user/product_cart.dart';
+import 'package:bukulapak/model/tambahproduk_model.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
 import 'package:bukulapak/pages/user/list_product_page.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -151,39 +154,57 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       SizedBox(height: 15),
-                      SingleChildScrollView(
+                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
+                        child: StreamBuilder<List<TambahprodukModel>>(
+                          stream: TambahprodukService().getAllProduk(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Row(
+                                children: [CircularProgressIndicator()],
+                              );
+                            }
 
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
+                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return Container(
+                                height: 190,
+                                child: Center(
+                                  child: Row(
+                                    children: [Text("Belum ada produk")],
+                                  ),
+                                ),
+                              );
+                            }
 
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
-                          ],
+                            final produkList = snapshot.data!;
+
+                            return Row(
+                              children: produkList
+                              .where((produk) => produk.Kategori.toLowerCase() == 'gratis')
+                              .map((produk) {
+                                return ProductCard(
+                                  imageProduct: produk.Gambar,
+                                  date: produk.timestamp != null
+                                      ? DateFormat(
+                                          'dd-MM-yyyy',
+                                        ).format(produk.timestamp!.toDate())
+                                      : 'Tanggal Kosong',
+                                  time: produk.timestamp != null
+                                      ? DateFormat(
+                                          'HH:mm',
+                                        ).format(produk.timestamp!.toDate())
+                                      : 'Jam Kosong',
+                                  price:'GRATIS',
+                                  location: "Malang",
+                                  title: produk.Judul,
+                                );
+                              }).toList(),
+                            );
+                          },
                         ),
                       ),
+
                       SizedBox(height: 40),
                       Padding(
                         padding: EdgeInsets.only(
@@ -233,33 +254,53 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(height: 15),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
-                            ProductCard(
-                              imageProduct: 'assets/images/banner1.jpg',
-                              date: '22-08-2025',
-                              time: '00.00',
-                              price: '24000',
-                              location: 'Kota Malang, Ja...',
-                              title: 'Hujan',
-                            ),
-                          ],
+                        child: StreamBuilder<List<TambahprodukModel>>(
+                          stream: TambahprodukService().getAllProduk(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Row(
+                                children: [CircularProgressIndicator()],
+                              );
+                            }
+
+                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return Container(
+                                height: 190,
+                                child: Center(
+                                  child: Row(
+                                    children: [Text("Belum ada produk")],
+                                  ),
+                                ),
+                              );
+                            }
+
+                            final produkList = snapshot.data!;
+
+                            return Row(
+                              children: produkList.map((produk) {
+                                return ProductCard(
+                                  imageProduct: produk.Gambar,
+                                  date: produk.timestamp != null
+                                      ? DateFormat(
+                                          'dd-MM-yyyy',
+                                        ).format(produk.timestamp!.toDate())
+                                      : 'Tanggal Kosong',
+                                  time: produk.timestamp != null
+                                      ? DateFormat(
+                                          'HH:mm',
+                                        ).format(produk.timestamp!.toDate())
+                                      : 'Jam Kosong',
+                                  price:
+                                      produk.Kategori.toLowerCase() == 'gratis'
+                                      ? 'GRATIS'
+                                      : 'Rp${produk.Harga}',
+                                  location: "kota malang",
+                                  title: produk.Judul,
+                                );
+                              }).toList(),
+                            );
+                          },
                         ),
                       ),
                     ],

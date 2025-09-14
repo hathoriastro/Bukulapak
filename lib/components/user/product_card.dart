@@ -1,7 +1,7 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:flutter/material.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final String imageProduct;
   final String date;
   final String time;
@@ -19,6 +19,11 @@ class ProductCard extends StatelessWidget {
     required this.title,
   });
 
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -45,8 +50,8 @@ class ProductCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(10),
                 //IMAGE PRODUCT
-                child: Image.asset(
-                  imageProduct,
+                child: Image.network(
+                  widget.imageProduct,
                   fit: BoxFit.cover,
                   width: sizewidth * 170 / fullwidth,
                   height: 134,
@@ -59,7 +64,9 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                       maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                      widget.title,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -68,20 +75,25 @@ class ProductCard extends StatelessWidget {
                     SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      
                       children: [
-                        Text(
-                          'Dijual $time',
-                          style: TextStyle(fontSize: 8, color: lightGray),
+                        Expanded(
+                          child: Text(
+                            'Dijual ${widget.date}',
+                             maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 8, color: lightGray),
+                          ),
                         ),
                         Text(
-                          '$time WIB',
+                          '${widget.time} WIB',
                           style: TextStyle(fontSize: 8, color: lightGray),
                         ),
                       ],
                     ),
                     SizedBox(height: 6),
                     Text(
-                      'Rp$price',
+                      widget.price,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
@@ -96,7 +108,10 @@ class ProductCard extends StatelessWidget {
                           color: Colors.black,
                           size: 11,
                         ),
-                        Text(location, style: TextStyle(fontSize: 8)),
+                        Text(
+                           maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          widget.location, style: TextStyle(fontSize: 8)),
                       ],
                     ),
                   ],
