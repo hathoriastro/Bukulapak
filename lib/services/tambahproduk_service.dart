@@ -32,7 +32,7 @@ class TambahprodukService {
   }
 
 
-   // 🔹 Ambil hanya produk milik user saat ini
+   
   Stream<List<TambahprodukModel>> getProdukByUser() {
     return _firestore
         .collection('user')
@@ -47,7 +47,7 @@ class TambahprodukService {
         });
   }
 
-  // 🔹 Ambil semua produk dari semua user
+
   Stream<List<TambahprodukModel>> getAllProduk() {
     return _firestore
         .collectionGroup('tambah_produk')
