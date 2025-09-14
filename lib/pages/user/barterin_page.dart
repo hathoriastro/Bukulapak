@@ -207,7 +207,7 @@ class _BarterinPageState extends State<BarterinPage> {
                       )
                   );
                   Navigator.pushNamed(context, '/mapPage');
-                  // Navigasi disini
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: orange,
