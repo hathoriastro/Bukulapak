@@ -32,7 +32,29 @@ class TambahprodukService {
   }
 
 
-   // 🔹 Ambil hanya produk milik user saat ini
+  Future<void> addProductAll(TambahprodukModel addProduct) async {
+    try {
+      final docRef = _firestore
+          .collection('produk')
+          .doc();
+
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+
+        await docRef.update(addProduct.toMap());
+      } else {
+        await docRef.set({
+          ...addProduct.toMap(),
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print('Error menambah produk: $e');
+    }
+  }
+
+   
   Stream<List<TambahprodukModel>> getProdukByUser() {
     return _firestore
         .collection('user')
@@ -47,11 +69,10 @@ class TambahprodukService {
         });
   }
 
-  // 🔹 Ambil semua produk dari semua user
+
   Stream<List<TambahprodukModel>> getAllProduk() {
     return _firestore
-        .collectionGroup('tambah_produk')
-        .orderBy('timestamp', descending: true)
+        .collectionGroup('produk')
         .snapshots()
         .map((snapshot) {
           return snapshot.docs

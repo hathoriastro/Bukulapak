@@ -34,26 +34,53 @@ class _ModulTabPageState extends State<ModulTabPage>
   }
 
   //ambil data modul berdasar jenjang nya
-  Stream<List<Map<String, dynamic>>> getModulStream(String jenjang) async* {
-    final firestore = FirebaseFirestore.instance;
-    final modulSnapshot = await firestore.collection('modul').get();
+  // Stream<List<Map<String, dynamic>>> getModulStream(String jenjang) async* {
+  //   final firestore = FirebaseFirestore.instance;
+  //   final modulSnapshot = await firestore.collection('modul').get();
 
-    List<Map<String, dynamic>> modulList = [];
-    for (var modulDoc in modulSnapshot.docs) {
-      if (modulDoc['jenjang'] == jenjang) {
-        final pdfSnapshot = await firestore
-            .collection('modul')
-            .doc(modulDoc.id)
-            .collection('modul_pdf')
-            .get();
+  //   List<Map<String, dynamic>> modulList = [];
+  //   for (var modulDoc in modulSnapshot.docs) {
+  //     if (modulDoc['jenjang'] == jenjang) {
+  //       final pdfSnapshot = await firestore
+  //           .collection('modul')
+  //           .doc(modulDoc.id)
+  //           .collection('modul_pdf')
+  //           .get();
 
-        for (var pdf in pdfSnapshot.docs) {
-          modulList.add(pdf.data());
+  //       for (var pdf in pdfSnapshot.docs) {
+  //         modulList.add(pdf.data());
+  //       }
+  //     }
+  //   }
+  //   yield modulList;
+  // }
+
+  Stream<List<Map<String, dynamic>>> getModulStream(String jenjang) {
+  final firestore = FirebaseFirestore.instance;
+
+  return firestore
+      .collection('modul')
+      .where('jenjang', isEqualTo: jenjang)
+      .snapshots()
+      .asyncMap((modulSnapshot) async {
+        List<Map<String, dynamic>> modulList = [];
+
+        for (var modulDoc in modulSnapshot.docs) {
+          final pdfSnapshot = await firestore
+              .collection('modul')
+              .doc(modulDoc.id)
+              .collection('modul_pdf')
+              .get();
+
+          for (var pdf in pdfSnapshot.docs) {
+            modulList.add(pdf.data());
+          }
         }
-      }
-    }
-    yield modulList;
-  }
+
+        return modulList;
+      });
+}
+
 
   @override
   Widget build(BuildContext context) {

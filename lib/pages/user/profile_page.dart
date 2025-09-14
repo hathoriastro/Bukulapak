@@ -158,6 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   boxicon: Icons.inbox,
                   boxcolor: orange,
                   textcolor: darkBlue,
+                  route: '/pesanan',
                 ),
                 customBox(
                   context: context,
@@ -165,6 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   boxicon: Icons.favorite,
                   boxcolor: darkBlue,
                   textcolor: orange,
+                  route: '/favoritpage'
                 ),
               ],
             ),
@@ -181,6 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   boxicon: Icons.store,
                   boxcolor: darkBlue,
                   textcolor: orange,
+                  route: '/produkanda'
                 ),
                 customBox(
                   context: context,
@@ -188,6 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   boxicon: Icons.language,
                   boxcolor: orange,
                   textcolor: darkBlue,
+                  route: '/homepage'
                 ),
               ],
             ),
@@ -205,13 +209,14 @@ Widget customBox({
   required IconData boxicon,
   required Color boxcolor,
   required Color textcolor,
+  required String route,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
 
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, '/homepage');
+      Navigator.pushNamed(context, route);
     },
     child: Container(
       height: screenHeight * 0.18,
