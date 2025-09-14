@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                        SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: StreamBuilder<List<TambahprodukModel>>(
-                          stream: TambahprodukService().getAllProduk(),
+                          stream: TambahprodukService().getAllProdukbyCategory(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -180,9 +180,7 @@ class _HomePageState extends State<HomePage> {
                             final produkList = snapshot.data!;
 
                             return Row(
-                              children: produkList
-                              .where((produk) => produk.Kategori.toLowerCase() == 'gratis')
-                              .map((produk) {
+                              children: produkList.map((produk) {
                                 return ProductCard(
                                   imageProduct: produk.Gambar,
                                   date: produk.timestamp != null
