@@ -191,7 +191,6 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
             ),
 
-
             // Tambah gambar
             SizedBox(height: screenHeight * 0.02),
             Align(
@@ -278,8 +277,8 @@ class _AddProductPageState extends State<AddProductPage> {
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () {
-                // Navigasi disini
-              },
+                  
+                },
               style: ElevatedButton.styleFrom(
                 backgroundColor: orange,
                 padding: EdgeInsets.symmetric(

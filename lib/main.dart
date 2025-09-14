@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/sign_in',
+      initialRoute: '/detailpage',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
