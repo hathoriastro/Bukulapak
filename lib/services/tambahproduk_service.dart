@@ -68,6 +68,7 @@ class TambahprodukService {
               .toList();
         });
   }
+  
 
 
   Stream<List<TambahprodukModel>> getAllProduk() {
@@ -80,4 +81,17 @@ class TambahprodukService {
               .toList();
         });
   }
+
+  Stream<List<TambahprodukModel>> getAllProdukbyCategory() {
+    return _firestore
+        .collection('produk')
+        .where('harga', isEqualTo: "")
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => TambahprodukModel.fromFirestore(doc))
+          .toList();
+    });
+  }
+  
 }

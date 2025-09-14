@@ -1,4 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
@@ -8,6 +9,8 @@ class ProductCard extends StatefulWidget {
   final String price;
   final String location;
   final String title;
+  final String kategori;
+  final String deskripsi;
 
   const ProductCard({
     super.key,
@@ -17,6 +20,8 @@ class ProductCard extends StatefulWidget {
     required this.price,
     required this.location,
     required this.title,
+    required this.kategori,
+    required this.deskripsi,
   });
 
   @override
@@ -31,7 +36,19 @@ class _ProductCardState extends State<ProductCard> {
     final fullwidth = 440;
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/detailpage');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(
+              imageProduct: widget.imageProduct,
+              price: widget.price,
+              location: widget.location,
+              title: widget.title,
+              kategori: widget.kategori,
+              deskripsi: widget.deskripsi,
+            ),
+          ),
+        );
       },
       child: Container(
         width: sizewidth * 182 / fullwidth,
@@ -64,8 +81,8 @@ class _ProductCardState extends State<ProductCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                       maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       widget.title,
                       style: TextStyle(
                         fontSize: 14,
@@ -75,12 +92,12 @@ class _ProductCardState extends State<ProductCard> {
                     SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      
+
                       children: [
                         Expanded(
                           child: Text(
                             'Dijual ${widget.date}',
-                             maxLines: 1,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 8, color: lightGray),
                           ),
@@ -109,9 +126,11 @@ class _ProductCardState extends State<ProductCard> {
                           size: 11,
                         ),
                         Text(
-                           maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          widget.location, style: TextStyle(fontSize: 8)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          widget.location,
+                          style: TextStyle(fontSize: 8),
+                        ),
                       ],
                     ),
                   ],

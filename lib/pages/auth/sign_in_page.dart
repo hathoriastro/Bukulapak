@@ -16,6 +16,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final authService _authService = authService();
+  bool isLoading = false;
 
   void _handleSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -30,7 +31,33 @@ class _SignInPageState extends State<SignInPage> {
       password: _passwordController.text,
     );
 
+
+
     _authService.saveUser(User as User);
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      await _authService.saveUser(userCredential!.user!);
+      {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false,
+          );
+        }
+      }
+    } catch (e) {} finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -186,6 +213,11 @@ class _SignInPageState extends State<SignInPage> {
               style: TextStyle(color: lightGray, fontSize: screenWidth * 0.025),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              isLoading ? null : _handleGoogleSignIn();
+            },
+            child:
           Container(
             height: screenHeight * 0.05,
             width: screenWidth * 0.4,
@@ -200,6 +232,7 @@ class _SignInPageState extends State<SignInPage> {
                 height: screenHeight * 0.07,
               ),
             ),
+          ),
           ),
           SizedBox(height: screenHeight * 0.05),
           Padding(

@@ -34,7 +34,7 @@ class TambahprodukModel {
       Kategori: data['kategori'] ?? '',
       Gambar: data['gambar'] ?? '',
       Video: data['video'] ?? '',
-      Harga: data['harga'] ?? '',
+      Harga: data['harga'] ?? 'gratis',
       Deskripsi: data['deskripsi'] ?? '',
       timestamp: data['timestamp'],
     );

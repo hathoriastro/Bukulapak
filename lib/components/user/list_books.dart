@@ -111,6 +111,8 @@ class _ListBooksState extends State<ListBooks>
                     : 'Rp.${produk.Harga}',
                 location: "Malang",
                 title: produk.Judul,
+                deskripsi: produk.Deskripsi,
+                kategori: produk.Kategori,
               );
             },
           );

@@ -1,8 +1,24 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/components/user/checkout_page.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  final String imageProduct;
+  final String price;
+  final String location;
+  final String title;
+  final String kategori;
+  final String deskripsi;
+
+  const DetailPage({
+    super.key,
+    required this.imageProduct,
+    required this.price,
+    required this.location,
+    required this.title,
+    required this.kategori,
+    required this.deskripsi
+  });
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -91,7 +107,7 @@ class _DetailPageState extends State<DetailPage> {
                       Icon(Icons.location_on_outlined, color: lightGray),
                       SizedBox(width: sizewidth * 0.01),
                       Text(
-                        'Bekasi, Indonesia',
+                        widget.location,
                         style: TextStyle(
                           fontSize: sizeheight * 0.012,
                           color: lightGray,
@@ -111,7 +127,7 @@ class _DetailPageState extends State<DetailPage> {
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/buku.png'),
+                    image: NetworkImage(widget.imageProduct),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -121,7 +137,7 @@ class _DetailPageState extends State<DetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Hujan - Tere Liye',
+                  widget.title,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 IconButton(
@@ -140,7 +156,7 @@ class _DetailPageState extends State<DetailPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Stock : 19 Juta',
+                'Stok : 19 Juta',
                 style: TextStyle(fontSize: 13, color: lightGray),
               ),
             ),
@@ -148,22 +164,22 @@ class _DetailPageState extends State<DetailPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Novel, Fiction'),
+                Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(widget.kategori),
               ],
             ),
             SizedBox(height: sizeheight * 0.02),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Product Overview',
+                'Deskripsi',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Lorem Ipsum Dolor Sit Amet',
+                widget.deskripsi,
                 style: TextStyle(color: lightGray, fontSize: 12),
               ),
             ),
@@ -181,9 +197,22 @@ class _DetailPageState extends State<DetailPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('Hujan - 65.000'),
+              Row(
+                children: [
+                  Text(widget.title),
+                  Text(' - '),
+                  Text(widget.price),
+                ],
+              ),
               FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CheckoutPage()
+          ),
+        );
+                },
                 style: FilledButton.styleFrom(backgroundColor: lightBlue),
                 child: Text(
                   'Add to Cart',
@@ -197,3 +226,12 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
+
+// String _limitWords(String text, int maxWords) {
+//   final words = text.split(' ');
+//   if (words.length <= maxWords) {
+//     return text;
+//   } else {
+//     return words.take(maxWords).join(' ') + '...';
+//   }
+// }
