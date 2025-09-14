@@ -30,7 +30,12 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
                 Image.asset(
                   "assets/images/logo_bukulapak.png",
                   width: screenWidth * 0.1,

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class ListBooks extends StatefulWidget {
   final int currentindex;
-  const ListBooks ({super.key, required this.currentindex});
+  const ListBooks({super.key, required this.currentindex});
 
   @override
-  State<ListBooks > createState() => _ListBooksState();
+  State<ListBooks> createState() => _ListBooksState();
 }
 
 class _ListBooksState extends State<ListBooks>
@@ -16,12 +16,15 @@ class _ListBooksState extends State<ListBooks>
   late TabController _tabController;
 
   final List<String> text = ["Berbayar", "Gratis"];
-  
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: text.length, vsync: this, initialIndex: widget.currentindex);
+    _tabController = TabController(
+      length: text.length,
+      vsync: this,
+      initialIndex: widget.currentindex,
+    );
     _tabController.addListener(() {
       setState(() {});
     });
@@ -40,11 +43,9 @@ class _ListBooksState extends State<ListBooks>
     final fullwidth = 440;
     return DefaultTabController(
       length: text.length,
-      
+
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 25
-        ),
+        padding: const EdgeInsets.only(top: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -52,19 +53,19 @@ class _ListBooksState extends State<ListBooks>
               controller: _tabController,
               backgroundColor: lightBlue,
               contentCenter: true,
-              width: sizewidth* 182/ fullwidth,
+              width: sizewidth * 182 / fullwidth,
               height: 41,
-            
+
               unselectedBackgroundColor: Colors.transparent,
               unselectedLabelStyle: TextStyle(
                 color: lightBlue,
                 fontWeight: FontWeight.w800,
-                fontSize: 24
+                fontSize: 24,
               ),
               labelStyle: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
-                fontSize: 24
+                fontSize: 24,
               ),
               borderWidth: 1,
               unselectedBorderColor: lightBlue,
@@ -90,7 +91,6 @@ class _ListBooksState extends State<ListBooks>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-
                   //Berbayar
                   GridView.count(
                     crossAxisCount: 2,
@@ -100,51 +100,50 @@ class _ListBooksState extends State<ListBooks>
                     mainAxisSpacing: 15,
                     children: const [
                       ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: '24000',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                              ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: '24000',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                               ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: '24000',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                               ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: '24000',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                              ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: '24000',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                              
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: '24000',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
+                      ProductCard(
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: '24000',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
+                      ProductCard(
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: '24000',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
+                      ProductCard(
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: '24000',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
+                      ProductCard(
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: '24000',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
                     ],
                   ),
-        
+
                   // GRATIS
-                GridView.count(
+                  GridView.count(
                     crossAxisCount: 2,
                     childAspectRatio: sizewidth * 182 / fullwidth / 215,
                     padding: EdgeInsets.only(left: 24, right: 8, bottom: 15),
@@ -152,21 +151,21 @@ class _ListBooksState extends State<ListBooks>
                     mainAxisSpacing: 15,
                     children: const [
                       ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: 'Gratis',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
-                              ProductCard(
-                                imageProduct: 'assets/images/banner1.jpg',
-                                date: '22-08-2025',
-                                time: '00.00',
-                                price: 'Gratis',
-                                location: 'Kota Malang, Ja...',
-                                title: 'Hujan',
-                              ),
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: 'Gratis',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
+                      ProductCard(
+                        imageProduct: 'assets/images/banner1.jpg',
+                        date: '22-08-2025',
+                        time: '00.00',
+                        price: 'Gratis',
+                        location: 'Kota Malang, Ja...',
+                        title: 'Hujan',
+                      ),
                     ],
                   ),
                 ],

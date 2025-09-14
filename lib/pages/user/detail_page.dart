@@ -9,7 +9,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-   bool isFavorite = false;
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class _DetailPageState extends State<DetailPage> {
                   'Hujan - Tere Liye',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                                IconButton(
+                IconButton(
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
                     color: isFavorite ? Colors.red : null,
@@ -164,12 +164,9 @@ class _DetailPageState extends State<DetailPage> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Lorem Ipsum Dolor Sit Amet',
-                style: TextStyle(
-                  color: lightGray,
-                  fontSize: 12
-                ),
-                ),
-            )
+                style: TextStyle(color: lightGray, fontSize: 12),
+              ),
+            ),
           ],
         ),
       ),
