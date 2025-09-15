@@ -1,26 +1,21 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/model/keranjang_model.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
-class KeranjangCard extends StatefulWidget {
-  final String coverbook;
-  final String text1;
-  final String text2;
-  final String price;
+class KeranjangCard extends StatelessWidget {
+  final KeranjangModel keranjangItem;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final VoidCallback onRemove;
 
   const KeranjangCard({
-    super.key,
-    required this.coverbook,
-    required this.text1,
-    required this.text2,
-    required this.price,
-  });
-
-  @override
-  State<KeranjangCard> createState() => _KeranjangCardState();
-}
-
-class _KeranjangCardState extends State<KeranjangCard> {
-  bool isClicked = false;
+    Key? key,
+    required this.keranjangItem,
+    required this.isSelected,
+    required this.onTap,
+    required this.onRemove,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +28,13 @@ class _KeranjangCardState extends State<KeranjangCard> {
     return Stack(
       children: [
         GestureDetector(
-          onTap: () {
-            setState(() {
-              isClicked = !isClicked;
-            });
-          },
+          onTap: onTap,
           child: Container(
             margin: EdgeInsets.only(bottom: 15),
             width: sizewidth * 402 / fullwidth,
             height: sizeheight * 101 / fullheight,
             decoration: BoxDecoration(
-              color: isClicked ? lightBlue : Colors.white,
+              color: isSelected ? lightBlue : Colors.white,
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
@@ -55,19 +46,14 @@ class _KeranjangCardState extends State<KeranjangCard> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(
-                right: 37,
-                top: 15,
-                bottom: 15,
-                left: 15,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: Row(
                 children: [
                   // COVER PRODUCT
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      widget.coverbook,
+                    child: Image.network(
+                      keranjangItem.gambar,
                       fit: BoxFit.cover,
                       width: sizewidth * 49 / fullwidth,
                       height: sizeheight * 65 / fullheight,
@@ -81,25 +67,25 @@ class _KeranjangCardState extends State<KeranjangCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.text1,
+                          keranjangItem.judul,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: isClicked ? Colors.white : Colors.black,
+                            color: isSelected ? Colors.white : Colors.black,
                           ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              widget.text2,
+                              keranjangItem.kategori,
                               style: TextStyle(
-                                color: isClicked ? Colors.white : Colors.black,
+                                color: isSelected ? Colors.white : Colors.black,
                               ),
                             ),
                             Text(
-                              widget.price,
+                              keranjangItem.harga,
                               style: TextStyle(
-                                color: isClicked ? Colors.white : Colors.black,
+                                color: isSelected ? Colors.white : Colors.black,
                               ),
                             ),
                           ],
@@ -115,17 +101,18 @@ class _KeranjangCardState extends State<KeranjangCard> {
         Align(
           alignment: Alignment.topRight,
           child: Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-              right: 15,
+            padding: const EdgeInsets.only(top: 5, right: 15),
+            child: GestureDetector(
+              onTap: onRemove,
+              child: Icon(
+                Icons.remove_circle_outline,
+                color: isSelected ? Colors.white : Colors.black,
+              ),
             ),
-            child: Icon(
-              Icons.remove_circle_outline,
-              color : isClicked ? Colors.white : Colors.black
-            )
           ),
-        ),
+        )
       ],
     );
   }
 }
+

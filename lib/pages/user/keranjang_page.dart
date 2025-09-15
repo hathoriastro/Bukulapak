@@ -1,5 +1,9 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/keranjang_card.dart';
+
+import 'package:bukulapak/model/keranjang_model.dart';
+import 'package:bukulapak/pages/user/checkout_page.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
 class KeranjangPage extends StatefulWidget {
@@ -11,6 +15,9 @@ class KeranjangPage extends StatefulWidget {
 
 class _KeranjangPageState extends State<KeranjangPage> {
   bool applyClicked = false;
+  String? selectedId;
+  int selectedPrice = 0;
+  KeranjangModel? _selectedKeranjang;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +26,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
     final sizeheight = size.height;
     final fullheight = 956;
     final fullwidth = 440;
+
+    TambahprodukService _tambah = TambahprodukService();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,25 +53,70 @@ class _KeranjangPageState extends State<KeranjangPage> {
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          left: 15,
-          right: 15,
-          top: 30,
-          bottom: 120,
-        ),
         child: Column(
           children: [
-            KeranjangCard(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Senja',
-              text2: 'Helo - Tere Liye',
-              price: 'Rp54.000',
-            ),
-            KeranjangCard(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Senja',
-              text2: 'Helo - Tere Liye',
-              price: 'Rp54.000',
+            StreamBuilder<List<KeranjangModel>>(
+              stream: _tambah.getKeranjang(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text("Keranjang masih kosong"));
+                }
+
+                final keranjangItems = snapshot.data!;
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(15),
+                  itemCount: keranjangItems.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final item = keranjangItems[index];
+                    return KeranjangCard(
+                      keranjangItem: item,
+                      isSelected: selectedId == item.id,
+                      onTap: () {
+                        setState(() {
+                          if (selectedId == item.id) {
+                            //kalau diklik lagi, unselect
+                            selectedId = null;
+                            selectedPrice = 0;
+                          } else {
+                            selectedId = item.id;
+
+                            //handle harga GRATIS
+                            if (item.harga.toLowerCase() == "gratis") {
+                              selectedPrice = 0;
+                            } else {
+                              selectedPrice =
+                                  int.tryParse(
+                                    item.harga.replaceAll(
+                                      RegExp(r'[^0-9]'),
+                                      '',
+                                    ),
+                                  ) ??
+                                  0;
+                            }
+                          }
+                        });
+                      },
+
+                      onRemove: () async {
+                        await _tambah.removeKeranjang(item.id);
+                        if (selectedId == item.id) {
+                          setState(() {
+                            selectedId = null;
+                            selectedPrice = 0;
+                          });
+                        }
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -158,39 +212,66 @@ class _KeranjangPageState extends State<KeranjangPage> {
                 child: Row(
                   children: [
                     Text(
-                      'Total: Rp120.000,00',
+                      selectedId == null
+                          ? 'Total: Rp0'
+                          : (selectedPrice == 0
+                                ? 'Total: GRATIS'
+                                : 'Total: Rp$selectedPrice'),
                       style: TextStyle(
                         color: lightGray,
                         fontWeight: FontWeight.w700,
                         fontSize: 16,
                       ),
                     ),
+
                     const Spacer(),
-                    Container(
-                      width: sizewidth * 120 / fullwidth,
-                      height: sizeheight * 46 / fullheight,
-                      decoration: BoxDecoration(
-                        color: customorange,
-                        borderRadius: BorderRadius.circular(28),
-                        boxShadow: [
-                          BoxShadow(
-                            color: lightGray.withOpacity(0.5),
-                            spreadRadius: 1.5,
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Checkout',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
+                   GestureDetector(
+  onTap: () {
+    if (_selectedKeranjang != null) {
+      // Ada item yang dipilih → navigasi ke CheckoutPage
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckoutPage(coverbook: coverbook, text1: text1, text2: text2, price: price)
+        ),
+      );
+    } else {
+      // Tidak ada yang dipilih → tampilkan notif
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Pilih produk dulu sebelum checkout"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  },
+  child: Container(
+    width: sizewidth * 120 / fullwidth,
+    height: sizeheight * 46 / fullheight,
+    decoration: BoxDecoration(
+      color: customorange,
+      borderRadius: BorderRadius.circular(28),
+      boxShadow: [
+        BoxShadow(
+          color: lightGray.withOpacity(0.5),
+          spreadRadius: 1.5,
+          blurRadius: 4,
+          offset: Offset(0, 4),
+        ),
+      ],
+    ),
+    child: const Center(
+      child: Text(
+        'Checkout',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+  ),
+)
+
                   ],
                 ),
               ),

@@ -1,6 +1,7 @@
 
 import 'package:badges/badges.dart' as badges;
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,7 +18,11 @@ class _ShoppingCartState extends State<ShoppingCart> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/keranjangpage');
+        Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => KeranjangPage()),
+);
+
       },child:  badges.Badge(
               position: badges.BadgePosition.topEnd(top: -12, end: -10),
               badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),
