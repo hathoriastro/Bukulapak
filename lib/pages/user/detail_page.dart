@@ -1,5 +1,6 @@
 import 'package:bukulapak/components/colors.dart';
-import 'package:bukulapak/components/user/checkout_page.dart';
+import 'package:bukulapak/pages/user/checkout_page.dart';
+import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class DetailPage extends StatefulWidget {
     required this.location,
     required this.title,
     required this.kategori,
-    required this.deskripsi
+    required this.deskripsi,
   });
 
   @override
@@ -138,7 +139,7 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 Text(
                   widget.title,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 IconButton(
                   icon: Icon(
@@ -155,25 +156,23 @@ class _DetailPageState extends State<DetailPage> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                'Stok : 19 Juta',
-                style: TextStyle(fontSize: 13, color: lightGray),
-              ),
-            ),
+              child: Text('Harga', style: TextStyle(fontWeight: FontWeight.w600))),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(widget.price, style: TextStyle(fontSize: 14, color: lightGray))),
             SizedBox(height: sizeheight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(widget.kategori),
-              ],
-            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Kategori', style: TextStyle(fontWeight: FontWeight.w600))),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(widget.kategori, style: TextStyle(fontSize: 14, color: lightGray))),
             SizedBox(height: sizeheight * 0.02),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Deskripsi',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
             Align(
@@ -197,26 +196,44 @@ class _DetailPageState extends State<DetailPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
-                children: [
-                  Text(widget.title),
-                  Text(' - '),
-                  Text(widget.price),
-                ],
+              FilledButton(
+                onPressed: () {
+                            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      KeranjangPage()
+                    ),
+                  );
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.white, // warna isi button
+                  side: BorderSide(color: lightBlue, width: 2),
+                ),
+                child: Text(
+                  '+ Keranjang',
+                  style: TextStyle(fontWeight: FontWeight.w800, color: lightBlue),
+                ),
               ),
+
               FilledButton(
                 onPressed: () {
                   Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CheckoutPage()
-          ),
-        );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckoutPage(
+                        coverbook: widget.imageProduct,
+                        text1: widget.title,
+                        text2: widget.kategori,
+                        price: widget.price,
+                      ),
+                    ),
+                  );
                 },
                 style: FilledButton.styleFrom(backgroundColor: lightBlue),
                 child: Text(
-                  'Add to Cart',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  'Beli Sekarang',
+                  style: TextStyle(fontWeight: FontWeight.w800),
                 ),
               ),
             ],

@@ -29,8 +29,9 @@ class _PesananCardState extends State<PesananCard> {
 
     return Stack(
       children: [
+        
         Container(
-          margin: EdgeInsets.only(bottom: 15),
+          margin: EdgeInsets.only(top: 15),
           width: sizewidth * 402 / fullwidth,
           height: sizeheight * 101 / fullheight,
           decoration: BoxDecoration(
@@ -57,7 +58,7 @@ class _PesananCardState extends State<PesananCard> {
                 // COVER PRODUCT
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
+                  child: Image.network(
                     widget.coverbook,
                     fit: BoxFit.cover,
                     width: sizewidth * 49 / fullwidth,
@@ -77,7 +78,7 @@ class _PesananCardState extends State<PesananCard> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text(widget.text2), Text(widget.price)],
+                        children: [Text(widget.text2), Text(widget.price),],
                       ),
                     ],
                   ),

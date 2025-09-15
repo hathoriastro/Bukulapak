@@ -1,4 +1,4 @@
-import 'package:bukulapak/components/user/checkout_page.dart';
+import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/pages/splash_screen.dart';
 import 'package:bukulapak/pages/user/add_product_page.dart';
 import 'package:bukulapak/pages/user/barterin_page.dart';
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         '/favoritpage': (context) => const FavoritProfilePage(),
         '/produkanda': (context) => const ProdukAndaProfilePage(),
         '/mapPage': (context) => const MapScreen(),
-        '/checkoutpage': (context) => const CheckoutPage(),
+        // '/checkoutpage': (context) => const CheckoutPage(),
         '/edit_profile': (context) => const EditProfilePage()
       },
     );
