@@ -1,3 +1,4 @@
+import 'package:bukulapak/model/favoriteProduct_model.dart';
 import 'package:bukulapak/model/tambahproduk_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -93,5 +94,42 @@ class TambahprodukService {
           .toList();
     });
   }
-  
+
+  Future<void>addFavoriteProduct (FavoriteproductModel addProduct) async {
+    try {
+      final docRef = _firestore
+          .collection('user')
+          .doc(_firebaseAuth.currentUser?.uid)
+          .collection('favorite')
+          .doc();
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+
+      await docRef.update(addProduct.toMap());
+    } else {
+      await docRef.set({
+        ...addProduct.toMap(),
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (e) {
+  print('Error menambah produk: $e');
+       }
+    }
+
+    Stream<List<FavoriteproductModel>> getFavoriteProduct() {
+    return _firestore
+        .collection('user')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .collection('favorite')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => FavoriteproductModel.fromFirestore(doc))
+              .toList();
+        });
+    }
 }

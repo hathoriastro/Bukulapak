@@ -1,6 +1,9 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:bukulapak/model/favoriteProduct_model.dart';
 import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -10,6 +13,8 @@ class DetailPage extends StatefulWidget {
   final String title;
   final String kategori;
   final String deskripsi;
+  final String time;
+  final String date;
 
   const DetailPage({
     super.key,
@@ -19,6 +24,8 @@ class DetailPage extends StatefulWidget {
     required this.title,
     required this.kategori,
     required this.deskripsi,
+    required this.time,
+    required this.date,
   });
 
   @override
@@ -35,6 +42,8 @@ class _DetailPageState extends State<DetailPage> {
     final sizeheight = size.height;
     final fullheight = 956;
     final fullwidth = 440;
+    TambahprodukService _tambah = TambahprodukService();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -146,7 +155,18 @@ class _DetailPageState extends State<DetailPage> {
                     isFavorite ? Icons.favorite : Icons.favorite_border,
                     color: isFavorite ? Colors.red : null,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    _tambah.addFavoriteProduct(
+                      FavoriteproductModel(
+                          Judul: widget.title,
+                          Gambar: widget.imageProduct,
+                          Harga: widget.price,
+                          location: widget.location,
+                          kategori: widget.kategori,
+                          deskripsi: widget.deskripsi,
+                          jam: widget.time, tanggal: widget.date,
+                      )
+                    );
                     setState(() {
                       isFavorite = !isFavorite;
                     });

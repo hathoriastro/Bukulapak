@@ -46,6 +46,8 @@ class _ProductCardState extends State<ProductCard> {
               title: widget.title,
               kategori: widget.kategori,
               deskripsi: widget.deskripsi,
+              time: widget.time,
+              date: widget.date,
             ),
           ),
         );

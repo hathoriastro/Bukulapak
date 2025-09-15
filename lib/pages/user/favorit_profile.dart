@@ -1,6 +1,9 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/product_card.dart';
+import 'package:bukulapak/model/favoriteProduct_model.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FavoritProfilePage extends StatefulWidget {
   const FavoritProfilePage({super.key});
@@ -32,10 +35,8 @@ class _FavoritProfilePageState extends State<FavoritProfilePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back),
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.arrow_back),
               ),
               Text(
                 'Favorit',
@@ -50,46 +51,46 @@ class _FavoritProfilePageState extends State<FavoritProfilePage> {
           ),
         ),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: (sizewidth * 186 / fullwidth) / 215,
-        padding: EdgeInsets.only(left: 24, right: 8, bottom: 15, top: 20),
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 15,
-        children: const [
-          // ProductCard(
-          //   imageProduct: 'assets/images/banner1.jpg',
-          //   date: '22-08-2025',
-          //   time: '00.00',
-          //   price: '24000',
-          //   location: 'Kota Malang, Ja...',
-          //   title: 'Hujan',
-          // ),
-          // ProductCard(
-          //   imageProduct: 'assets/images/banner1.jpg',
-          //   date: '22-08-2025',
-          //   time: '00.00',
-          //   price: '24000',
-          //   location: 'Kota Malang, Ja...',
-          //   title: 'Hujan',
-          // ),
-          // ProductCard(
-          //   imageProduct: 'assets/images/banner1.jpg',
-          //   date: '22-08-2025',
-          //   time: '00.00',
-          //   price: '24000',
-          //   location: 'Kota Malang, Ja...',
-          //   title: 'Hujan',
-          // ),
-          // ProductCard(
-          //   imageProduct: 'assets/images/banner1.jpg',
-          //   date: '22-08-2025',
-          //   time: '00.00',
-          //   price: '24000',
-          //   location: 'Kota Malang, Ja...',
-          //   title: 'Hujan',
-          // ),
-        ],
+
+
+      body: StreamBuilder<List<FavoriteproductModel>>(
+        stream: TambahprodukService().getFavoriteProduct(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("Belum ada produk favorit"));
+          }
+
+          final produkList = snapshot.data!;
+
+          return GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 15,
+            ),
+            itemCount: produkList.length,
+            itemBuilder: (context, index) {
+              final produk = produkList[index];
+
+              return ProductCard(
+                imageProduct: produk.Gambar,
+                date: produk.tanggal,
+                time: produk.jam,
+                price: produk.Harga,
+                location: produk.location,
+                title: produk.Judul,
+                kategori: produk.kategori,
+                deskripsi: produk.deskripsi,
+              );
+            },
+          );
+        },
       ),
     );
   }
