@@ -38,6 +38,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final sizeheight = size.height;
     final fullheight = 956;
 
+    String angkaBersih = widget.price.replaceAll(RegExp(r'[^0-9]'), '');
+
+// Convert ke int
+int harga = int.parse(angkaBersih);
+    int ongkir = 7000;
+    int totalPrice = harga.toInt() + ongkir;
+    
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -196,8 +204,76 @@ class _CheckoutPageState extends State<CheckoutPage> {
         groupValue: _bayar,
         onChanged: (val) => setState(() => _bayar = val),
       ),
+      const Divider(),
 
-      const SizedBox(height: 100), // biar ada spasi sebelum bottom bar
+            const Text(
+              'Rincian Pembayaran',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 6),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Harga Buku',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  '$harga',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:  [
+                Text(
+                  'Ongkos Pengiriman',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  ongkir.toString(),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+           
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Point Anda',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  '-',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total Pembayaran',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  'Rp$totalPrice',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+
+      const SizedBox(height: 30), // biar ada spasi sebelum bottom bar
     ],
   ),
 ),
@@ -214,7 +290,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('TOTAL : ${widget.price}'),
+              Text('TOTAL : Rp$totalPrice'),
               FilledButton(
                 onPressed: () {},
                 style: FilledButton.styleFrom(backgroundColor: orange),

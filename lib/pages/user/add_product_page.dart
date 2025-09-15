@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
+import 'package:flutter/services.dart';
 
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'dart:typed_data';
@@ -150,11 +151,14 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
 
             if (_selectedOption == 'Berbayar')
+            
               customInputField(
                 context: context,
                 title: 'Harga',
-                labelText: 'Rp 100.000',
+                labelText: '100.000',
                 controller: _hargaController,
+                keyboardType: TextInputType.number,
+  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
 
             customInputField(
@@ -337,6 +341,8 @@ Widget customInputField({
   required String title, // Dynamic title text
   required String labelText, // Dynamic label text for TextField
   required TextEditingController controller, // Dynamic controller
+  TextInputType keyboardType = TextInputType.text, // default text
+  List<TextInputFormatter>? inputFormatters,  
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
@@ -383,6 +389,8 @@ Widget customInputField({
             fillColor: darkWhite,
             filled: true,
           ),
+          keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         ),
       ),
     ],

@@ -79,130 +79,145 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: sizeheight * 0.03,
-                        height: sizewidth * 0.075,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: lightGray,
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/dummy_pp.jpg"),
-                            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: sizeheight * 0.03,
+                          height: sizewidth * 0.075,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: lightGray,
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/dummy_pp.jpg"),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: sizewidth * 0.01),
-                      Text(
-                        'Gibran Store',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: sizeheight * 0.013,
+                        SizedBox(width: sizewidth * 0.01),
+                        Text(
+                          'Gibran Store',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: sizeheight * 0.013,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on_outlined, color: lightGray),
+                        SizedBox(width: sizewidth * 0.01),
+                        Text(
+                          widget.location,
+                          style: TextStyle(
+                            fontSize: sizeheight * 0.012,
+                            color: lightGray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsGeometry.only(top: 10, bottom: 15),
+                child: Container(
+                  height: sizeheight * 0.25,
+                  width: sizewidth * 0.9,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: NetworkImage(widget.imageProduct),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on_outlined, color: lightGray),
-                      SizedBox(width: sizewidth * 0.01),
-                      Text(
-                        widget.location,
-                        style: TextStyle(
-                          fontSize: sizeheight * 0.012,
-                          color: lightGray,
-                        ),
-                      ),
-                    ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : null,
+                    ),
+                    onPressed: () async {
+                      _tambah.addFavoriteProduct(
+                        FavoriteproductModel(
+                            Judul: widget.title,
+                            Gambar: widget.imageProduct,
+                            Harga: widget.price,
+                            location: widget.location,
+                            kategori: widget.kategori,
+                            deskripsi: widget.deskripsi,
+                            jam: widget.time, tanggal: widget.date,
+                        )
+                      );
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                       ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isFavorite
+              ? 'Produk ditambahkan ke favorit❤️'
+              : 'Produk dihapus dari favorit💔',
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: orange,
+      ),
+    );
+                    },
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsetsGeometry.only(top: 10, bottom: 15),
-              child: Container(
-                height: sizeheight * 0.25,
-                width: sizewidth * 0.9,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: NetworkImage(widget.imageProduct),
-                    fit: BoxFit.cover,
-                  ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Harga', style: TextStyle(fontWeight: FontWeight.w600))),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(widget.price, style: TextStyle(fontSize: 14, color: lightGray))),
+              SizedBox(height: sizeheight * 0.02),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Kategori', style: TextStyle(fontWeight: FontWeight.w600))),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(widget.kategori, style: TextStyle(fontSize: 14, color: lightGray))),
+              SizedBox(height: sizeheight * 0.02),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Deskripsi',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                  maxLines: 6,
+                        overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  widget.deskripsi,
+                  style: TextStyle(color: lightGray, fontSize: 12),
                 ),
-                IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : null,
-                  ),
-                  onPressed: () async {
-                    _tambah.addFavoriteProduct(
-                      FavoriteproductModel(
-                          Judul: widget.title,
-                          Gambar: widget.imageProduct,
-                          Harga: widget.price,
-                          location: widget.location,
-                          kategori: widget.kategori,
-                          deskripsi: widget.deskripsi,
-                          jam: widget.time, tanggal: widget.date,
-                      )
-                    );
-                    setState(() {
-                      isFavorite = !isFavorite;
-                    });
-                  },
-                ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Harga', style: TextStyle(fontWeight: FontWeight.w600))),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(widget.price, style: TextStyle(fontSize: 14, color: lightGray))),
-            SizedBox(height: sizeheight * 0.02),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Kategori', style: TextStyle(fontWeight: FontWeight.w600))),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(widget.kategori, style: TextStyle(fontSize: 14, color: lightGray))),
-            SizedBox(height: sizeheight * 0.02),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Deskripsi',
-                style: TextStyle(fontWeight: FontWeight.w600),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.deskripsi,
-                style: TextStyle(color: lightGray, fontSize: 12),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
