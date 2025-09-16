@@ -1,5 +1,6 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/model/favoriteProduct_model.dart';
+import 'package:bukulapak/model/keranjang_model.dart';
 import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
@@ -43,7 +44,6 @@ class _DetailPageState extends State<DetailPage> {
     final fullheight = 956;
     final fullwidth = 440;
     TambahprodukService _tambah = TambahprodukService();
-
 
     return Scaffold(
       appBar: AppBar(
@@ -159,46 +159,63 @@ class _DetailPageState extends State<DetailPage> {
                     onPressed: () async {
                       _tambah.addFavoriteProduct(
                         FavoriteproductModel(
-                            Judul: widget.title,
-                            Gambar: widget.imageProduct,
-                            Harga: widget.price,
-                            location: widget.location,
-                            kategori: widget.kategori,
-                            deskripsi: widget.deskripsi,
-                            jam: widget.time, tanggal: widget.date,
-                        )
+                          Judul: widget.title,
+                          Gambar: widget.imageProduct,
+                          Harga: widget.price,
+                          location: widget.location,
+                          kategori: widget.kategori,
+                          deskripsi: widget.deskripsi,
+                          jam: widget.time,
+                          tanggal: widget.date,
+                        ),
                       );
                       setState(() {
                         isFavorite = !isFavorite;
                       });
-                       ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          isFavorite
-              ? 'Produk ditambahkan ke favorit❤️'
-              : 'Produk dihapus dari favorit💔',
-        ),
-        duration: Duration(seconds: 2),
-        backgroundColor: orange,
-      ),
-    );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            isFavorite
+                                ? 'Produk ditambahkan ke favorit'
+                                : 'Produk dihapus dari favorit',
+                          ),
+                          duration: Duration(seconds: 2),
+                          backgroundColor: orange,
+                        ),
+                      );
                     },
                   ),
                 ],
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Harga', style: TextStyle(fontWeight: FontWeight.w600))),
+                child: Text(
+                  'Harga',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text(widget.price, style: TextStyle(fontSize: 14, color: lightGray))),
+                child: Text(
+                  widget.price,
+                  style: TextStyle(fontSize: 14, color: lightGray),
+                ),
+              ),
               SizedBox(height: sizeheight * 0.02),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Kategori', style: TextStyle(fontWeight: FontWeight.w600))),
+                child: Text(
+                  'Kategori',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text(widget.kategori, style: TextStyle(fontSize: 14, color: lightGray))),
+                child: Text(
+                  widget.kategori,
+                  style: TextStyle(fontSize: 14, color: lightGray),
+                ),
+              ),
               SizedBox(height: sizeheight * 0.02),
               Align(
                 alignment: Alignment.centerLeft,
@@ -206,7 +223,7 @@ class _DetailPageState extends State<DetailPage> {
                   'Deskripsi',
                   style: TextStyle(fontWeight: FontWeight.w600),
                   maxLines: 6,
-                        overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Align(
@@ -232,23 +249,54 @@ class _DetailPageState extends State<DetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-                onPressed: () {
-                            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      KeranjangPage()
-                    ),
-                  );
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white, // warna isi button
-                  side: BorderSide(color: lightBlue, width: 2),
-                ),
-                child: Text(
-                  '+ Keranjang',
-                  style: TextStyle(fontWeight: FontWeight.w800, color: lightBlue),
-                ),
+  onPressed: () async {
+    final alreadyInCart = await _tambah.checkKeranjang(widget.title);
+
+    if (alreadyInCart) {
+      // Produk sudah ada
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Produk sudah ada di keranjang"),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    } else {
+      // Tambah baru
+      await _tambah.addKeranjang(
+        KeranjangModel(
+          judul: widget.title,
+          gambar: widget.imageProduct,
+          harga: widget.price,
+          kategori: widget.kategori,
+          id: '',
+          isCheckout: false
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Produk berhasil ditambahkan ke keranjang"),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => KeranjangPage()),
+      );
+    }
+  },
+  style: FilledButton.styleFrom(
+    backgroundColor: Colors.white,
+    side: BorderSide(color: lightBlue, width: 2),
+  ),
+  child: Text(
+    '+ Keranjang',
+    style: TextStyle(
+      fontWeight: FontWeight.w800,
+      color: lightBlue,
+    ),
+  ),
               ),
 
               FilledButton(
@@ -261,6 +309,7 @@ class _DetailPageState extends State<DetailPage> {
                         text1: widget.title,
                         text2: widget.kategori,
                         price: widget.price,
+                        
                       ),
                     ),
                   );

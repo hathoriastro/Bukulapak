@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         '/barterin': (context) => const BarterinPage(),
         '/modulGo': (context) => const ModulPage(),
         '/homepage': (context) => const HomePage(),
-        '/keranjangpage': (context) => const KeranjangPage(),
+        // '/keranjangpage': (context) => const KeranjangPage(),
         '/profilepage': (context) => const ProfilePage(),
         // '/detailpage': (context) => const DetailPage(),
         '/pesanan': (context) => const PesananProfilePage(),

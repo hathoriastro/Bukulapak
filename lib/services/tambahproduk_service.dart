@@ -1,4 +1,5 @@
 import 'package:bukulapak/model/favoriteProduct_model.dart';
+import 'package:bukulapak/model/keranjang_model.dart';
 import 'package:bukulapak/model/tambahproduk_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class TambahprodukService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+
   
   Future<void> addProduct(TambahprodukModel addProduct) async {
     try {
@@ -132,4 +135,82 @@ class TambahprodukService {
               .toList();
         });
     }
+
+
+
+
+    //KERANJANG
+    Future<void> addKeranjang(KeranjangModel addProduct) async {
+  try {
+    final docRef = _firestore
+        .collection('user')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .collection('tambah_keranjang')
+        .doc();
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      await docRef.update(addProduct.toMap());
+    } else {
+      await docRef.set({
+        ...addProduct.toMap(),
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (e) {
+    print('Error menambah produk: $e');
+  }
 }
+
+
+  Future<void> removeKeranjang(String id) async {
+    final userId = _firebaseAuth.currentUser!.uid;
+
+    await _firestore
+        .collection('user')
+        .doc(userId)
+        .collection('tambah_keranjang')
+        .doc(id)
+        .delete();
+  }
+
+  // stream keranjang biar UI auto refresh
+  Stream<List<KeranjangModel>> getKeranjang() {
+    final userId = _firebaseAuth.currentUser!.uid;
+    return _firestore
+        .collection('user')
+        .doc(userId)
+        .collection('tambah_keranjang')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => KeranjangModel.fromFirestore(doc)).toList());
+  }
+
+Future<bool> checkKeranjang(String judul) async {
+  final userId = _firebaseAuth.currentUser!.uid;
+
+  final query = await _firestore
+      .collection('user')
+      .doc(userId)
+      .collection('tambah_keranjang')
+      .where('judul', isEqualTo: judul)
+      .get();
+
+  return query.docs.isNotEmpty; // true kalau sudah ada
+}
+
+Future<void> updateCheckoutByJudul(String judul, bool status) async {
+  // misalnya kamu pakai Firestore:
+  final query = await FirebaseFirestore.instance
+      .collection('produk')
+      .where('judul', isEqualTo: judul)
+      .get();
+
+  for (var doc in query.docs) {
+    await doc.reference.update({'isCheckout': status});
+  }
+}
+
+}
+
