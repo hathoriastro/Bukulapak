@@ -10,6 +10,7 @@ class TambahprodukModel {
   final String Harga;
   final String Deskripsi;
   final Timestamp? timestamp;
+  final bool isCheckout; 
 
   TambahprodukModel({
     required this.Judul,
@@ -21,6 +22,7 @@ class TambahprodukModel {
     required this.Harga,
     required this.Deskripsi,
     required this.timestamp,
+    this.isCheckout = false,
   });
 
   /// ambil data value dari firestore
@@ -37,6 +39,7 @@ class TambahprodukModel {
       Harga: data['harga'] ?? 'gratis',
       Deskripsi: data['deskripsi'] ?? '',
       timestamp: data['timestamp'],
+       isCheckout: data['isCheckout'] ?? false,
     );
   }
 
@@ -52,6 +55,7 @@ class TambahprodukModel {
       'harga': Harga,
       'deskripsi': Deskripsi,
       'timestamp': timestamp,
+      'isCheckout' : isCheckout
     };
   }
 }

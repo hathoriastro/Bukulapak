@@ -1,10 +1,10 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/pesanan_card.dart';
-import 'package:bukulapak/model/tambahproduk_model.dart';
+import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
-enum OpsiPengiriman { JNE, LionParcel, SiCepat}
+enum OpsiPengiriman { JNE, LionParcel, SiCepat }
 
 enum MetodeBayar { cod, qris }
 
@@ -13,6 +13,7 @@ class CheckoutPage extends StatefulWidget {
   final String text1;
   final String text2;
   final String price;
+
   const CheckoutPage({
     super.key,
     required this.coverbook,
@@ -21,36 +22,31 @@ class CheckoutPage extends StatefulWidget {
     required this.price,
   });
 
-  
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  bool isFavorite = false;
   OpsiPengiriman? _pengiriman = OpsiPengiriman.JNE;
   MetodeBayar? _bayar = MetodeBayar.qris;
+  final TambahprodukService _service = TambahprodukService();
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final sizewidth = size.width;
     final sizeheight = size.height;
-    final fullheight = 956;
 
     String angkaBersih = widget.price.replaceAll(RegExp(r'[^0-9]'), '');
-
-// Convert ke int
-int harga = int.parse(angkaBersih);
+    int harga = angkaBersih.isEmpty ? 0 : int.parse(angkaBersih);
     int ongkir = 7000;
-    int totalPrice = harga.toInt() + ongkir;
-    
+    int totalPrice = harga + ongkir;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        toolbarHeight: sizeheight * 112 / fullheight,
+        toolbarHeight: sizeheight * 0.12,
         elevation: 4,
         shadowColor: Colors.grey.withOpacity(0.001),
         surfaceTintColor: Colors.transparent,
@@ -66,145 +62,154 @@ int harga = int.parse(angkaBersih);
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.arrow_back),
+                    child: const Icon(Icons.arrow_back),
                   ),
-                  Text(
+                  const Text(
                     'Checkout',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  Container(color: Colors.transparent, width: sizewidth * 0.1),
+                  Container(color: Colors.transparent, width: size.width * 0.1),
                 ],
               ),
             ),
             SizedBox(height: sizeheight * 0.006),
-            Divider(),
+            const Divider(),
           ],
         ),
       ),
-     body: SingleChildScrollView(
-  padding: const EdgeInsets.symmetric(horizontal: 20),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      PesananCard(
-        coverbook: widget.coverbook,
-        text1: widget.text1,
-        text2: widget.text2,
-        price: widget.price,
-      ),
-
-      const SizedBox(height: 25),
-
-      // Address
-      Row(
-        children: const [
-          Icon(Icons.location_on, color: darkBlue),
-          SizedBox(width: 8),
-          Text(
-            'Alamat Tujuan',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-      const SizedBox(height: 10),
-      Container(
-        height: sizeheight * 0.2,
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: lightGray.withOpacity(0.7),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 1),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Kartu Pesanan
+            PesananCard(
+              coverbook: widget.coverbook,
+              text1: widget.text1,
+              text2: widget.text2,
+              price: widget.price,
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: const [
-                  Icon(Icons.location_on_outlined, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Text("Nama || No Telp",
-                      style: TextStyle(color: Colors.grey)),
+
+            const SizedBox(height: 25),
+
+            // Alamat
+            Row(
+              children: const [
+                Icon(Icons.location_on, color: darkBlue),
+                SizedBox(width: 8),
+                Text(
+                  'Alamat Tujuan',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: sizeheight * 0.2,
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: lightGray.withOpacity(0.7),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Lorem Ipsum Dolor", style: TextStyle(color: Colors.grey)),
-                  Icon(Icons.arrow_forward_ios),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.location_on_outlined, color: Colors.grey),
+                        SizedBox(width: 8),
+                        Text(
+                          "Nama || No Telp",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          "Lorem Ipsum Dolor",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Icon(Icons.arrow_forward_ios),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
 
-      const SizedBox(height: 15),
+            const SizedBox(height: 15),
 
-      // Opsi Pengiriman
-       Row(
-        children: const [
-          Icon(Icons.delivery_dining_rounded, color: darkBlue),
-          SizedBox(width: 8),
-          Text(
-            'Opsi Pengiriman',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-      RadioListTile<OpsiPengiriman>(
-        title: const Text('JNE', style: TextStyle(fontSize: 12)),
-        value: OpsiPengiriman.JNE,
-        groupValue: _pengiriman,
-        onChanged: (val) => setState(() => _pengiriman = val),
-      ),
-      RadioListTile<OpsiPengiriman>(
-        title: const Text('LionParcel', style: TextStyle(fontSize: 12)),
-        value: OpsiPengiriman.LionParcel,
-        groupValue: _pengiriman,
-        onChanged: (val) => setState(() => _pengiriman = val),
-      ),
-      RadioListTile<OpsiPengiriman>(
-        title: const Text('SiCepat', style: TextStyle(fontSize: 12)),
-        value: OpsiPengiriman.SiCepat,
-        groupValue: _pengiriman,
-        onChanged: (val) => setState(() => _pengiriman = val),
-      ),
+            // Opsi Pengiriman
+            Row(
+              children: const [
+                Icon(Icons.delivery_dining_rounded, color: darkBlue),
+                SizedBox(width: 8),
+                Text(
+                  'Opsi Pengiriman',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            RadioListTile<OpsiPengiriman>(
+              title: const Text('JNE', style: TextStyle(fontSize: 12)),
+              value: OpsiPengiriman.JNE,
+              groupValue: _pengiriman,
+              onChanged: (val) => setState(() => _pengiriman = val),
+            ),
+            RadioListTile<OpsiPengiriman>(
+              title: const Text('LionParcel', style: TextStyle(fontSize: 12)),
+              value: OpsiPengiriman.LionParcel,
+              groupValue: _pengiriman,
+              onChanged: (val) => setState(() => _pengiriman = val),
+            ),
+            RadioListTile<OpsiPengiriman>(
+              title: const Text('SiCepat', style: TextStyle(fontSize: 12)),
+              value: OpsiPengiriman.SiCepat,
+              groupValue: _pengiriman,
+              onChanged: (val) => setState(() => _pengiriman = val),
+            ),
 
-      const Divider(),
+            const Divider(),
 
-      // Metode Pembayaran
-      Row(
-        children: const [
-          Icon(Icons.account_balance_wallet, color: darkBlue),
-          SizedBox(width: 8),
-          Text(
-            'Metode Pembayaran',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-      RadioListTile<MetodeBayar>(
-        title: const Text('COD (Bayar ditempat)', style: TextStyle(fontSize: 12)),
-        value: MetodeBayar.cod,
-        groupValue: _bayar,
-        onChanged: (val) => setState(() => _bayar = val),
-      ),
-      RadioListTile<MetodeBayar>(
-        title: const Text('QRIS', style: TextStyle(fontSize: 12)),
-        value: MetodeBayar.qris,
-        groupValue: _bayar,
-        onChanged: (val) => setState(() => _bayar = val),
-      ),
-      const Divider(),
+            // Metode Pembayaran
+            Row(
+              children: const [
+                Icon(Icons.account_balance_wallet, color: darkBlue),
+                SizedBox(width: 8),
+                Text(
+                  'Metode Pembayaran',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            RadioListTile<MetodeBayar>(
+              title: const Text(
+                'COD (Bayar ditempat)',
+                style: TextStyle(fontSize: 12),
+              ),
+              value: MetodeBayar.cod,
+              groupValue: _bayar,
+              onChanged: (val) => setState(() => _bayar = val),
+            ),
+            RadioListTile<MetodeBayar>(
+              title: const Text('QRIS', style: TextStyle(fontSize: 12)),
+              value: MetodeBayar.qris,
+              groupValue: _bayar,
+              onChanged: (val) => setState(() => _bayar = val),
+            ),
+            const Divider(),
 
             const Text(
               'Rincian Pembayaran',
@@ -220,7 +225,7 @@ int harga = int.parse(angkaBersih);
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  '$harga',
+                  'Rp$harga',
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
@@ -230,18 +235,20 @@ int harga = int.parse(angkaBersih);
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
-                Text(
+              children: [
+                const Text(
                   'Ongkos Pengiriman',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  ongkir.toString(),
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                  'Rp$ongkir',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
-           
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
@@ -273,33 +280,65 @@ int harga = int.parse(angkaBersih);
               ],
             ),
 
-      const SizedBox(height: 30), // biar ada spasi sebelum bottom bar
-    ],
-  ),
-),
+            const SizedBox(height: 30), // spasi sebelum bottom bar
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Container(
+            height: sizeheight * 0.07,
+            decoration: BoxDecoration(
+              color: const Color(0xFFD6D6E8),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('TOTAL : Rp$totalPrice'),
+                FilledButton(
+                  onPressed: _loading
+                      ? null
+                      : () async {
+                          setState(() {
+                            _loading = true;
+                          });
 
+                          // Update field isCheckout di database
+                          await _service.updateCheckoutByJudul(
+                            widget.text1,
+                            true,
+                          );
 
-      bottomNavigationBar: Padding(
-        padding: EdgeInsetsGeometry.symmetric(vertical: 20, horizontal: 20),
-        child: Container(
-          height: sizeheight * 0.07,
-          decoration: BoxDecoration(
-            color: Color(0xFFD6D6E8),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('TOTAL : Rp$totalPrice'),
-              FilledButton(
-                onPressed: () {},
-                style: FilledButton.styleFrom(backgroundColor: orange),
-                child: Text(
-                  'Buat Pesanan',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Berhasil dipesan')),
+                          );
+
+                          Future.delayed(const Duration(seconds: 1), () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                              (route) => false,
+                            );
+                          });
+                        },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    minimumSize: const Size(120, 45),
+                  ),
+                  child: _loading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Buat Pesanan',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

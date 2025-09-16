@@ -1,6 +1,5 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/keranjang_card.dart';
-
 import 'package:bukulapak/model/keranjang_model.dart';
 import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
@@ -17,7 +16,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
   bool applyClicked = false;
   String? selectedId;
   int selectedPrice = 0;
-  KeranjangModel? _selectedKeranjang;
+
+  List<KeranjangModel> _keranjangItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
     final fullheight = 956;
     final fullwidth = 440;
 
-    TambahprodukService _tambah = TambahprodukService();
+    final TambahprodukService _tambah = TambahprodukService();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -38,9 +38,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
         shadowColor: Colors.grey.withOpacity(0.5),
         surfaceTintColor: Colors.transparent,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => Navigator.pop(context),
           child: const Icon(Icons.arrow_back),
         ),
         title: const Padding(
@@ -66,28 +64,32 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   return const Center(child: Text("Keranjang masih kosong"));
                 }
 
-                final keranjangItems = snapshot.data!;
+                _keranjangItems = snapshot.data!;
 
                 return ListView.builder(
                   padding: const EdgeInsets.all(15),
-                  itemCount: keranjangItems.length,
+                  itemCount: _keranjangItems.length,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final item = keranjangItems[index];
+                    final item = _keranjangItems[index];
                     return KeranjangCard(
                       keranjangItem: item,
                       isSelected: selectedId == item.id,
                       onTap: () {
+                        if (item.isCheckout) {
+                          // kalau sudah checkout, jangan bisa dipilih
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Produk sudah habis')),
+                          );
+                          return;
+                        }
                         setState(() {
                           if (selectedId == item.id) {
-                            //kalau diklik lagi, unselect
                             selectedId = null;
                             selectedPrice = 0;
                           } else {
                             selectedId = item.id;
-
-                            //handle harga GRATIS
                             if (item.harga.toLowerCase() == "gratis") {
                               selectedPrice = 0;
                             } else {
@@ -103,7 +105,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                           }
                         });
                       },
-
                       onRemove: () async {
                         await _tambah.removeKeranjang(item.id);
                         if (selectedId == item.id) {
@@ -127,7 +128,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            //KUPON
+            // kupon
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: sizeheight * 81 / fullheight,
@@ -151,7 +152,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                     const SizedBox(width: 10),
                     Text('Put Your Coupon', style: TextStyle(color: softgray)),
                     const Spacer(),
-
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -176,7 +176,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         child: Center(
                           child: Text(
                             applyClicked ? 'Applied' : 'Apply',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                             ),
@@ -188,10 +188,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
                 ),
               ),
             ),
-
-            SizedBox(height: 10),
-
-            //CHECKOUT
+            const SizedBox(height: 10),
+            // checkout
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: sizeheight * 81 / fullheight,
@@ -223,55 +221,90 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         fontSize: 16,
                       ),
                     ),
-
                     const Spacer(),
-                   GestureDetector(
-  onTap: () {
-    if (_selectedKeranjang != null) {
-      // Ada item yang dipilih → navigasi ke CheckoutPage
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CheckoutPage(coverbook: coverbook, text1: text1, text2: text2, price: price)
-        ),
-      );
-    } else {
-      // Tidak ada yang dipilih → tampilkan notif
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Pilih produk dulu sebelum checkout"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  },
-  child: Container(
-    width: sizewidth * 120 / fullwidth,
-    height: sizeheight * 46 / fullheight,
-    decoration: BoxDecoration(
-      color: customorange,
-      borderRadius: BorderRadius.circular(28),
-      boxShadow: [
-        BoxShadow(
-          color: lightGray.withOpacity(0.5),
-          spreadRadius: 1.5,
-          blurRadius: 4,
-          offset: Offset(0, 4),
-        ),
-      ],
-    ),
-    child: const Center(
-      child: Text(
-        'Checkout',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    ),
-  ),
-)
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: sizewidth * 120 / fullwidth,
+                        height: sizeheight * 46 / fullheight,
+                        child: GestureDetector(
+                          onTap: () {
+                            // cek apakah user sudah pilih item
+                            if (selectedId == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Pilih item dulu sebelum checkout',
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
 
+                            // cari item sesuai selectedId yang belum isCheckout
+                            KeranjangModel? activeItem;
+                            try {
+                              activeItem = _keranjangItems.firstWhere(
+                                (item) =>
+                                    item.id == selectedId && !item.isCheckout,
+                              );
+                            } catch (e) {
+                              activeItem = null; // kalau tidak ketemu
+                            }
+
+                            // kalau item tidak ditemukan atau sudah habis → snackBar
+                            if (activeItem == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Produk sudah habis atau tidak bisa di-checkout',
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
+
+                            // kalau lolos di sini → push ke halaman checkout
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CheckoutPage(
+                                  coverbook: activeItem!
+                                      .gambar, // pakai ! karena udah kita cek nullnya
+                                  text1: activeItem!.judul,
+                                  text2: activeItem!.kategori,
+                                  price: activeItem!.harga,
+                                ),
+                              ),
+                            );
+                          },
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: customorange,
+                              borderRadius: BorderRadius.circular(28),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: lightGray.withOpacity(0.5),
+                                  spreadRadius: 1.5,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Checkout',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

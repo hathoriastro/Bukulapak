@@ -269,6 +269,7 @@ class _DetailPageState extends State<DetailPage> {
           harga: widget.price,
           kategori: widget.kategori,
           id: '',
+          isCheckout: false
         ),
       );
 
@@ -308,6 +309,7 @@ class _DetailPageState extends State<DetailPage> {
                         text1: widget.title,
                         text2: widget.kategori,
                         price: widget.price,
+                        
                       ),
                     ),
                   );

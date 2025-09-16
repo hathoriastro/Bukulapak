@@ -6,12 +6,13 @@ class KeranjangModel {
   final String harga;
   final String kategori;
    final String id;
+   final bool isCheckout;
 
   KeranjangModel({
     required this.judul,
     required this.gambar,
     required this.harga,
-    required this.kategori,required this.id
+    required this.kategori,required this.id,required this.isCheckout
   });
 
 
@@ -24,6 +25,7 @@ class KeranjangModel {
       kategori: data['kategori'],
       harga: data['harga'] ?? 'GRATIS',
       id: doc.id,
+       isCheckout: data['isCheckout'] ?? false,
     );
   }
 
@@ -34,6 +36,7 @@ class KeranjangModel {
     'gambar': gambar,
     'harga': harga,
     'kategori': kategori,
+     'isCheckout' : isCheckout
   };
 }
 

@@ -200,6 +200,17 @@ Future<bool> checkKeranjang(String judul) async {
   return query.docs.isNotEmpty; // true kalau sudah ada
 }
 
+Future<void> updateCheckoutByJudul(String judul, bool status) async {
+  // misalnya kamu pakai Firestore:
+  final query = await FirebaseFirestore.instance
+      .collection('produk')
+      .where('judul', isEqualTo: judul)
+      .get();
+
+  for (var doc in query.docs) {
+    await doc.reference.update({'isCheckout': status});
+  }
+}
 
 }
 
