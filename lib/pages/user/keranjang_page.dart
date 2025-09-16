@@ -78,7 +78,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                       isSelected: selectedId == item.id,
                       onTap: () {
                         if (item.isCheckout) {
-                          // kalau sudah checkout, jangan bisa dipilih
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Produk sudah habis')),
                           );

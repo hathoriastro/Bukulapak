@@ -60,24 +60,27 @@ class TambahprodukService {
 
    
   Stream<List<TambahprodukModel>> getProdukByUser() {
-    return _firestore
-        .collection('user')
-        .doc(_firebaseAuth.currentUser?.uid)
-        .collection('tambah_produk')
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => TambahprodukModel.fromFirestore(doc))
-              .toList();
-        });
-  }
+  return _firestore
+      .collection('user')
+      .doc(_firebaseAuth.currentUser?.uid) // ← Dokumen sesuai UID user login
+      .collection('tambah_produk')         // ← Subkoleksi produk user itu saja
+      .orderBy('timestamp', descending: true)
+      .snapshots()
+      .map((snapshot) {
+        return snapshot.docs
+            .map((doc) => TambahprodukModel.fromFirestore(doc))
+            .toList();
+      });
+}
+
   
 
 
   Stream<List<TambahprodukModel>> getAllProduk() {
     return _firestore
-        .collectionGroup('produk')
+        .collection('produk')
+        .where( "isCheckout", isEqualTo: false)
+        // .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
           return snapshot.docs
@@ -89,7 +92,8 @@ class TambahprodukService {
   Stream<List<TambahprodukModel>> getAllProdukbyCategory() {
     return _firestore
         .collection('produk')
-        .where('harga', isEqualTo: "")
+        .where('harga', isEqualTo: "",)
+        .where('isCheckout', isEqualTo: false)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
