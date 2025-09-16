@@ -26,7 +26,9 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
-  String? _selectedOption;
+  String? _selectedKategoriJual; // Gratis / Berbayar
+String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
+
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
   TambahprodukService _addProduct = TambahprodukService();
@@ -144,13 +146,13 @@ class _AddProductPageState extends State<AddProductPage> {
                 option2: 'Berbayar',
                 onChanged: (value) {
                   setState(() {
-                    _selectedOption = value;
+                    _selectedKategoriJual = value;
                   });
                 },
               ),
             ),
 
-            if (_selectedOption == 'Berbayar')
+            if (_selectedKategoriJual == 'Berbayar')
             
               customInputField(
                 context: context,
@@ -193,7 +195,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 option4: 'SD',
                 onChanged: (value) {
                   setState(() {
-                    _selectedOption = value;
+                    _selectedKategoriBuku = value;
                   });
                 },
               ),
@@ -289,7 +291,8 @@ class _AddProductPageState extends State<AddProductPage> {
                  Judul: _judulController.text,
                   Penerbit: _penerbitController.text,
                   ISBN: _isbnController.text,
-                  Kategori: _selectedOption ?? '',
+                  KategoriBuku: _selectedKategoriBuku?? '',
+                  KategoriJual: _selectedKategoriJual ?? '',
                   Gambar: _imageService.imageUrl ?? '',
                   Video: _videoPicker.videoUrl ?? '',
                   Harga: _hargaController.text,

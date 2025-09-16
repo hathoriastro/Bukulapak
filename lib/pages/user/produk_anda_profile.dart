@@ -67,7 +67,7 @@ class ProdukAndaProfilePage extends StatelessWidget {
                   return ProdukAndaCardVertical(
                     coverbook: produk.Gambar,
                     text1: produk.Judul,
-                    text2: produk.Kategori,
+                    text2: produk.KategoriBuku,
                     price: 'Rp${produk.Harga}',
                   );
                 }).toList(),

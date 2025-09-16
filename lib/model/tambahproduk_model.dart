@@ -4,7 +4,8 @@ class TambahprodukModel {
   final String Judul;
   final String Penerbit;
   final String ISBN;
-  final String Kategori;
+  final String KategoriBuku;
+  final String KategoriJual;
   final String Gambar;
   final String Video;
   final String Harga;
@@ -16,7 +17,8 @@ class TambahprodukModel {
     required this.Judul,
     required this.Penerbit,
     required this.ISBN,
-    required this.Kategori,
+    required this.KategoriBuku,
+    required this.KategoriJual,
     required this.Gambar,
     required this.Video,
     required this.Harga,
@@ -33,7 +35,8 @@ class TambahprodukModel {
       Judul: data['judul'] ?? '',
       Penerbit: data['penerbit'] ?? '',
       ISBN: data['isbn'] ?? '',
-      Kategori: data['kategori'] ?? '',
+      KategoriBuku: data['kategoriBuku'] ?? data['kategori'] ?? '',
+      KategoriJual: data['kategoriJual'] ?? '',
       Gambar: data['gambar'] ?? '',
       Video: data['video'] ?? '',
       Harga: data['harga'] ?? 'gratis',
@@ -49,7 +52,8 @@ class TambahprodukModel {
       'judul': Judul,
       'penerbit': Penerbit,
       'isbn': ISBN,
-      'kategori': Kategori,
+      'kategoriBuku': KategoriBuku,
+      'kategoriJual': KategoriJual,
       'gambar': Gambar,
       'video': Video,
       'harga': Harga,

@@ -70,19 +70,27 @@ class _ListBooksState extends State<ListBooks>
           }
 
           // Filter sesuai tab
-          final produkList = snapshot.data!
-              .where((produk) =>
-                  produk.Kategori.toLowerCase() == kategori.toLowerCase())
-              .toList();
+          final produkList = snapshot.data!.where((produk) {
+  if (kategori.toLowerCase() == 'gratis') {
+    return produk.Harga == '0' || produk.Harga.isEmpty;
+  } else {
+    return produk.Harga != '0' && produk.Harga.isNotEmpty;
+  }
+}).toList();
 
-          if (produkList.isEmpty) {
-            return Center(
-              child: Text(
-                "Belum ada produk $kategori",
-                style: TextStyle(color: lightGray, fontSize: 16),
-              ),
-            );
-          }
+          // final produkList = snapshot.data!
+          //     .where((produk) =>
+          //         produk.KategoriJual.toLowerCase() == kategori.toLowerCase())
+          //     .toList();
+
+          // if (produkList.isEmpty) {
+          //   return Center(
+          //     child: Text(
+          //       "Belum ada produk $kategori",
+          //       style: TextStyle(color: lightGray, fontSize: 16),
+          //     ),
+          //   );
+          // }
 
           return GridView.builder(
             shrinkWrap: true,
@@ -112,7 +120,7 @@ class _ListBooksState extends State<ListBooks>
                 location: "Malang",
                 title: produk.Judul,
                 deskripsi: produk.Deskripsi,
-                kategori: produk.Kategori,
+                kategori: produk.KategoriBuku,
               );
             },
           );
