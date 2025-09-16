@@ -58,19 +58,19 @@ class TambahprodukService {
   }
 
    
-  Stream<List<TambahprodukModel>> getProdukByUser() {
+Stream<List<TambahprodukModel>> getProdukByUser() {
+  final user = FirebaseAuth.instance.currentUser;
+
   return _firestore
-      .collection('user')
-      .doc(_firebaseAuth.currentUser?.uid) // ← Dokumen sesuai UID user login
-      .collection('tambah_produk')         // ← Subkoleksi produk user itu saja
-      .orderBy('timestamp', descending: true)
+      .collection('produk') // koleksi produk semua user
+      .where('ownerId', isEqualTo: user?.uid) // filter hanya produk user ini
+      // .orderBy('timestamp', descending: true)
       .snapshots()
-      .map((snapshot) {
-        return snapshot.docs
-            .map((doc) => TambahprodukModel.fromFirestore(doc))
-            .toList();
-      });
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => TambahprodukModel.fromFirestore(doc)).toList());
 }
+
+
 
   
 

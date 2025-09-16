@@ -43,7 +43,7 @@ class ProdukAndaProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: StreamBuilder<List<TambahprodukModel>>(
-          stream: TambahprodukService().getProdukByUser(),
+          stream: TambahprodukService().getProdukByUser() ,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -68,7 +68,7 @@ class ProdukAndaProfilePage extends StatelessWidget {
                     coverbook: produk.Gambar,
                     text1: produk.Judul,
                     text2: produk.KategoriBuku,
-                    price: 'Rp${produk.Harga}',
+                    price: produk.Harga.toLowerCase() == 'gratis'? 'GRATIS' : 'Rp${produk.Harga}',
                   );
                 }).toList(),
               ),

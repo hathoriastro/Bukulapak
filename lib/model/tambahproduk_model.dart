@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TambahprodukModel {
   final String Judul;
@@ -12,7 +13,7 @@ class TambahprodukModel {
   final String Deskripsi;
   final Timestamp? timestamp;
   final bool isCheckout; 
-
+  final String ownerId;
   TambahprodukModel({
     required this.Judul,
     required this.Penerbit,
@@ -25,11 +26,14 @@ class TambahprodukModel {
     required this.Deskripsi,
     required this.timestamp,
     this.isCheckout = false,
+    required this.ownerId
   });
 
   /// ambil data value dari firestore
   factory TambahprodukModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    final User? user = FirebaseAuth.instance.currentUser;
+final String uid = user?.uid ?? '';
 
     return TambahprodukModel(
       Judul: data['judul'] ?? '',
@@ -43,6 +47,7 @@ class TambahprodukModel {
       Deskripsi: data['deskripsi'] ?? '',
       timestamp: data['timestamp'],
        isCheckout: data['isCheckout'] ?? false,
+       ownerId: data['ownerId'] ?? '',
     );
   }
 
@@ -59,7 +64,8 @@ class TambahprodukModel {
       'harga': Harga,
       'deskripsi': Deskripsi,
       'timestamp': timestamp,
-      'isCheckout' : isCheckout
+      'isCheckout' : isCheckout,
+      'ownerId' : ownerId
     };
   }
 }

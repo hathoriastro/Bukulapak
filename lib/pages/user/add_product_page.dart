@@ -5,6 +5,7 @@ import 'package:bukulapak/services/image_service.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:bukulapak/services/video_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -287,6 +288,8 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () async {
+                final User? user = FirebaseAuth.instance.currentUser;
+final String uid = user?.uid ?? '';
                 TambahprodukModel tambahproduk = TambahprodukModel(
                  Judul: _judulController.text,
                   Penerbit: _penerbitController.text,
@@ -298,6 +301,7 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
                   Harga: _hargaController.text,
                   Deskripsi: _deskripsiController.text,
                   timestamp: Timestamp.fromDate(DateTime.now()),
+                  ownerId: uid,
                 );
 
                 await _addProduct.addProduct(
