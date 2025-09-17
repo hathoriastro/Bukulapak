@@ -3,6 +3,7 @@ import 'package:bukulapak/components/user/pesanan_card.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum OpsiPengiriman { JNE, LionParcel, SiCepat }
 
@@ -39,6 +40,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final sizeheight = size.height;
     final fullheight = 956;
     final fullwidth = 440;
+
+    final TextEditingController _detailController = TextEditingController();
+    final TextEditingController _alamatController = TextEditingController();
 
     String angkaBersih = widget.price.replaceAll(RegExp(r'[^0-9]'), '');
     int harga = angkaBersih.isEmpty ? 0 : int.parse(angkaBersih);
@@ -107,54 +111,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
             const SizedBox(height: 10),
-            Container(
-              height: sizeheight * 0.2,
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: lightGray.withOpacity(0.7),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: const [
-                        Icon(Icons.location_on_outlined, color: Colors.grey),
-                        SizedBox(width: 8),
-                        Text(
-                          "Nama || No Telp",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          "Lorem Ipsum Dolor",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Icon(Icons.arrow_forward_ios),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+            customInputField(
+              context: context,
+              labelText: 'Jl. Bandung No 3, Malang',
+              controller: _alamatController,
+            ),
+            
+            customInputField(
+              context: context,
+              labelText: 'Detail (Cth : Pagar Hitam)',
+              controller: _detailController,
             ),
 
-            const SizedBox(height: 15),
-
-            // Opsi Pengiriman
+            const SizedBox(height: 10),
             Row(
               children: const [
                 Icon(Icons.delivery_dining_rounded, color: darkBlue),
@@ -416,4 +385,51 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
     );
   }
+}
+
+Widget customInputField({
+  required BuildContext context,
+  required String labelText,
+  required TextEditingController controller,
+  TextInputType keyboardType = TextInputType.text,
+  List<TextInputFormatter>? inputFormatters,
+}) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.01,
+          vertical: screenHeight * 0.008,
+        ),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontFamily: 'poppins',
+              color: Colors.black54,
+              fontSize: screenWidth * 0.03,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            fillColor: darkWhite,
+            filled: true,
+          ),
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+        ),
+      ),
+    ],
+  );
 }

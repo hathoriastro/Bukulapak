@@ -149,7 +149,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   children: [
                     Image.asset('assets/images/price-tag.png'),
                     const SizedBox(width: 10),
-                    Text('Put Your Coupon', style: TextStyle(color: softgray)),
+                    Text('Pakai Kupon Anda', style: TextStyle(color: softgray)),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
@@ -174,7 +174,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         ),
                         child: Center(
                           child: Text(
-                            applyClicked ? 'Applied' : 'Apply',
+                            applyClicked ? 'Terpakai' : 'Pakai',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,

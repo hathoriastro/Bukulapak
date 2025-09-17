@@ -246,7 +246,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
 
-            // Lokasi
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Align(
               alignment: const Alignment(-0.83, 0),
@@ -315,7 +314,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 }
 
-/// 🔧 Custom Input Field
+/// Custom Input Field
 Widget customInputField({
   required BuildContext context,
   required String title,
