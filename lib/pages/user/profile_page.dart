@@ -65,6 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var screenHeight = screenSize.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(

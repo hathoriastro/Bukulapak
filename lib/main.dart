@@ -7,6 +7,7 @@ import 'package:bukulapak/pages/user/edit_profile.dart';
 import 'package:bukulapak/pages/user/favorit_profile.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
+import 'package:bukulapak/pages/user/lokasi_page.dart';
 import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:bukulapak/pages/user/pesanan_profile.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/sign_in',
+      initialRoute: '/homepage',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
         '/produkanda': (context) => const ProdukAndaProfilePage(),
         '/mapPage': (context) => const MapScreen(),
         // '/checkoutpage': (context) => const CheckoutPage(),
-        '/edit_profile': (context) => const EditProfilePage()
+        '/edit_profile': (context) => const EditProfilePage(),
+        '/lokasipage': (context) => const LokasiPage(),
       },
     );
   }
