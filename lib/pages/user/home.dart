@@ -314,11 +314,16 @@ class _HomePageState extends State<HomePage> {
           Positioned(
             right: 12,
             bottom: 10,
-            child: Image.asset(
-              "assets/images/floatinglamp.png",
-              width: 77,
-              height: 77,
-            ),
+            child:
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/quiz'),
+              child: Image.asset(
+                "assets/images/floatinglamp.png",
+                width: 77,
+                height: 77,
+              ),
+              )
+
           ),
         ],
       ),

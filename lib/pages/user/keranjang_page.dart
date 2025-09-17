@@ -5,6 +5,8 @@ import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/voucher_services.dart';
+
 class KeranjangPage extends StatefulWidget {
   const KeranjangPage({super.key});
 
@@ -16,6 +18,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
   bool applyClicked = false;
   String? selectedId;
   int selectedPrice = 0;
+  final TextEditingController _couponController = TextEditingController();
+
 
   List<KeranjangModel> _keranjangItems = [];
 
@@ -78,7 +82,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                       isSelected: selectedId == item.id,
                       onTap: () {
                         if (item.isCheckout) {
-                          // kalau sudah checkout, jangan bisa dipilih
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Produk sudah habis')),
                           );
@@ -128,7 +131,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // kupon
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: sizeheight * 81 / fullheight,
@@ -150,13 +152,30 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   children: [
                     Image.asset('assets/images/price-tag.png'),
                     const SizedBox(width: 10),
-                    Text('Put Your Coupon', style: TextStyle(color: softgray)),
+                    Expanded(
+                      child: TextField(
+                        controller: _couponController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your coupon',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         setState(() {
                           applyClicked = !applyClicked;
                         });
+
+                        if(_couponController != null){
+                          VoucherServices voucherServices = VoucherServices();
+                          await voucherServices.applyVoucher(_couponController.text);
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Masukkan kode kupon dulu')),
+                        );
+
                       },
                       child: Container(
                         width: sizewidth * 88 / fullwidth,
@@ -249,10 +268,10 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                     item.id == selectedId && !item.isCheckout,
                               );
                             } catch (e) {
-                              activeItem = null; // kalau tidak ketemu
+                              activeItem = null;
                             }
 
-                            // kalau item tidak ditemukan atau sudah habis → snackBar
+
                             if (activeItem == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -264,13 +283,13 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               return;
                             }
 
-                            // kalau lolos di sini → push ke halaman checkout
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CheckoutPage(
                                   coverbook: activeItem!
-                                      .gambar, // pakai ! karena udah kita cek nullnya
+                                      .gambar,
                                   text1: activeItem!.judul,
                                   text2: activeItem!.kategori,
                                   price: activeItem!.harga,

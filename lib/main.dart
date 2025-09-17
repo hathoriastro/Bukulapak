@@ -11,6 +11,7 @@ import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:bukulapak/pages/user/pesanan_profile.dart';
 import 'package:bukulapak/pages/user/produk_anda_profile.dart';
+import 'package:bukulapak/pages/user/quiz_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/sign_in',
+      initialRoute: '/sign_up',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
         '/produkanda': (context) => const ProdukAndaProfilePage(),
         '/mapPage': (context) => const MapScreen(),
         // '/checkoutpage': (context) => const CheckoutPage(),
-        '/edit_profile': (context) => const EditProfilePage()
+        '/edit_profile': (context) => const EditProfilePage(),
+        '/quiz': (context) => const QuizPage()
       },
     );
   }
