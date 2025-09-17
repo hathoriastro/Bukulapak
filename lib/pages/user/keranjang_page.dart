@@ -227,11 +227,11 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         width: sizewidth * 120 / fullwidth,
                         height: sizeheight * 46 / fullheight,
                         child: GestureDetector(
-                          onTap: () {
-                            // cek apakah user sudah pilih item
+                          onTap: () async {
                             if (selectedId == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  backgroundColor: orange,
                                   content: Text(
                                     'Pilih item dulu sebelum checkout',
                                   ),
@@ -240,7 +240,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               return;
                             }
 
-                            // cari item sesuai selectedId yang belum isCheckout
+                            // cari item yang dipilih
                             KeranjangModel? activeItem;
                             try {
                               activeItem = _keranjangItems.firstWhere(
@@ -248,10 +248,9 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                     item.id == selectedId && !item.isCheckout,
                               );
                             } catch (e) {
-                              activeItem = null; // kalau tidak ketemu
+                              activeItem = null;
                             }
 
-                            // kalau item tidak ditemukan atau sudah habis → snackBar
                             if (activeItem == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -263,16 +262,21 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               return;
                             }
 
-                            // kalau lolos di sini → push ke halaman checkout
+                            //Update Firestore dulu biar hilang dari keranjang
+                            await _tambah.updateCheckoutInKeranjangById(
+                              activeItem.id,
+                              true,
+                            );
+
+                            // baru lanjut ke halaman Checkout
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CheckoutPage(
-                                  coverbook: activeItem!
-                                      .gambar, // pakai ! karena udah kita cek nullnya
-                                  text1: activeItem!.judul,
-                                  text2: activeItem!.kategori,
-                                  price: activeItem!.harga,
+                                  coverbook: activeItem!.gambar,
+                                  text1: activeItem.judul,
+                                  text2: activeItem.kategori,
+                                  price: activeItem.harga,
                                 ),
                               ),
                             );

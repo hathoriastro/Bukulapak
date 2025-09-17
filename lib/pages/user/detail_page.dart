@@ -249,54 +249,58 @@ class _DetailPageState extends State<DetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FilledButton(
-  onPressed: () async {
-    final alreadyInCart = await _tambah.checkKeranjang(widget.title);
+                onPressed: () async {
+                  final alreadyInCart = await _tambah.checkKeranjang(
+                    widget.title,
+                  );
 
-    if (alreadyInCart) {
-      // Produk sudah ada
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Produk sudah ada di keranjang"),
-          backgroundColor: Colors.orange,
-        ),
-      );
-    } else {
-      // Tambah baru
-      await _tambah.addKeranjang(
-        KeranjangModel(
-          judul: widget.title,
-          gambar: widget.imageProduct,
-          harga: widget.price,
-          kategori: widget.kategori,
-          id: '',
-          isCheckout: false
-        ),
-      );
+                  if (alreadyInCart) {
+                    // Produk sudah ada
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Produk sudah ada di keranjang"),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                  } else {
+                    // Tambah baru
+                    await _tambah.addKeranjang(
+                      KeranjangModel(
+                        judul: widget.title,
+                        gambar: widget.imageProduct,
+                        harga: widget.price,
+                        kategori: widget.kategori,
+                        id: '',
+                        isCheckout: false,
+                      ),
+                    );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Produk berhasil ditambahkan ke keranjang"),
-          backgroundColor: Colors.green,
-        ),
-      );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "Produk berhasil ditambahkan ke keranjang",
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => KeranjangPage()),
-      );
-    }
-  },
-  style: FilledButton.styleFrom(
-    backgroundColor: Colors.white,
-    side: BorderSide(color: lightBlue, width: 2),
-  ),
-  child: Text(
-    '+ Keranjang',
-    style: TextStyle(
-      fontWeight: FontWeight.w800,
-      color: lightBlue,
-    ),
-  ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => KeranjangPage()),
+                    );
+                  }
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: BorderSide(color: lightBlue, width: 2),
+                ),
+                child: Text(
+                  '+ Keranjang',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: lightBlue,
+                  ),
+                ),
               ),
 
               FilledButton(
@@ -309,7 +313,6 @@ class _DetailPageState extends State<DetailPage> {
                         text1: widget.title,
                         text2: widget.kategori,
                         price: widget.price,
-                        
                       ),
                     ),
                   );

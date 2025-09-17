@@ -178,17 +178,37 @@ Stream<List<TambahprodukModel>> getProdukByUser() {
         .delete();
   }
 
-  // stream keranjang biar UI auto refresh
-  Stream<List<KeranjangModel>> getKeranjang() {
-    final userId = _firebaseAuth.currentUser!.uid;
-    return _firestore
-        .collection('user')
-        .doc(userId)
-        .collection('tambah_keranjang')
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => KeranjangModel.fromFirestore(doc)).toList());
-  }
+Stream<List<KeranjangModel>> getKeranjang() {
+  final userId = _firebaseAuth.currentUser?.uid;
+  if (userId == null) return const Stream.empty();
+
+  return _firestore
+      .collection('user')
+      .doc(userId)
+      .collection('tambah_keranjang')
+      .where('isCheckout', isEqualTo: false)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => KeranjangModel.fromFirestore(doc)).toList());
+}
+
+  
+
+  // --- Update isCheckout di keranjang user berdasarkan document id
+  Future<void> updateCheckoutInKeranjangById(String docId, bool status) async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return;
+
+  final docRef = FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId)
+      .collection('tambah_keranjang')
+      .doc(docId);
+
+  await docRef.update({'isCheckout': status});
+}
+
+
 
 Future<bool> checkKeranjang(String judul) async {
   final userId = _firebaseAuth.currentUser!.uid;
