@@ -12,6 +12,7 @@ import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
 import 'package:bukulapak/pages/user/pesanan_profile.dart';
 import 'package:bukulapak/pages/user/produk_anda_profile.dart';
+import 'package:bukulapak/pages/user/quiz_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         // '/checkoutpage': (context) => const CheckoutPage(),
         '/edit_profile': (context) => const EditProfilePage(),
         '/lokasipage': (context) => const LokasiPage(),
+        '/quiz' : (context) => const QuizPage()
       },
     );
   }
