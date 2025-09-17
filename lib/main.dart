@@ -6,7 +6,6 @@ import 'package:bukulapak/pages/user/detail_page.dart';
 import 'package:bukulapak/pages/user/edit_profile.dart';
 import 'package:bukulapak/pages/user/favorit_profile.dart';
 import 'package:bukulapak/pages/user/home.dart';
-import 'package:bukulapak/pages/user/keranjang_page.dart';
 import 'package:bukulapak/pages/user/lokasi_page.dart';
 import 'package:bukulapak/pages/user/map_screen.dart';
 import 'package:bukulapak/pages/user/modul_page.dart';
@@ -50,7 +49,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/homepage',
+      initialRoute: '/sign_in',
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomePage(),

@@ -12,7 +12,6 @@ import 'package:bukulapak/components/user/add_button.dart';
 import 'package:flutter/services.dart';
 
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'dart:typed_data';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -28,7 +27,8 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
   String? _selectedKategoriJual; // Gratis / Berbayar
-String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
+  String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
+  
 
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
@@ -154,14 +154,13 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
             ),
 
             if (_selectedKategoriJual == 'Berbayar')
-            
               customInputField(
                 context: context,
                 title: 'Harga',
                 labelText: '100.000',
                 controller: _hargaController,
                 keyboardType: TextInputType.number,
-  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
 
             customInputField(
@@ -237,7 +236,7 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        _imageService.imageUrl??"",
+                        _imageService.imageUrl ?? "",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -266,7 +265,6 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
                       await _videoPicker.pickVideo();
                       if (_videoPicker.videoUrl != null) {
                         await generateThumbnail(_videoPicker.videoUrl!);
-                        
                       }
                     },
                   )
@@ -283,18 +281,35 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
                     ),
                   ),
 
-
             // Tombol Unggah Produk
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () async {
+                if (_deskripsiController.text.trim().isEmpty ||
+                    _isbnController.text.trim().isEmpty ||
+                    _penerbitController.text.trim().isEmpty ||
+                    _judulController.text.trim().isEmpty ||
+                    _imageService.imageUrl == null ||
+                    _selectedKategoriBuku == null ||
+                    _selectedKategoriJual == null ||
+                    (_selectedKategoriJual == 'Berbayar' &&
+                        _hargaController.text.trim().isEmpty)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Kamu belum mengisi semua form"),
+                      backgroundColor: lightBlue,
+                    ),
+                  );
+                  return;
+                }
+
                 final User? user = FirebaseAuth.instance.currentUser;
-final String uid = user?.uid ?? '';
+                final String uid = user?.uid ?? '';
                 TambahprodukModel tambahproduk = TambahprodukModel(
-                 Judul: _judulController.text,
+                  Judul: _judulController.text,
                   Penerbit: _penerbitController.text,
                   ISBN: _isbnController.text,
-                  KategoriBuku: _selectedKategoriBuku?? '',
+                  KategoriBuku: _selectedKategoriBuku ?? '',
                   KategoriJual: _selectedKategoriJual ?? '',
                   Gambar: _imageService.imageUrl ?? '',
                   Video: _videoPicker.videoUrl ?? '',
@@ -304,13 +319,9 @@ final String uid = user?.uid ?? '';
                   ownerId: uid,
                 );
 
-                await _addProduct.addProduct(
-                  tambahproduk
-                );
+                await _addProduct.addProduct(tambahproduk);
 
-                await _addProduct.addProductAll(
-                  tambahproduk
-                );
+                // await _addProduct.addProductAll(tambahproduk);
 
                 Navigator.pushNamed(context, '/homepage');
               },
@@ -349,7 +360,7 @@ Widget customInputField({
   required String labelText, // Dynamic label text for TextField
   required TextEditingController controller, // Dynamic controller
   TextInputType keyboardType = TextInputType.text, // default text
-  List<TextInputFormatter>? inputFormatters,  
+  List<TextInputFormatter>? inputFormatters,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
@@ -397,7 +408,7 @@ Widget customInputField({
             filled: true,
           ),
           keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
+          inputFormatters: inputFormatters,
         ),
       ),
     ],

@@ -105,7 +105,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         });
                       },
                       onRemove: () async {
-                        await _tambah.removeKeranjang(item.id);
+                        await _tambah.removeKeranjang(item.id!);
                         if (selectedId == item.id) {
                           setState(() {
                             selectedId = null;
@@ -263,10 +263,10 @@ class _KeranjangPageState extends State<KeranjangPage> {
                             }
 
                             //Update Firestore dulu biar hilang dari keranjang
-                            await _tambah.updateCheckoutInKeranjangById(
-                              activeItem.id,
-                              true,
-                            );
+                            // await _tambah.updateCheckoutInKeranjangById(
+                            //   activeItem.id,
+                            //   true,
+                            // );
 
                             // baru lanjut ke halaman Checkout
                             Navigator.push(

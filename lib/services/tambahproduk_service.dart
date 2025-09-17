@@ -8,54 +8,45 @@ class TambahprodukService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  
-  Future<void> addProduct(TambahprodukModel addProduct) async {
-    try {
-      final docRef = _firestore
-          .collection('user')
-          .doc(_firebaseAuth.currentUser?.uid)
-          .collection('tambah_produk')
-          .doc();
+Future<String?> addProduct(TambahprodukModel addProduct) async {
+  try {
+    // Generate ID di collection produk
+    final docRef = _firestore.collection('produk').doc();
+    final String productId = docRef.id;
 
-      final docSnapshot = await docRef.get();
+    final data = {
+      ...addProduct.toMap(),
+      'id': productId,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
 
-      if (docSnapshot.exists) {
-        
-        await docRef.update(addProduct.toMap());
-      } else {
-        //timestamp
-        await docRef.set({
-          ...addProduct.toMap(),
-          'timestamp': FieldValue.serverTimestamp(),
-        });
-      }
-    } catch (e) {
-      print('Error menambah produk: $e');
-    }
+    await docRef.set(data);
+
+    return productId; // kembalikan id produk untuk dipakai di keranjang
+  } catch (e) {
+    print('Error menambah produk: $e');
+    return null;
   }
+}
+Future<void> addKeranjang(KeranjangModel addProduct) async {
+  try {
+    final docRef = _firestore
+        .collection('user')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .collection('tambah_keranjang')
+        .doc(); // auto generate id keranjang
 
-
-  Future<void> addProductAll(TambahprodukModel addProduct) async {
-    try {
-      final docRef = _firestore
-          .collection('produk')
-          .doc();
-
-      final docSnapshot = await docRef.get();
-
-      if (docSnapshot.exists) {
-
-        await docRef.update(addProduct.toMap());
-      } else {
-        await docRef.set({
-          ...addProduct.toMap(),
-          'timestamp': FieldValue.serverTimestamp(),
-        });
-      }
-    } catch (e) {
-      print('Error menambah produk: $e');
-    }
+    await docRef.set({
+      'id': docRef.id, // id keranjang
+      ...addProduct.toMap(),
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  } catch (e) {
+    print('Error menambah keranjang: $e');
   }
+}
+
+
 
    
 Stream<List<TambahprodukModel>> getProdukByUser() {
@@ -128,6 +119,7 @@ Stream<List<TambahprodukModel>> getProdukByUser() {
     Stream<List<FavoriteproductModel>> getFavoriteProduct() {
     return _firestore
         .collection('user')
+        
         .doc(_firebaseAuth.currentUser?.uid)
         .collection('favorite')
         .orderBy('timestamp', descending: true)
@@ -143,40 +135,45 @@ Stream<List<TambahprodukModel>> getProdukByUser() {
 
 
     //KERANJANG
-    Future<void> addKeranjang(KeranjangModel addProduct) async {
+//     Future<void> addKeranjang(KeranjangModel addProduct) async {
+//   try {
+//     final docRef = _firestore
+//         .collection('user')
+//         .doc(_firebaseAuth.currentUser?.uid)
+//         .collection('tambah_keranjang')
+//         .doc();
+
+//     final docSnapshot = await docRef.get();
+
+//     if (docSnapshot.exists) {
+//       await docRef.update(addProduct.toMap());
+//     } else {
+//       await docRef.set({
+//         ...addProduct.toMap(),
+//         'timestamp': FieldValue.serverTimestamp(),
+//       });
+//     }
+//   } catch (e) {
+//     print('Error menambah produk: $e');
+//   }
+// }
+
+Future<void> removeKeranjang(String keranjangId) async {
   try {
-    final docRef = _firestore
-        .collection('user')
-        .doc(_firebaseAuth.currentUser?.uid)
-        .collection('tambah_keranjang')
-        .doc();
-
-    final docSnapshot = await docRef.get();
-
-    if (docSnapshot.exists) {
-      await docRef.update(addProduct.toMap());
-    } else {
-      await docRef.set({
-        ...addProduct.toMap(),
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    }
-  } catch (e) {
-    print('Error menambah produk: $e');
-  }
-}
-
-
-  Future<void> removeKeranjang(String id) async {
-    final userId = _firebaseAuth.currentUser!.uid;
+    final userId = _firebaseAuth.currentUser?.uid;
+    if (userId == null) return;
 
     await _firestore
         .collection('user')
         .doc(userId)
         .collection('tambah_keranjang')
-        .doc(id)
+        .doc(keranjangId) // id dokumen keranjang
         .delete();
+  } catch (e) {
+    print('Error menghapus keranjang: $e');
   }
+}
+
 
 Stream<List<KeranjangModel>> getKeranjang() {
   final userId = _firebaseAuth.currentUser?.uid;
@@ -222,18 +219,24 @@ Future<bool> checkKeranjang(String judul) async {
 
   return query.docs.isNotEmpty; // true kalau sudah ada
 }
+Future<void> checkoutByProductId(String productId) async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  if (uid == null) return;
 
-Future<void> updateCheckoutByJudul(String judul, bool status) async {
-  // misalnya kamu pakai Firestore:
   final query = await FirebaseFirestore.instance
-      .collection('produk')
-      .where('judul', isEqualTo: judul)
+      .collection('user')
+      .doc(uid)
+      .collection('tambah_keranjang')
+      .where('productId', isEqualTo: productId)
       .get();
 
   for (var doc in query.docs) {
-    await doc.reference.update({'isCheckout': status});
+    await doc.reference.update({'isCheckout': true});
   }
 }
+
+
+
 
 }
 

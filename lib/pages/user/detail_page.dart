@@ -265,15 +265,17 @@ class _DetailPageState extends State<DetailPage> {
                   } else {
                     // Tambah baru
                     await _tambah.addKeranjang(
-                      KeranjangModel(
-                        judul: widget.title,
-                        gambar: widget.imageProduct,
-                        harga: widget.price,
-                        kategori: widget.kategori,
-                        id: '',
-                        isCheckout: false,
-                      ),
-                    );
+  KeranjangModel(
+    productId: "id-produk-asli", // misalnya dari produk Firestore
+    judul: widget.title,
+    gambar: widget.imageProduct,
+    harga: widget.price,
+    kategori: widget.kategori,
+    isCheckout: false,
+    
+  ),
+);
+
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

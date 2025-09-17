@@ -68,7 +68,7 @@ class ProdukAndaProfilePage extends StatelessWidget {
                     coverbook: produk.Gambar,
                     text1: produk.Judul,
                     text2: produk.KategoriBuku,
-                    price: produk.Harga.toLowerCase() == 'gratis'? 'GRATIS' : 'Rp${produk.Harga}',
+                    price: produk.Harga.toLowerCase() == ''? 'GRATIS' : 'Rp${produk.Harga}',
                   );
                 }).toList(),
               ),
