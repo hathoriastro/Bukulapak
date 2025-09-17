@@ -83,9 +83,17 @@ class KeranjangCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              keranjangItem.harga,
+                              keranjangItem.isCheckout
+                                  ? 'HABIS'
+                                  : '${keranjangItem.harga}',
                               style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.black,
+                                color: keranjangItem.isCheckout
+                                    ? Colors
+                                          .red // warna kalau habis
+                                    : (isSelected
+                                          ? Colors.white
+                                          : Colors
+                                                .black), // warna normal tergantung selected
                               ),
                             ),
                           ],
@@ -110,9 +118,8 @@ class KeranjangCard extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
 }
-

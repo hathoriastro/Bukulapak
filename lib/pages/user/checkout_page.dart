@@ -35,7 +35,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final sizewidth = size.width;
     final sizeheight = size.height;
+    final fullheight = 956;
+    final fullwidth = 440;
 
     String angkaBersih = widget.price.replaceAll(RegExp(r'[^0-9]'), '');
     int harga = angkaBersih.isEmpty ? 0 : int.parse(angkaBersih);
@@ -312,19 +315,88 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           );
 
                           if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Berhasil dipesan')),
+                          showDialog(
+                            context: context,
+                            builder: (_) => Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: SizedBox(
+                                width: sizewidth * 330 / fullwidth,
+                                height: sizeheight * 330 / fullheight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, 
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // horizontal tengah
+                                  children: [
+                                    // Gambar
+                                    Image.asset(
+                                      'assets/images/paket_pesan.png',
+                                      height: sizeheight * 170 / fullheight,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    const SizedBox(
+                                      height: 14,
+                                    ), 
+                                    
+                                    Text(
+                                      "Pesananmu Berhasil Dibuat!",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: orange,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(
+                                      height: 14,
+                                    ), 
+                                    GestureDetector(
+                                      onTap: () async {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomePage(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 130,
+                                        height: 38,
+                                        decoration: BoxDecoration(
+                                          color: lightBlue,
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            'OKE',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           );
 
-                          Future.delayed(const Duration(seconds: 1), () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                              (route) => false,
-                            );
-                          });
+                          // Future.delayed(const Duration(seconds: 1), () {
+                          //   Navigator.pushAndRemoveUntil(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const HomePage(),
+                          //     ),
+                          //     (route) => false,
+                          //   );
+                          // });
                         },
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.orange,

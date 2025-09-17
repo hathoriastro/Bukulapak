@@ -8,7 +8,6 @@ class TambahprodukService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-
   
   Future<void> addProduct(TambahprodukModel addProduct) async {
     try {
@@ -59,25 +58,28 @@ class TambahprodukService {
   }
 
    
-  Stream<List<TambahprodukModel>> getProdukByUser() {
-    return _firestore
-        .collection('user')
-        .doc(_firebaseAuth.currentUser?.uid)
-        .collection('tambah_produk')
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => TambahprodukModel.fromFirestore(doc))
-              .toList();
-        });
-  }
+Stream<List<TambahprodukModel>> getProdukByUser() {
+  final user = FirebaseAuth.instance.currentUser;
+
+  return _firestore
+      .collection('produk') // koleksi produk semua user
+      .where('ownerId', isEqualTo: user?.uid) // filter hanya produk user ini
+      // .orderBy('timestamp', descending: true)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => TambahprodukModel.fromFirestore(doc)).toList());
+}
+
+
+
   
 
 
   Stream<List<TambahprodukModel>> getAllProduk() {
     return _firestore
-        .collectionGroup('produk')
+        .collection('produk')
+        .where( "isCheckout", isEqualTo: false)
+        // .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
           return snapshot.docs
@@ -89,7 +91,8 @@ class TambahprodukService {
   Stream<List<TambahprodukModel>> getAllProdukbyCategory() {
     return _firestore
         .collection('produk')
-        .where('harga', isEqualTo: "")
+        .where('harga', isEqualTo: "",)
+        .where('isCheckout', isEqualTo: false)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
@@ -175,17 +178,37 @@ class TambahprodukService {
         .delete();
   }
 
-  // stream keranjang biar UI auto refresh
-  Stream<List<KeranjangModel>> getKeranjang() {
-    final userId = _firebaseAuth.currentUser!.uid;
-    return _firestore
-        .collection('user')
-        .doc(userId)
-        .collection('tambah_keranjang')
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => KeranjangModel.fromFirestore(doc)).toList());
-  }
+Stream<List<KeranjangModel>> getKeranjang() {
+  final userId = _firebaseAuth.currentUser?.uid;
+  if (userId == null) return const Stream.empty();
+
+  return _firestore
+      .collection('user')
+      .doc(userId)
+      .collection('tambah_keranjang')
+      .where('isCheckout', isEqualTo: false)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => KeranjangModel.fromFirestore(doc)).toList());
+}
+
+  
+
+  // --- Update isCheckout di keranjang user berdasarkan document id
+  Future<void> updateCheckoutInKeranjangById(String docId, bool status) async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return;
+
+  final docRef = FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId)
+      .collection('tambah_keranjang')
+      .doc(docId);
+
+  await docRef.update({'isCheckout': status});
+}
+
+
 
 Future<bool> checkKeranjang(String judul) async {
   final userId = _firebaseAuth.currentUser!.uid;
