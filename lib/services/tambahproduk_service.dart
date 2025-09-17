@@ -10,13 +10,21 @@ class TambahprodukService {
 
 
   Future<String?> addProduct(TambahprodukModel addProduct) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    final userId = currentUser?.uid;
+    final userDoc = await _firestore.collection('user').doc(userId).get();
+    final lokasiUser = userDoc.data()?['provinsi'] ?? '';
+
     try {
       // Generate ID di collection produk
       final docRef = _firestore.collection('produk').doc();
       final String productId = docRef.id;
 
+
       final data = {
         ...addProduct.toMap(),
+        'lokasi_penjual': lokasiUser,
         'id': productId,
         'timestamp': FieldValue.serverTimestamp(),
       };
@@ -30,26 +38,6 @@ class TambahprodukService {
     }
   }
 
-  Future<void> addProductAll(TambahprodukModel addProduct) async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) return;
-
-    final userId = currentUser.uid;
-    final userDoc = await _firestore.collection('user').doc(userId).get();
-    final lokasiUser = userDoc.data()?['provinsi'] ?? '';
-
-    try {
-
-      await _firestore.collection('produk').add({
-        ...addProduct.toMap(),
-        'ownerId': userId,
-        'lokasi_penjual': lokasiUser,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      print('Error menambah produk: $e');
-    }
-  }
 
   Future<void> addKeranjang(KeranjangModel addProduct) async {
     try {
@@ -91,7 +79,6 @@ Stream<List<TambahprodukModel>> getProdukByUser() {
     return _firestore
         .collection('produk')
         .where( "isCheckout", isEqualTo: false)
-        // .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
           return snapshot.docs

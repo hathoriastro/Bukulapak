@@ -307,9 +307,7 @@ final String uid = user?.uid ?? '';
                   tambahproduk
                 );
 
-                await _addProduct.addProductAll(
-                  tambahproduk
-                );
+
 
                 Navigator.pushNamed(context, '/homepage');
               },
