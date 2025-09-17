@@ -1,4 +1,6 @@
 import 'package:bukulapak/components/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LokasiPage extends StatelessWidget {
@@ -57,15 +59,25 @@ class LokasiPage extends StatelessWidget {
     ],
   };
 
+  Future<void> saveProvinsiToFirestore(String provinsiDipilih) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+
+
+    await firestore.collection('user').doc(FirebaseAuth.instance.currentUser!.uid).set({
+      'provinsi': provinsiDipilih,
+    },
+        SetOptions(merge: true));
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back),
         ),
         title: const Text(
           "Pilih Lokasi",
@@ -84,7 +96,6 @@ class LokasiPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Judul Pulau
                 Text(
                   pulau,
                   style: const TextStyle(
@@ -94,38 +105,45 @@ class LokasiPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-
-                // Scrollable list provinsi per pulau
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(provinsiList.length, (index) {
                       final provinsi = provinsiList[index];
-                      final isEven = index % 2 == 0;
-                      final color = isEven ? darkBlue : darkBlue;
 
-                      return Container(
-                        margin: const EdgeInsets.only(right: 12),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              blurRadius: 6,
-                              offset: const Offset(0, 4),
+                      return GestureDetector(
+                        onTap: () async {
+                          // 🟢 kirim provinsi yang diklik
+                          await saveProvinsiToFirestore(provinsi);
+
+                          // Optional: kasih feedback
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('$provinsi disimpan')),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            color: darkBlue,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 6,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            provinsi,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                        child: Text(
-                          provinsi,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       );

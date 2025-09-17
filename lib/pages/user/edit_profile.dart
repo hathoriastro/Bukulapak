@@ -85,7 +85,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ? Timestamp.fromDate(_birthDate!)
             : null,
       }, SetOptions(merge: true));
-
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Profil berhasil diperbarui!")),
@@ -285,7 +284,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                _isSaving ? null : _saveProfile;
+                _isSaving ? null : _saveProfile();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: orange,

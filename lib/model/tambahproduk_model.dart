@@ -14,6 +14,7 @@ class TambahprodukModel {
   final Timestamp? timestamp;
   final bool isCheckout; 
   final String ownerId;
+  final String? lokasiPenjual;
   TambahprodukModel({
     required this.Judul,
     required this.Penerbit,
@@ -26,7 +27,8 @@ class TambahprodukModel {
     required this.Deskripsi,
     required this.timestamp,
     this.isCheckout = false,
-    required this.ownerId
+    required this.ownerId,
+    this.lokasiPenjual
   });
 
   /// ambil data value dari firestore
@@ -48,6 +50,7 @@ final String uid = user?.uid ?? '';
       timestamp: data['timestamp'],
        isCheckout: data['isCheckout'] ?? false,
        ownerId: data['ownerId'] ?? '',
+      lokasiPenjual: data['lokasi_penjual'] as String?,
     );
   }
 
@@ -65,7 +68,8 @@ final String uid = user?.uid ?? '';
       'deskripsi': Deskripsi,
       'timestamp': timestamp,
       'isCheckout' : isCheckout,
-      'ownerId' : ownerId
+      'ownerId' : ownerId,
+      'lokasi_penjual' : lokasiPenjual
     };
   }
 }

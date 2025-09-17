@@ -36,29 +36,29 @@ class TambahprodukService {
 
 
   Future<void> addProductAll(TambahprodukModel addProduct) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    final userId = currentUser.uid;
+    final userDoc = await _firestore.collection('user').doc(userId).get();
+    final lokasiUser = userDoc.data()?['provinsi'] ?? '';
+
     try {
-      final docRef = _firestore
-          .collection('produk')
-          .doc();
 
-      final docSnapshot = await docRef.get();
-
-      if (docSnapshot.exists) {
-
-        await docRef.update(addProduct.toMap());
-      } else {
-        await docRef.set({
-          ...addProduct.toMap(),
-          'timestamp': FieldValue.serverTimestamp(),
-        });
-      }
+      await _firestore.collection('produk').add({
+        ...addProduct.toMap(),
+        'ownerId': userId,
+        'lokasi_penjual': lokasiUser,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
     } catch (e) {
       print('Error menambah produk: $e');
     }
   }
 
-   
-Stream<List<TambahprodukModel>> getProdukByUser() {
+
+
+  Stream<List<TambahprodukModel>> getProdukByUser() {
   final user = FirebaseAuth.instance.currentUser;
 
   return _firestore

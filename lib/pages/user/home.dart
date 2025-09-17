@@ -7,6 +7,7 @@ import 'package:bukulapak/model/tambahproduk_model.dart';
 import 'package:bukulapak/pages/user/category_page.dart';
 import 'package:bukulapak/pages/user/list_product_page.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -25,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     final sizeheight = size.height;
     final fullheight = 956;
     final fullwidth = 440;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -194,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                         ).format(produk.timestamp!.toDate())
                                       : 'Jam Kosong',
                                   price:'GRATIS',
-                                  location: "Malang",
+                                  location: produk.lokasiPenjual?? '',
                                   title: produk.Judul,
                                   kategori: produk.KategoriBuku,
                                   deskripsi: produk.Deskripsi,
@@ -295,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                       produk.KategoriJual.toLowerCase() == 'gratis'
                                       ? 'GRATIS'
                                       : 'Rp${produk.Harga}',
-                                  location: "kota malang",
+                                  location: produk.lokasiPenjual?? '',
                                   title: produk.Judul,
                                   deskripsi: produk.Deskripsi,
                                   kategori: produk.KategoriBuku,

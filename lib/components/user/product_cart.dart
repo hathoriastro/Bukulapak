@@ -1,37 +1,46 @@
-
 import 'package:badges/badges.dart' as badges;
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/pages/user/keranjang_page.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/keranjang_model.dart';
 
+class ShoppingCart extends StatelessWidget {
+  final TambahprodukService _tambah = TambahprodukService();
 
-class ShoppingCart extends StatefulWidget {
-  const ShoppingCart({super.key});
+  ShoppingCart({super.key});
 
-  @override
-  State<ShoppingCart> createState() => _ShoppingCartState();
-}
-
-class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => KeranjangPage()),
-);
+    return StreamBuilder<List<KeranjangModel>>(
+      stream: _tambah.getKeranjang(),
+      builder: (context, snapshot) {
+        int itemCount = 0;
+        if (snapshot.hasData) {
+          itemCount = snapshot.data!.length;
+        }
 
-      },child:  badges.Badge(
-              position: badges.BadgePosition.topEnd(top: -12, end: -10),
-              badgeStyle: badges.BadgeStyle(badgeColor: darkBlue),
-              badgeContent: Text(
-                '2',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-              child: Image.asset('assets/images/cart.png', width: 28),
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const KeranjangPage()),
+            );
+          },
+          child: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -12, end: -10),
+            badgeStyle: badges.BadgeStyle(
+              badgeColor: darkBlue,
             ),
+            badgeContent: Text(
+              itemCount.toString(), // <-- jumlah item keranjang
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+            child: Image.asset('assets/images/cart.png', width: 28),
+          ),
+        );
+      },
     );
   }
 }

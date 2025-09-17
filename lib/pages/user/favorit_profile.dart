@@ -70,7 +70,7 @@ class _FavoritProfilePageState extends State<FavoritProfilePage> {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.75,
+              childAspectRatio: 0.65,
               crossAxisSpacing: 5,
               mainAxisSpacing: 15,
             ),

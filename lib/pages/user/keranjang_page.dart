@@ -63,6 +63,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
     final fullwidth = 440;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
