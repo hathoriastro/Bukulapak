@@ -5,8 +5,6 @@ import 'package:bukulapak/pages/user/checkout_page.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/voucher_services.dart';
-
 class KeranjangPage extends StatefulWidget {
   const KeranjangPage({super.key});
 
@@ -18,8 +16,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
   bool applyClicked = false;
   String? selectedId;
   int selectedPrice = 0;
-  final TextEditingController _couponController = TextEditingController();
-
 
   List<KeranjangModel> _keranjangItems = [];
 
@@ -131,6 +127,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // kupon
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: sizeheight * 81 / fullheight,
@@ -152,30 +149,13 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   children: [
                     Image.asset('assets/images/price-tag.png'),
                     const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: _couponController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your coupon',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
+                    Text('Put Your Coupon', style: TextStyle(color: softgray)),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () async {
+                      onTap: () {
                         setState(() {
                           applyClicked = !applyClicked;
                         });
-
-                        if(_couponController != null){
-                          VoucherServices voucherServices = VoucherServices();
-                          await voucherServices.applyVoucher(_couponController.text);
-                        }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Masukkan kode kupon dulu')),
-                        );
-
                       },
                       child: Container(
                         width: sizewidth * 88 / fullwidth,
@@ -247,11 +227,11 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         width: sizewidth * 120 / fullwidth,
                         height: sizeheight * 46 / fullheight,
                         child: GestureDetector(
-                          onTap: () {
-                            // cek apakah user sudah pilih item
+                          onTap: () async {
                             if (selectedId == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  backgroundColor: orange,
                                   content: Text(
                                     'Pilih item dulu sebelum checkout',
                                   ),
@@ -260,7 +240,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               return;
                             }
 
-                            // cari item sesuai selectedId yang belum isCheckout
+                            // cari item yang dipilih
                             KeranjangModel? activeItem;
                             try {
                               activeItem = _keranjangItems.firstWhere(
@@ -270,7 +250,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                             } catch (e) {
                               activeItem = null;
                             }
-
 
                             if (activeItem == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -283,16 +262,21 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               return;
                             }
 
+                            //Update Firestore dulu biar hilang dari keranjang
+                            await _tambah.updateCheckoutInKeranjangById(
+                              activeItem.id,
+                              true,
+                            );
 
+                            // baru lanjut ke halaman Checkout
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CheckoutPage(
-                                  coverbook: activeItem!
-                                      .gambar,
-                                  text1: activeItem!.judul,
-                                  text2: activeItem!.kategori,
-                                  price: activeItem!.harga,
+                                  coverbook: activeItem!.gambar,
+                                  text1: activeItem.judul,
+                                  text2: activeItem.kategori,
+                                  price: activeItem.harga,
                                 ),
                               ),
                             );

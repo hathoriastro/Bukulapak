@@ -1,5 +1,7 @@
 import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/produk_anda_card.dart';
+import 'package:bukulapak/model/tambahproduk_model.dart';
+import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:flutter/material.dart';
 
 class ProdukAndaProfilePage extends StatelessWidget {
@@ -39,40 +41,39 @@ class ProdukAndaProfilePage extends StatelessWidget {
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-        child: Column(
-          children: const [
-            ProdukAndaCardVertical(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Buku 1',
-              text2: 'Penulis A',
-              price: 'Rp50.000',
-            ),
-            ProdukAndaCardVertical(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Buku 2',
-              text2: 'Penulis B',
-              price: 'Rp60.000',
-            ),
-            ProdukAndaCardVertical(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Buku 3',
-              text2: 'Penulis C',
-              price: 'Rp70.000',
-            ),
-            ProdukAndaCardVertical(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Buku 4',
-              text2: 'Penulis D',
-              price: 'Rp80.000',
-            ),
-            ProdukAndaCardVertical(
-              coverbook: 'assets/images/logo_bukulapak.png',
-              text1: 'Buku 5',
-              text2: 'Penulis E',
-              price: 'Rp90.000',
-            ),
-          ],
+        scrollDirection: Axis.vertical,
+        child: StreamBuilder<List<TambahprodukModel>>(
+          stream: TambahprodukService().getProdukByUser() ,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Container(
+                height: 190,
+                child: Center(
+                  child: Text("Anda Belum Menjual Buku"),
+                ),
+              );
+            }
+
+            final produkList = snapshot.data!;
+
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              child: Column(
+                children: produkList.map((produk) {
+                  return ProdukAndaCardVertical(
+                    coverbook: produk.Gambar,
+                    text1: produk.Judul,
+                    text2: produk.KategoriBuku,
+                    price: produk.Harga.toLowerCase() == 'gratis'? 'GRATIS' : 'Rp${produk.Harga}',
+                  );
+                }).toList(),
+              ),
+            );
+          },
         ),
       ),
     );

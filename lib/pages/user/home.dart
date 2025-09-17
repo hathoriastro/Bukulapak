@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                                   price:'GRATIS',
                                   location: "Malang",
                                   title: produk.Judul,
-                                  kategori: produk.Kategori,
+                                  kategori: produk.KategoriBuku,
                                   deskripsi: produk.Deskripsi,
                                 );
                               }).toList(),
@@ -292,13 +292,13 @@ class _HomePageState extends State<HomePage> {
                                         ).format(produk.timestamp!.toDate())
                                       : 'Jam Kosong',
                                   price:
-                                      produk.Kategori.toLowerCase() == 'gratis'
+                                      produk.KategoriJual.toLowerCase() == 'gratis'
                                       ? 'GRATIS'
                                       : 'Rp${produk.Harga}',
                                   location: "kota malang",
                                   title: produk.Judul,
                                   deskripsi: produk.Deskripsi,
-                                  kategori: produk.Kategori,
+                                  kategori: produk.KategoriBuku,
                                 );
                               }).toList(),
                             );

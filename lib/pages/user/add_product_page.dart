@@ -5,6 +5,7 @@ import 'package:bukulapak/services/image_service.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
 import 'package:bukulapak/services/video_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bukulapak/components/user/option_button.dart';
 import 'package:bukulapak/components/user/add_button.dart';
@@ -26,7 +27,9 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
-  String? _selectedOption;
+  String? _selectedKategoriJual; // Gratis / Berbayar
+String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
+
   final ImageService _imageService = ImageService();
   final VideoPicker _videoPicker = VideoPicker();
   TambahprodukService _addProduct = TambahprodukService();
@@ -144,13 +147,13 @@ class _AddProductPageState extends State<AddProductPage> {
                 option2: 'Berbayar',
                 onChanged: (value) {
                   setState(() {
-                    _selectedOption = value;
+                    _selectedKategoriJual = value;
                   });
                 },
               ),
             ),
 
-            if (_selectedOption == 'Berbayar')
+            if (_selectedKategoriJual == 'Berbayar')
             
               customInputField(
                 context: context,
@@ -193,7 +196,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 option4: 'SD',
                 onChanged: (value) {
                   setState(() {
-                    _selectedOption = value;
+                    _selectedKategoriBuku = value;
                   });
                 },
               ),
@@ -285,16 +288,20 @@ class _AddProductPageState extends State<AddProductPage> {
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () async {
+                final User? user = FirebaseAuth.instance.currentUser;
+final String uid = user?.uid ?? '';
                 TambahprodukModel tambahproduk = TambahprodukModel(
                  Judul: _judulController.text,
                   Penerbit: _penerbitController.text,
                   ISBN: _isbnController.text,
-                  Kategori: _selectedOption ?? '',
+                  KategoriBuku: _selectedKategoriBuku?? '',
+                  KategoriJual: _selectedKategoriJual ?? '',
                   Gambar: _imageService.imageUrl ?? '',
                   Video: _videoPicker.videoUrl ?? '',
                   Harga: _hargaController.text,
                   Deskripsi: _deskripsiController.text,
                   timestamp: Timestamp.fromDate(DateTime.now()),
+                  ownerId: uid,
                 );
 
                 await _addProduct.addProduct(

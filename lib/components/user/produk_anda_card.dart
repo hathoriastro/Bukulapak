@@ -54,7 +54,7 @@ class _ProdukAndaCardVerticalState extends State<ProdukAndaCardVertical> {
                     // COVER PRODUCT
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
+                      child: Image.network(
                         widget.coverbook,
                         fit: BoxFit.cover,
                         width: sizewidth * 49 / fullwidth,
