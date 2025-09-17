@@ -193,13 +193,88 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   children: [
                     Image.asset('assets/images/price-tag.png'),
                     const SizedBox(width: 10),
-                    Text('Put Your Coupon', style: TextStyle(color: softgray)),
-                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: _couponController,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your coupon',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          applyClicked = !applyClicked;
-                        });
+                      onTap: () async {
+                        if (_couponController.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Masukkan kode kupon dulu')),
+                          );
+                          return;
+                        }
+
+                        if (selectedId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Pilih produk dulu sebelum apply voucher')),
+                          );
+                          return;
+                        }
+
+                        try {
+                          // Cari item yang dipilih
+                          final selectedItem = _keranjangItems.firstWhere(
+                                  (item) => item.id == selectedId,
+                              orElse: () => throw Exception('Item tidak ditemukan')
+                          );
+
+                          // Log detail produk
+                          print('=== PRODUK DIPILIH ===');
+                          print('Document ID : ${selectedItem.id}');
+                          print('Judul       : ${selectedItem.judul}');
+                          print('Harga       : ${selectedItem.harga}');
+                          print('Kategori    : ${selectedItem.kategori}');
+                          print('======================');
+
+                          // Apply voucher
+                          final newPrice = await voucherServices.applyVoucher(
+                            code: _couponController.text.trim(),
+                            productID: selectedItem.judul,
+                          );
+
+                          print("Harga baru setelah diskon: $newPrice");
+
+                          // Update UI dengan harga baru
+                          setState(() {
+                            discountedPrice = newPrice.toDouble();
+                            applyClicked = true;
+                          });
+
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text(
+                                'Voucher berhasil diterapkan! Harga baru: ${newPrice == 0 ? "GRATIS" : "Rp${newPrice.toString()}"}',
+                              ),
+                            ),
+                          );
+
+                        } catch (e) {
+                          print("Error saat apply voucher: $e");
+
+                          // Reset state jika error
+                          setState(() {
+                            applyClicked = false;
+                            discountedPrice = null;
+                          });
+
+                          // Show error message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text('Error: ${e.toString()}'),
+                            ),
+                          );
+                        }
                       },
                       child: Container(
                         width: sizewidth * 88 / fullwidth,
