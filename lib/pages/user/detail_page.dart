@@ -270,7 +270,7 @@ class _DetailPageState extends State<DetailPage> {
                         gambar: widget.imageProduct,
                         harga: widget.price,
                         kategori: widget.kategori,
-                        id: '',
+                        id: widget.title,
                         isCheckout: false,
                       ),
                     );

@@ -36,7 +36,8 @@ class KeranjangModel {
     'gambar': gambar,
     'harga': harga,
     'kategori': kategori,
-     'isCheckout' : isCheckout
+     'isCheckout' : isCheckout,
+    'id' : id
   };
 }
 
