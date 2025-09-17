@@ -2,6 +2,8 @@ import 'package:bukulapak/components/colors.dart';
 import 'package:bukulapak/components/user/pesanan_card.dart';
 import 'package:bukulapak/pages/user/home.dart';
 import 'package:bukulapak/services/tambahproduk_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum OpsiPengiriman { JNE, LionParcel, SiCepat }
@@ -308,11 +310,49 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             _loading = true;
                           });
 
-                          // Update field isCheckout di database
-                          await _service.updateCheckoutByJudul(
-                            widget.text1,
-                            true,
-                          );
+                          // Update keranjang berdasarkan productId
+        // await _service.checkoutByProductId(widget.productId);
+      
+        // cari dokumen keranjang
+        final keranjangRef = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('tambah_keranjang')
+            .where('judul', isEqualTo: widget.text1) // filter pakai judul / unik field lain
+            .get();
+
+            if (keranjangRef.docs.isNotEmpty) {
+  final docId = keranjangRef.docs.first.id;
+
+  // update status di keranjang
+  await _service.updateCheckoutInKeranjangById(docId, true);
+
+  // cari produk dengan judul yang sama lalu update juga
+  final produkRef = await FirebaseFirestore.instance
+      .collection('produk')
+      .where('judul', isEqualTo: widget.text1)
+      .get();
+
+  for (var doc in produkRef.docs) {
+    await doc.reference.update({'isCheckout': true});
+  }
+}
+
+
+//         if (keranjangRef.docs.isNotEmpty) {
+//           // ambil id dokumen keranjang
+//           final docId = keranjangRef.docs.first.id;
+
+//           // update status checkout pakai service
+//           await _service.checkoutByProductId(docId);
+//         }
+
+// if (keranjangRef.docs.isNotEmpty) {
+//   final docId = keranjangRef.docs.first.id;
+//   await _service.updateCheckoutInKeranjangById(docId, true);
+// }
+
+
 
                           if (!mounted) return;
                           showDialog(

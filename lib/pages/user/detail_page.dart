@@ -266,11 +266,12 @@ class _DetailPageState extends State<DetailPage> {
                     // Tambah baru
                     await _tambah.addKeranjang(
                       KeranjangModel(
+                        productId: "id-produk-asli",
                         judul: widget.title,
                         gambar: widget.imageProduct,
                         harga: widget.price,
                         kategori: widget.kategori,
-                        id: widget.title,
+                        id: '',
                         isCheckout: false,
                       ),
                     );

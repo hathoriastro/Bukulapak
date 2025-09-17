@@ -284,13 +284,11 @@ String? _selectedKategoriBuku; // Novel / UTBK / Komik / SD
                   ),
 
 
-
             SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () async {
                 final User? user = FirebaseAuth.instance.currentUser;
-                final String uid = user?.uid ?? '';
-
+final String uid = user?.uid ?? '';
                 TambahprodukModel tambahproduk = TambahprodukModel(
                  Judul: _judulController.text,
                   Penerbit: _penerbitController.text,
